@@ -1,0 +1,34 @@
+\documentclass{article}
+
+\title{Does environmental variability help or harm population growth?}
+
+\begin{document}
+  \maketitle
+
+\section{To-do list, end of fall semester 2018}
+\begin{enumerate}
+\item{How do we handle multi-spp data sets? Do we fit the full model with species * as.factor(year) interactions? Is there a way to supress intercepts to make the output more interpretable?}
+\item{How do we handle idiosyncratic weirdness with spatial replication levels? We could combine all spatial reps into one combo variable. This would be convenient but we would lose resolution.}
+\item{We need clear and consistent criteria for inclusion. Do we discard very rare species? What if the abundance observation is not an observation of the organism, but something that it is correlated with (crab holes)?}
+\item{We need to develop a pipeline for abundance observations of different data types (count, biomass, density, percent cover).}
+\item{Do we combine data for species that are represented across multiple studies and LTER sites?}
+\item{We should code up a simulation study to see if there are any biases in model selection for piecewise regression models with different breakpoints.}
+\item{Perhaps most significantly, we need to define the environmental variation that we will use to explain inter-annual variation in population growth rates. This is a big can of worms with several issues to consider.}
+\begin{enumerate}
+\item{Do we handle environmental data differently for terrestrial versus aquatic organisms?}
+\item{Timing of environmental data needs to align with timing of population growth census year.}
+\item{Data sources. Presuming we want to work with climate data, should we used LTER meteorological data? Or PRISM data (or some other downscaled data product)?}
+\item{Do we try to select individual climate variables that are predictive of the data? If so, how?}
+\begin{itemize}
+\item{ClimWin is one option that has been developed and vetted by others. We could also do our own variable selection.}
+\end{itemize}
+\item{Alternatively, we could take some dimensionality-reduction approach to multivariate climate data, without trying to find the specific drivers for each species.}
+\begin{itemize}
+\item{Drought indices like SPEI or Palmer combine info on preciptation and temperature. Probably a good one-size-fits-all approach for plants, may be not as good for higher trophic levels.}
+\item{We could use PCA to reduce climate dimensions, but the top PC may only explain a small fraction of the climate data, and it may not be the part of climate that is most relevant for the organism.}
+\end{itemize}
+\end{enumerate}
+\end{enumerate}
+
+
+\end{document}
