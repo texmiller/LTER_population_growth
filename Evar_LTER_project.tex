@@ -7,25 +7,40 @@
 
 \section{To-do list, end of fall semester 2018}
 \begin{enumerate}
-\item{How do we handle multi-spp data sets? Do we fit the full model with species * as.factor(year) interactions? Is there a way to supress intercepts to make the output more interpretable?}
-\item{How do we handle idiosyncratic weirdness with spatial replication levels? We could combine all spatial reps into one combo variable. This would be convenient but we would lose resolution.}
-\item{We need clear and consistent criteria for inclusion. Do we discard very rare species? What if the abundance observation is not an observation of the organism, but something that it is correlated with (crab holes)?}
-\item{We need to develop a pipeline for abundance observations of different data types (count, biomass, density, percent cover).}
-\item{Do we combine data for species that are represented across multiple studies and LTER sites?}
-\item{We should code up a simulation study to see if there are any biases in model selection for piecewise regression models with different breakpoints.}
-\item{Perhaps most significantly, we need to define the environmental variation that we will use to explain inter-annual variation in population growth rates. This is a big can of worms with several issues to consider.}
+
+\item{How do we handle multi-spp data sets? Do we fit the full model with species * as.factor(year) interactions? Is there a way to supress intercepts to make the output more interpretable? Decision: we will model multi-spp data sets together with one random effect distribtuion. If it fits poorly in the diagnostics, we can revisit splitting species.}
+
+\item{How do we handle idiosyncratic weirdness with spatial replication levels? We could combine all spatial reps into one combo variable. This would be convenient but we would lose resolution. Decision: YES.}
+
+\item{We need clear and consistent criteria for inclusion. Do we discard very rare species? Decision: FIT EVERYTHING. }
+
+\item{What if the abundance observation is not an observation of the organism, but something that it is correlated with (crab holes)?  We May need to catalog weird data sets, including incomplete taxonomic info. Gaps will be another potential source of weirdness.}
+
+\item{What do we do for data sets with only genus info? We may not know how big a problem this is until we start.}
+
+\item{We need to develop a pipeline for abundance observations of different data types (count, biomass, density, percent cover). THERE WILL BE A PIPELINE TEAM.}
+
+\item{Do we combine data for species that are represented across multiple studies and LTER sites? BOTH WAYS.}
+
+\item{We should code up a simulation study to see if there are any biases in model selection for piecewise regression models with different breakpoints. SIMULATION TEAM.}
+
+\item{Perhaps most significantly, we need to define the environmental variation that we will use to explain inter-annual variation in population growth rates. This is a big can of worms with several issues to consider. DECISION: ALL WAYS? THERE IS A LOT OF ENTHUSIASM FOR CLIMWIN AS A WAY TO UNDERSTAND WHAT IS ACTUALLY DRIVING INDIVIDUAL SPP, BUT IT CAN BE HARD TO COMPARE ACROSS SPECIES, STORY IS LESS COHESIVE IN TERMS OF CLIMATE CHANGE AND KNOWN ELEMENTS OF CLIMATE VARIANCE THAT ARE KNOWN TO INCREASE. ALSO CLIMWIN WILL MAKE THE PIPELINE ANNOYING AND SLOW.}
+
 \begin{enumerate}
-\item{Do we handle environmental data differently for terrestrial versus aquatic organisms?}
+\item{Do we handle environmental data differently for terrestrial versus aquatic organisms? IT DEPENDS. IF WE USE CLIMWIN, WE CAN PUT TOGETHER. MAYBE BOTH WAYS, NEED TO THINK MORE ABOUT. THIS IS A TRAIT, SO MAYBE BETTER TO CONNECT TO VARIATION ON THE BACK END.}
+
 \item{Timing of environmental data needs to align with timing of population growth census year.}
-\item{Data sources. Presuming we want to work with climate data, should we used LTER meteorological data? Or PRISM data (or some other downscaled data product)?}
+
+\item{Data sources. Presuming we want to work with climate data, should we used LTER meteorological data? Or PRISM data (or some other downscaled data product)? Could use NOAA for aquatic data.}
+
 \item{Do we try to select individual climate variables that are predictive of the data? If so, how?}
 \begin{itemize}
 \item{ClimWin is one option that has been developed and vetted by others. We could also do our own variable selection.}
 \end{itemize}
 \item{Alternatively, we could take some dimensionality-reduction approach to multivariate climate data, without trying to find the specific drivers for each species.}
 \begin{itemize}
-\item{Drought indices like SPEI or Palmer combine info on preciptation and temperature. Probably a good one-size-fits-all approach for plants, may be not as good for higher trophic levels.}
-\item{We could use PCA to reduce climate dimensions, but the top PC may only explain a small fraction of the climate data, and it may not be the part of climate that is most relevant for the organism.}
+\item{Drought indices like SPEI or Palmer combine info on preciptation and temperature. Probably a good one-size-fits-all approach for plants, may be not as good for higher trophic levels. Is there an index for aquatic systems?}
+\item{We could use PCA to reduce climate dimensions, but the top PC may only explain a small fraction of the climate data, and it may not be the part of climate that is most relevant for the organism. IF WE DID PCA, WPOULD WE HAVE ONE MEGA PCA OR LOTS OF MINI PCAS?}
 \end{itemize}
 \end{enumerate}
 \end{enumerate}
