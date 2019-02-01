@@ -5,6 +5,17 @@
 \begin{document}
   \maketitle
 
+\section{Group meeting, January 24, 2019}
+Here is a run-down of the decisions we made today:
+\begin{enumerate}
+\item{We will use a spline approach to quantitatively describe the concavity of demographic responses to climate variability. We’re not sure if the spline approach will work well for short time series but we’ll try and modify as needed if we get garbage results. }
+\item{We will use annual means for the climate variable(s) rather than trying to do something fancy with a weighted density kernel to quantify time lags. If we go with SPEI (next point), this already has some “history” built into it since we need to specify the time window of climate integration.}
+\item{We will use SPEI, a widely applied index of drought stress based on evapotranspirative potential. This really simplifies this. There was some discussion of \textit{also} using straight-up temperature and precipitation, and the code will likely be written generally enough that it should be easy to swap in different climate variables if we decide to go that route. We are not sure if SPEI is super meaningful for marine and/or freshwater taxa but we’ll proceed in treating these data the same as the terrestrial data, and decide later if the project should be limited to land.}
+\item{There will be some work to do in deriving climate change forecasts for SPEI at all of our LTER sites, but this will likely come after we have fit the population models and are ready for some forecasting analysis.}
+\end{enumerate}
+
+Lastly, here is the GPP paper that Kai mentioned: https://www.nature.com/articles/nature23021. If you know of other, related synthesis papers (Bene had one in mind) please share with the group. 
+
 \section{To-do list, end of fall semester 2018}
 \begin{enumerate}
 
