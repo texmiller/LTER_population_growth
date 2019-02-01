@@ -8,13 +8,23 @@
 #install.packages("dplyr")
 library(popler)
 
-bigfun <- function(popler_obj){
+## let's use the heron data set as a guinea pig
+herons_metadat <- pplr_browse(proj_metadata_key==88)
+herons <- pplr_get_data(herons_metadat)
+herons_metadat$lat_lter
+
+bigfun <- function(popler_proj_key){
   
-  ## extract popler project metadata
+  ## extract popler project data and metadata
+  metadat <- pplr_browse(proj_metadata_key==popler_proj_key)
+  dat <- pplr_get_data(metadat)
   
   ## collect climate covariates
+  latlong_DD <- c(metadat$lat_lter, metadat$long_lter)
+  years <- metadat$studystartyr:metadat$studyendyr
   
   ## diagnose the data type
+  type <- metadat$datatype
   
   ## prep data for analysis
   
