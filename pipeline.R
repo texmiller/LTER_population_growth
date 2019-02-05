@@ -9,49 +9,60 @@
 library(popler)
 library(tidyverse)
 library(rstan)
+library(bayesplot)
+library(rstanarm)
 
-## let's use the heron data set as a guinea pig
-herons_metadat <- pplr_browse(proj_metadata_key==88)
-herons <- pplr_get_data(herons_metadat,cov_unpack=T)
-herons_metadat$lat_lter
+## let's use the heron data set (88) as a guinea pig
+popler_proj_key <- 88
 
-bigfun <- function(popler_proj_key){
+bigfun <- function(k){
   
   ## extract popler project data and metadata
-  metadat <- pplr_browse(proj_metadata_key==popler_proj_key, full_tbl = T)
+  metadat <- pplr_browse(proj_metadata_key==as.integer(k), full_tbl = T)
   ## diagnose the data type
   type <- metadat$datatype
-  if(type=="individual" | type=="basal_area"){return("Non-desired data type")}
+  if(type=="individual" | type=="basal_cover"){return("Non-desired data type")}
   ## get data and combine spatial rep info
   n_spat_levels <- metadat$n_spat_levs
   dat <- pplr_get_data(metadat) %>% 
     as.data.frame %>% 
+    mutate(n_spat_levels = n_spat_levels) %>% 
     mutate(ran_effect = ifelse(n_spat_levels==1,spatial_replication_level_1,
-                          ifelse(n_spat_levels==2,interaction(spatial_replication_level_1,spatial_replication_level_2),
-                                 ifelse(n_spat_levels==3,interaction(spatial_replication_level_1,spatial_replication_level_2,spatial_replication_level_3),
-                                        interaction(spatial_replication_level_1,spatial_replication_level_2,spatial_replication_level_3,spatial_replication_level_4)))))
-
-  ## filter out NAs and very rare species -- still need to do
-
+                               ifelse(n_spat_levels==2,interaction(spatial_replication_level_1,spatial_replication_level_2),
+                                      ifelse(n_spat_levels==3,interaction(spatial_replication_level_1,spatial_replication_level_2,spatial_replication_level_3),
+                                             interaction(spatial_replication_level_1,spatial_replication_level_2,spatial_replication_level_3,spatial_replication_level_4))))) %>% 
+    filter(!is.na(abundance_observation))
+  ## filter out NAs and very rare species -- we made a decision to use only the data provided by PIs-- we are not
+  ## assumming that NAs are zero
+  
+  ## keep track of what year*ran_effect levels were lost by na.omit
+  summ <- dat %>% 
+    group_by(year,ran_effect) %>% 
+    summarise(n(),sum(is.na(abundance_observation)))
 
   ## prep data for analysis
+  newdat <- dat %>% 
+    select(year,ran_effect,sppcode,abundance_observation) %>% 
+    drop_na()
   datalist<-list(
     n=nrow(dat),
-    nyear=length(unique(as.factor(dat$year))),
-    nrep=length(unique(as.factor(dat$ran_effect))),
-    nspp=length(unique(as.factor(dat$sppcode))),
-    year=as.numeric(as.factor(as.character(dat$year))),
-    rep=as.numeric(as.factor(as.character(dat$ran_effect))),
-    spp=as.numeric(as.factor(as.character(dat$sppcode))),
-    count=dat$abundance_observation)
+    nyear=length(unique(as.factor(newdat$year))),
+    nrep=length(unique(as.factor(newdat$ran_effect))),
+    nsp=length(unique(as.factor(newdat$sppcode))),
+    year=as.numeric(as.factor(as.character(newdat$year))),
+    rep=as.numeric(as.factor(as.character(newdat$ran_effect))),
+    sp=as.numeric(as.factor(as.character(newdat$sppcode))),
+    count=newdat$abundance_observation)
   
   ## send to the appropriate Stan model, given data type
   stan_model <- ifelse(type=="count","count_model.stan",
                        ifelse(type=="biomass","biomass_model.stan",
                               ifelse(type=="cover","cover_model.stan","density_model.stan")))
-  abund_fit<-stan(file=stan_model,data=datalist,iter=10000,chains=3)
+  abund_fit<-stan(file=stan_model,data=datalist,iter=5000,chains=3)
   
+  ## generate diagnostic quantities
   
+  ## generate derived estimate of lambda
   
   ## collect climate covariates
   latlong_DD <- c(metadat$lat_lter, metadat$long_lter)
@@ -60,8 +71,12 @@ bigfun <- function(popler_proj_key){
   ## pull out items of interest from Stan output - could embed climate change simulation here
   
   ## package outputs into data frame or list
-  
+  output <- extract(abund_fit,"a")[[1]]
+  return(output)
 }
+
+test <- bigfun(62)
+
 
 ## pseudo-code for Stan model
 #1. Get year-specific lambdas
@@ -69,6 +84,17 @@ bigfun <- function(popler_proj_key){
 #3. Derive expected value
 #4. Calculate model diagnostics
 
+
+traceplot(abund_fit)
+print(abund_fit)
+
+mcmc_areas(
+  posterior, 
+  pars = c("cyl", "drat", "am", "sigma"),
+  prob = 0.8, # 80% intervals
+  prob_outer = 0.99, # 99%
+  point_est = "mean"
+)
 
 
 
