@@ -15,7 +15,7 @@ herons_metadat <- pplr_browse(proj_metadata_key==88)
 herons <- pplr_get_data(herons_metadat,cov_unpack=T)
 herons_metadat$lat_lter
 
-bigfun <- function(popler_proj_key,rarity_threshold){
+bigfun <- function(popler_proj_key){
   
   ## extract popler project data and metadata
   metadat <- pplr_browse(proj_metadata_key==popler_proj_key, full_tbl = T)
@@ -24,25 +24,25 @@ bigfun <- function(popler_proj_key,rarity_threshold){
   if(type=="individual" | type=="basal_area"){return("Non-desired data type")}
   ## get data and combine spatial rep info
   n_spat_levels <- metadat$n_spat_levs
-  dat <- pplr_get_data(metadat) 
-  dat <- dat %>% mutate(ran_effect = ifelse(n_spat_levels==1,spatial_replication_level_1,
+  dat <- pplr_get_data(metadat) %>% 
+    as.data.frame %>% 
+    mutate(ran_effect = ifelse(n_spat_levels==1,spatial_replication_level_1,
                           ifelse(n_spat_levels==2,interaction(spatial_replication_level_1,spatial_replication_level_2),
                                  ifelse(n_spat_levels==3,interaction(spatial_replication_level_1,spatial_replication_level_2,spatial_replication_level_3),
                                         interaction(spatial_replication_level_1,spatial_replication_level_2,spatial_replication_level_3,spatial_replication_level_4)))))
 
   ## filter out NAs and very rare species -- still need to do
 
-  ## number of species we are left with
-  spp <- na.omit(unique(dat$sppcode))
-  n_spp <- length(spp)
 
   ## prep data for analysis
   datalist<-list(
     n=nrow(dat),
     nyear=length(unique(as.factor(dat$year))),
     nrep=length(unique(as.factor(dat$ran_effect))),
+    nspp=length(unique(as.factor(dat$sppcode))),
     year=as.numeric(as.factor(as.character(dat$year))),
     rep=as.numeric(as.factor(as.character(dat$ran_effect))),
+    spp=as.numeric(as.factor(as.character(dat$sppcode))),
     count=dat$abundance_observation)
   
   ## send to the appropriate Stan model, given data type
