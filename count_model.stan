@@ -2,14 +2,16 @@ data {
     int<lower=0> nrep;
     int<lower=0> nyear;
     int<lower=0> n;
+    int<lower=0> nsp;
     int<lower=0> rep[n];
     int<lower=0> year[n];
     int<lower=0> count[n];
+    int<lower=0> sp[n];
 }
 
 
 parameters {
-    real a[nyear];
+    matrix[nyear,nsp] a;
     real b[nrep];
     real <lower=0.00001> sigb;
 }
@@ -18,7 +20,7 @@ transformed parameters {
    real mu[n];
 for(i in 1:n)
 {
-mu[i]=exp(a[year[i]]+b[rep[i]]);
+mu[i]=exp(a[year[i],sp[i]] + b[rep[i]]);
 }
 }
 
