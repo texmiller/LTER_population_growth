@@ -32,7 +32,10 @@ climate_dat <- raster::getData("worldclim",var="bio",res=10)
 
 ## This would be the command for pulling the predicted future climate
 ## but it's not working
-#r <- raster::getData("CMIP5",var="bio",res=10, rcp=45, model='BC', year = 50)
+
+#r <- getData('CMIP5', var='bio', res=10, rcp=85, model='AC', year=70)
+#r2 <- getData('CMIP5', var='prec', res=10, rcp=85, model='AC', year=70)
+#climate_dat = r
 
 ## pull out just variables 1 and 12, which are Temperature and Precipitation
 ## according to the metadata
@@ -70,7 +73,7 @@ LTER_climate_df <- cbind.data.frame(coordinates(points),values)
 ```{r temp}
 ## visualize the LTER sites with the temperature data at the world scale
 ## (need to multiply temp by 0.1 to get it into the correct format for degrees C)
-plot(climate_dat$Temp)
+plot(climate_dat$Temp*.1, main="Annual Mean Temperature", xlab="Longitude",ylab="Latitude",cex.axis=1.3, cex.lab=1.4, cex.main=1.5,col=rev(heat.colors(20)))
 plot(points,add=T)
 ```
 
@@ -79,7 +82,7 @@ Plot for temperature estimates from WorldClim with our LTER sites overlaid as po
 
 ```{r precip}
 ## visualize the LTER sites with the precipitation data (mm) at the world scale
-plot(climate_dat$Prec)
+plot(climate_dat$Prec,main="Annual Precipitation", xlab="Longitude",ylab="Latitude",cex.axis=1.3, cex.lab=1.4, cex.main=1.5)
 plot(points,add=T)
 ```
 
@@ -92,11 +95,11 @@ Plot for precipitation estimates from WorldClim with our LTER sites overlaid as 
 ```{r temp and precip US, echo =F, out.height = '60%', out.width='55%'}
 ## visualize the LTER sites with the temperature data for N. America
 ## (need to multiply temp by 0.1 to get it into the correct format for degrees C)
-plot(climate_dat$Temp, xlim = c(-160, -50), ylim = c(0, 100), axes=TRUE)
+plot((climate_dat$Temp*.1), xlim = c(-160, -50), ylim = c(0, 100), main="Annual Mean Temperature", xlab="Longitude",ylab="Latitude",cex.axis=1.3, cex.lab=1.4, cex.main=1.5,col=rev(heat.colors(10)))
 plot(points,add=T)
 
 ## visualize the LTER sites with the precipitation data (mm) for N. America
-plot(climate_dat$Prec,xlim = c(-160, -50), ylim = c(0, 100), axes=TRUE)
+plot(climate_dat$Prec,xlim = c(-160, -50), ylim = c(0, 100), axes=TRUE,main="Annual Precipitation", xlab="Longitude",ylab="Latitude",cex.axis=1.3, cex.lab=1.4, cex.main=1.5)
 plot(points,add=T)
 ```
 
