@@ -68,13 +68,17 @@ LTER_climate_df <- cbind.data.frame(coordinates(points),values)
 plot(climate_dat$Temp)
 plot(points,add=T)
 ```
-Plot for temperature estimates from WorldClim with our LTER sites overlaid as points. (Temp needs to be scaled by 0.1 to convert to degrees C.) Pretty cool to see the LTER sites like this! *Could probably just zoom into the US instead of keeping both N. and S. America.*
+
+
+Plot for temperature estimates from WorldClim with our LTER sites overlaid as points. (Temp needs to be scaled by 0.1 to convert to degrees C.) Pretty cool to see the LTER sites like this!
 
 ```{r precip}
 ## visualize the LTER sites with the precipitation data (mm) at the world scale
 plot(climate_dat$Prec)
 plot(points,add=T)
 ```
+
+
 Plot for precipitation estimates from WorldClim with our LTER sites overlaid as points. Precipitation is in mm.
 *It would be nicer to get these into ggplot - think it should be fairly straightforward, just need to figure out how to use rasters in ggplot with the **dataVis** package.*
 
