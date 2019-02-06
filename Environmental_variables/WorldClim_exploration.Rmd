@@ -2,7 +2,7 @@
 title: "Climate Projections from WorldClim"
 author: "Marion Donald"
 date: "February 6, 2019"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -26,13 +26,16 @@ library(popler)
 library(raster)
 library(sp)
 
-## trying it first with the lowest level of resolution -- it takes a long time to download at the higher resolutions
+## trying it first with the lowest level of resolution
+## it takes a long time to download at the higher resolutions
 climate_dat <- raster::getData("worldclim",var="bio",res=10)
 
-## This would be the command for pulling the predicted future climate - but it's not working
+## This would be the command for pulling the predicted future climate
+## but it's not working
 #r <- raster::getData("CMIP5",var="bio",res=10, rcp=45, model='BC', year = 50)
 
-## pull out just variables 1 and 12, which are Temperature and Precipitation according to the metadata
+## pull out just variables 1 and 12, which are Temperature and Precipitation
+## according to the metadata
 climate_dat <- climate_dat[[c(1,12)]]
 names(climate_dat) <- c("Temp","Prec") ## rename these columns Temp and Prec
 
@@ -41,7 +44,8 @@ names(climate_dat) <- c("Temp","Prec") ## rename these columns Temp and Prec
 ### Adding in the popler LTER data
 
 ```{r popler setup, echo=T}
-## Pull data from ALL of the studies in the popler database -- ultimately, we'll want to filter this to match with the ones we've used in the population estimates
+## Pull data from ALL of the studies in the popler database
+## ultimately, we'll want to filter this to match with the ones we've used in the population estimates
 all_studies <- popler::pplr_browse()
 
 ## select just the lat/long columns
@@ -64,7 +68,8 @@ LTER_climate_df <- cbind.data.frame(coordinates(points),values)
 ```
 ### World map plots of temperature and precipitation with the LTER sites overlaid
 ```{r temp}
-## visualize the LTER sites with the temperature data (need to multiply temp by 0.1 to get it into the correct format for degrees C)
+## visualize the LTER sites with the temperature data at the world scale
+## (need to multiply temp by 0.1 to get it into the correct format for degrees C)
 plot(climate_dat$Temp)
 plot(points,add=T)
 ```
@@ -84,16 +89,16 @@ Plot for precipitation estimates from WorldClim with our LTER sites overlaid as 
 
 ### Zooming in on our sites in North America
 
-```{r temp US}
-## visualize the LTER sites with the temperature data (need to multiply temp by 0.1 to get it into the correct format for degrees C)
+```{r temp and precip US, echo =F, out.height = '60%', out.width='55%'}
+## visualize the LTER sites with the temperature data for N. America
+## (need to multiply temp by 0.1 to get it into the correct format for degrees C)
 plot(climate_dat$Temp, xlim = c(-160, -50), ylim = c(0, 100), axes=TRUE)
 plot(points,add=T)
-```
 
-```{r precip US}
-## visualize the LTER sites with the precipitation data (mm) at the world scale
+## visualize the LTER sites with the precipitation data (mm) for N. America
 plot(climate_dat$Prec,xlim = c(-160, -50), ylim = c(0, 100), axes=TRUE)
 plot(points,add=T)
 ```
+
 
 
