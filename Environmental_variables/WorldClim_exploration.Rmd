@@ -1,0 +1,95 @@
+---
+title: "Climate Projections from WorldClim"
+author: "Marion Donald"
+date: "February 6, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## WorldClim
+### Looking into climate projections from WorldClim based on Bene's suggestions 
+*The raster::getData command for the future projections doesn't work since you have to register online with CMIP5 to download the data this way (I think).*
+So the example here is with the current models rather than the future predictions for 2050 or 2070.
+
+
+```{r WorldClim set up, results='hide', message=FALSE, warning=FALSE}
+#install.packages("raster")
+#install.packages("sp")
+#install.packages("devtools")
+#devtools::install_github("AldoCompagnoni/popler", build_vignettes=T, force=T)
+
+library(tidyverse)
+library(popler)
+library(raster)
+library(sp)
+
+## trying it first with the lowest level of resolution -- it takes a long time to download at the higher resolutions
+climate_dat <- raster::getData("worldclim",var="bio",res=10)
+
+## This would be the command for pulling the predicted future climate - but it's not working
+#r <- raster::getData("CMIP5",var="bio",res=10, rcp=45, model='BC', year = 50)
+
+## pull out just variables 1 and 12, which are Temperature and Precipitation according to the metadata
+climate_dat <- climate_dat[[c(1,12)]]
+names(climate_dat) <- c("Temp","Prec") ## rename these columns Temp and Prec
+
+```
+
+### Adding in the popler LTER data
+
+```{r popler setup, echo=T}
+## Pull data from ALL of the studies in the popler database -- ultimately, we'll want to filter this to match with the ones we've used in the population estimates
+all_studies <- popler::pplr_browse()
+
+## select just the lat/long columns
+coords_pop <- all_studies %>% 
+                dplyr::select(lng_lter,lat_lter) 
+
+## turn this into a dataframe 
+coords_new <- as.data.frame(coords_pop)
+
+
+## turn our LTER coodinate points into a Spatial Points classification
+points <- SpatialPoints(coords_new, proj4string = climate_dat@crs)
+
+## subset the WorldClim data to match our lat/long LTER locations
+values <- raster::extract(climate_dat,points)
+
+## create a new dataframe with the LTER locations and the climate variables, just to see it
+LTER_climate_df <- cbind.data.frame(coordinates(points),values)
+
+```
+### World map plots of temperature and precipitation with the LTER sites overlaid
+```{r temp}
+## visualize the LTER sites with the temperature data (need to multiply temp by 0.1 to get it into the correct format for degrees C)
+plot(climate_dat$Temp)
+plot(points,add=T)
+```
+Plot for temperature estimates from WorldClim with our LTER sites overlaid as points. (Temp needs to be scaled by 0.1 to convert to degrees C.) Pretty cool to see the LTER sites like this! *Could probably just zoom into the US instead of keeping both N. and S. America.*
+
+```{r precip}
+## visualize the LTER sites with the precipitation data (mm) at the world scale
+plot(climate_dat$Prec)
+plot(points,add=T)
+```
+Plot for precipitation estimates from WorldClim with our LTER sites overlaid as points. Precipitation is in mm.
+*It would be nicer to get these into ggplot - think it should be fairly straightforward, just need to figure out how to use rasters in ggplot with the **dataVis** package.*
+
+### Zooming in on our sites in North America
+
+```{r temp US}
+## visualize the LTER sites with the temperature data (need to multiply temp by 0.1 to get it into the correct format for degrees C)
+plot(climate_dat$Temp, xlim = c(-160, -50), ylim = c(0, 100), axes=TRUE)
+plot(points,add=T)
+```
+
+```{r precip US}
+## visualize the LTER sites with the precipitation data (mm) at the world scale
+plot(climate_dat$Prec,xlim = c(-160, -50), ylim = c(0, 100), axes=TRUE)
+plot(points,add=T)
+```
+
+
