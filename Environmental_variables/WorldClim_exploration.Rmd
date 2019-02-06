@@ -1,6 +1,6 @@
 ---
 title: "Climate Projections from WorldClim"
-author: "Marion Donald"
+author: "Environmental Variable Team"
 date: "February 6, 2019"
 output: pdf_document
 ---
