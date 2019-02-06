@@ -70,7 +70,7 @@ values <- raster::extract(climate_dat,points)
 LTER_climate_df <- cbind.data.frame(coordinates(points),values)
 
 ```
-### World map plots of temperature and precipitation with the LTER sites overlaid
+### World maps of temperature and precipitation with the LTER sites overlaid
 ```{r temp}
 ## visualize the LTER sites with the temperature data at the world scale
 ## (need to multiply temp by 0.1 to get it into the correct format for degrees C)
