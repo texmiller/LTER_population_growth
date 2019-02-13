@@ -1,0 +1,39 @@
+model{
+
+    ## Priors
+    for(i in 1:nyear){
+      for(j in 1:nsp){
+      a[i,j]~dnorm(0,0.001)
+      }
+    }
+
+    sigma.rep~dunif(0,1000)
+    tau.rep<-1/(sigma.rep*sigma.rep)
+    for(i in 1:nrep){      
+    eps.rep[i]~dnorm(0,tau.rep)
+    }
+    
+    ## Likelihood
+    for(i in 1:n){
+    log(lambda[i]) <- a[year[i],sp[i]] + eps.rep[rep[i]]
+    count[i]~dpois(lambda[i])
+    
+    resid[i] <- (count[i]-lambda[i])/sqrt(lambda[i])
+    count.new[i] ~ dpois(lambda[i])
+    resid.new[i] <- (count.new[i]-lambda[i])/sqrt(lambda[i])
+    D[i] <- pow(resid[i],2)
+    D.new[i] <- pow(resid.new[i],2)
+    }    
+    
+    ## sum up posterior predictive checks
+    fit <- sum(D[]) 
+    fit.new <- sum(D.new[])
+    
+    ## derived quantities for population growth rates
+    for(i in 1:(nyear-1)){
+      for(j in 1:nsp){
+      r[i,j] <- log(a[(i+1),j] / a[i,j])
+      }
+    }
+    
+    }##end model
