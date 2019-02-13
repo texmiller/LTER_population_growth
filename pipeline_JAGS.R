@@ -63,8 +63,8 @@ pipeline <- function(k){
     count=newdat$abundance_observation)
   
   inits<-function(){list(a = matrix(rnorm(datalist$nyear*datalist$nsp,0,1),nrow=datalist$nyear,ncol=datalist$nsp),
-                         sigma.rep = rlnorm(1))}
-  parameters<-c("a","r","fit","fit.new")
+                         sigma.rep = rlnorm(1),sigma.od = rlnorm(1))}
+  parameters<-c("a","sigma.rep","sigma.od","r","fit","fit.new")
     
   ## send to the appropriate JAGS model, given data type
   jags_model <- ifelse(type=="count","count_model_jags.txt",
@@ -73,29 +73,54 @@ pipeline <- function(k){
   abund_fit<-jags(data=datalist,
                   inits=inits,
                   parameters.to.save=parameters,
-                  model.file=jags_model,
+                  model.file="count_model_jags.txt",
                   n.thin=5,
                   n.chains=3,
                   n.burnin=1000,
                   n.iter=5000,
                   working.directory=getwd())
   
-  ## generate diagnostic quantities
+  ## Bayesian p-value
+  bayes.p <- mean(abund_fit$BUGSoutput$sims.list$fit > abund_fit$BUGSoutput$sims.list$fit.new)
+
+  ## collect posterior mean and CI growth rates, convert to year * species matrix
+  r.indices <- which(str_sub(rownames(abund_fit$BUGSoutput$summary),1,1)=="r")
+  r.out <- tibble(r_mean = abund_fit$BUGSoutput$summary[r.indices,"mean"],
+                  r_lowCI = abund_fit$BUGSoutput$summary[r.indices,"2.5%"],
+                  r_highCI = abund_fit$BUGSoutput$summary[r.indices,"97.5%"],
+                  year = rep(1:(datalist$nyear-1),times=datalist$nsp),
+                  sp = rep(1:datalist$nsp,each=(datalist$nyear-1)),
+                  r_Rhats = abund_fit$BUGSoutput$summary[r.indices,"Rhat"])
   
-  ## generate derived estimate of lambda
-  
-  ## collect climate covariates
-  latlong_DD <- c(metadat$lat_lter, metadat$long_lter)
-  years <- metadat$studystartyr:metadat$studyendyr
-  
-  ## pull out items of interest from Stan output - could embed climate change simulation here
-  
-  ## package outputs into data frame or list
-  output <- extract(abund_fit,"a")[[1]]
-  return(output)
+  r.plot <- ggplot(r.out)+
+    geom_point(aes(x=as.factor(year),y=r_mean))+
+    geom_errorbar(aes(x=as.factor(year),ymin=r_lowCI, ymax=r_highCI))+
+    facet_wrap(~sp)
+
+  return(list(metadat=metadat,
+              r.out=r.out,
+              r.plot=r.plot,
+              bayes.p=bayes.p))
 }
 
-test <- bigfun(62)
+test <- pipeline(88)
+
+r.out %>% filter(sp!=8) %>% 
+ggplot()+
+  geom_point(aes(x=as.factor(year),y=r_mean))+
+  geom_errorbar(aes(x=as.factor(year),ymin=r_lowCI, ymax=r_highCI))+
+  facet_wrap(~sp)
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## pseudo-code for Stan model
@@ -133,3 +158,11 @@ test <- dat %>%
 
 filter(test,sppcode=="WI")
 spp <- na.omit(unique(test$sppcode))
+
+
+## collect climate covariates
+latlong_DD <- c(metadat$lat_lter, metadat$long_lter)
+years <- metadat$studystartyr:metadat$studyendyr
+
+## pull out items of interest from Stan output - could embed climate change simulation here
+
