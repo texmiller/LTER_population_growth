@@ -1,6 +1,6 @@
 ## Authors: LTER pipeline team
 ## Purpose: build a general function to analyze popler data sets and generate desired outputs
-## Last update: February 1, 2019
+## Last update: February 13, 2019
 
 ## install popler
 #install.packages("devtools")
@@ -13,7 +13,7 @@ library(bayesplot)
 library(rstanarm)
 
 ## let's use the heron data set (88) as a guinea pig
-popler_proj_key <- 88
+k <- 88
 
 bigfun <- function(k){
   
@@ -21,7 +21,9 @@ bigfun <- function(k){
   metadat <- pplr_browse(proj_metadata_key==as.integer(k), full_tbl = T)
   ## diagnose the data type
   type <- metadat$datatype
+  ## break out of function if datatype is individual or basal cover
   if(type=="individual" | type=="basal_cover"){return("Non-desired data type")}
+  
   ## get data and combine spatial rep info
   n_spat_levels <- metadat$n_spat_levs
   dat <- pplr_get_data(metadat) %>% 
@@ -34,6 +36,10 @@ bigfun <- function(k){
     filter(!is.na(abundance_observation))
   ## filter out NAs and very rare species -- we made a decision to use only the data provided by PIs-- we are not
   ## assumming that NAs are zero
+  
+  ## if study is experimental, use only the control group
+  ## check with Aldo what to specify here
+  if(metadat$studytype=="exp"){}
   
   ## keep track of what year*ran_effect levels were lost by na.omit
   summ <- dat %>% 
