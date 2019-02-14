@@ -7,14 +7,20 @@ model{
       }
     }
 
+    ## random effect variance
     sigma.rep~dunif(0,1000)
     tau.rep<-1/(sigma.rep*sigma.rep)
     for(i in 1:nrep){      
     eps.rep[i]~dnorm(0,tau.rep)
     }
-    
+    ## ovserdispersion
     sigma.od~dunif(0,1000)
     tau.od <- 1/(sigma.od*sigma.od)
+    
+    ##mean r
+    mu_r~dnorm(0,0.0001)
+    sigma_r~dunif(0,1000)
+    tau._r<-1/(sigma_r*sigma_r)
     
     ## Likelihood
     for(i in 1:n){

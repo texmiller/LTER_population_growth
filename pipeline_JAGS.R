@@ -14,7 +14,8 @@ library(bayesplot)
 library(rstanarm)
 
 ## let's use the heron data set (88) as a guinea pig
-k <- 88
+#k <- 88
+obs_count <- pplr_browse(studytype=="obs" & datatype == "count")$proj_metadata_key
 
 pipeline <- function(k){
   
@@ -38,17 +39,20 @@ pipeline <- function(k){
   ## filter out NAs and very rare species -- we made a decision to use only the data provided by PIs-- we are not
   ## assumming that NAs are zero
   
+  ## find species that were never observed in one or more years
+  drop_rare <- dat %>% 
+    group_by(sppcode,year) %>% 
+    summarise(total_obs_per_year = sum(abundance_observation))%>% 
+    filter(total_obs_per_year == 0)%>% 
+    summarise(unique(sppcode))
+  
   ## if study is experimental, use only the control group
   ## check with Aldo what to specify here
   if(metadat$studytype=="exp"){}
-  
-  ## keep track of what year*ran_effect levels were lost by na.omit
-  summ <- dat %>% 
-    group_by(year,ran_effect) %>% 
-    summarise(n(),sum(is.na(abundance_observation)))
 
-  ## prep data for analysis
+  ## drop rare spp and prep data for analysis
   newdat <- dat %>% 
+    filter(!sppcode %in% drop_rare$sppcode) %>% 
     select(year,ran_effect,sppcode,abundance_observation) %>% 
     drop_na()
   
@@ -95,7 +99,8 @@ pipeline <- function(k){
   r.plot <- ggplot(r.out)+
     geom_point(aes(x=as.factor(year),y=r_mean))+
     geom_errorbar(aes(x=as.factor(year),ymin=r_lowCI, ymax=r_highCI))+
-    facet_wrap(~sp)
+    facet_wrap(~sp)+
+    ggtitle(metadat$title)
 
   return(list(metadat=metadat,
               r.out=r.out,
@@ -103,16 +108,16 @@ pipeline <- function(k){
               bayes.p=bayes.p))
 }
 
-test <- pipeline(88)
+test <- pipeline(k = sample(obs_count,1))
 
-r.out %>% filter(sp!=8) %>% 
-ggplot()+
-  geom_point(aes(x=as.factor(year),y=r_mean))+
-  geom_errorbar(aes(x=as.factor(year),ymin=r_lowCI, ymax=r_highCI))+
-  facet_wrap(~sp)
+## plot r estimates
+test$r.plot
 
+## look at distribution of R-hat values
+hist(test$r.out$r_Rhats)
 
-
+## Bayesian p-value
+test$bayes.p
 
 
 
