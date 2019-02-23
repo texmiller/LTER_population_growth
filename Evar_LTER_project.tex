@@ -5,6 +5,26 @@
 \begin{document}
   \maketitle
 
+\section{Group meeting, February 14, 2019}
+We got updates and new goals for the pipeline and environmental covariate groups.
+\subsection{Pipeline group}
+\begin{itemize}
+\item{Bones of the pipeline code have come together}
+\item{Tom had some computer compatibility issues that may have something to do with popler version and package updates. Tom will troubleshoot this.}
+\item{We still need an effective criterion for dropping species with sparse data. Tom tried filtering out species that were unobserved in at least one year. This helps but still includes species with very wide lambda posteriors, so we will need to do additional filtering.}
+\item{Right now there are both JAGS and Stan versions of the pipeline. We need to pick one and run with it, and this may depend on how we choose to handle the splines.}
+\item{The main pipeline work ahead is to develop code for the spline analysis. This is a big goal ahead of our next meeting.}
+\item{We cannot estimate $\lambda$ as a stochastic node and then fit $\lambda$ to covariate all in the same model. We will need a strategy for dealing with this.}
+\item{We will need to decide whether or not to include experimental studies. We can pull out just the control data but this may be tedious for some studies. We also need a way to aggregate structured data. Aldo will need to help with this.}
+\end{itemize}
+
+\subsection{Covariate group}
+\begin{itemize}
+\item{The group made great progress (including nice markdown docs!) on pulling historical climate data for the LTER site locations, as well as future climate projections.}
+\item{So far, we have monthly temp and precip data. The next step will be to convert this to SPEI. We need to figure out the temporal resolution required for this. Can we calculate SPEI from monthly data or do we need finer temporal scale?}
+\item{We need to align the climate year with the demographic year, and this will require information on when (what month) the observations in each data set were collected. Unfortunately this information is not conveniently provided by popler (though sometimes it is in the covariates). We will need to collect this data manually, and Tom has started a google sheet for recording this, for all the observational studies that are not individual or basal area.}
+\end{itemize}
+
 \section{Group meeting, January 24, 2019}
 Here is a run-down of the decisions we made today:
 \begin{enumerate}
