@@ -1,0 +1,134 @@
+---
+title: "Extracting Climate Data from Prism"
+author: "Shannon Carter"
+date: "February 22, 2019"
+output: pdf_document
+---
+
+```{r prep_workspace, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+## Set working directory and clear environment
+setwd("C:\\Users\\Shannon\\Documents\\F18 Topics in Ecology\\Project")
+rm(list = ls(all = T))
+
+```
+
+## Here, I download climate data for each of the LTER sites from Prism and put it in a long format data frame.
+
+First, load required packages
+```{r, echo = T, message = F, warning = F}
+library(tidyverse)
+library(stringr)
+library(prism)
+library(raster)
+library(magrittr)
+library(popler)
+```
+
+## Fetch Data
+Prism has daily, monthly, or annual climate data. Climate measures are tmin, tmax, tmean, and ppt. Here, I've extracted monthly tmean and ppt for from 2000-2005.
+
+```{r get_data, echo = T, results = 'hide'}
+
+# First, set a file path where prism data will be stored
+# I recommend deleting contents this folder before downloading each new batch of data
+options(prism.path = 'C:\\Users\\Shannon\\Documents\\F18 Topics in Ecology\\prism.path_monthly')
+
+# Now, select the type and date range
+get_prism_monthlys(type = 'tmean', years = 2000:2005, mo = 1:12, keepZip = F)
+get_prism_monthlys(type = 'ppt', years = 2000:2005, mo = 1:12, keepZip = F)
+
+```
+
+## Process Data
+
+First, stack raster data and extract coordinates
+```{r, echo = T}
+
+# Here, you'll need to specify which dataset to pull if you've downloaded multiple to the path.
+mystack <- ls_prism_data() %>%  
+  prism_stack(.)  
+
+# Get project coordinates from raster stack
+mycrs <- mystack@crs@projargs
+```
+
+Now, make a dataframe of coordinates for each LTER site, put them in the same coordinate reference system (CRS) as the Prism data, and match them
+
+```{r, echo = T, warning = F}
+
+# First, pull all LTER sites
+all_studies <- popler::pplr_browse()
+
+# Select just the lat/long and site ID columns and make a df
+lter_sites <- all_studies %>%
+  dplyr::select(lng_lter,lat_lter, lterid)
+
+lter_sites <- as.data.frame(lter_sites)
+
+# Convert these locations to format that can be matched to prism data
+coordinates(lter_sites) <- c('lng_lter', 'lat_lter')
+proj4string(lter_sites) <- CRS(mycrs)
+
+```
+
+## Tidy Data
+Wrangle data to long format with columns lat, long, site ID, time, and climate
+
+```{r, echo = T, warning = F}
+
+# Extract data from raster
+data <- data.frame(coordinates(lter_sites), lter_sites$lterid, extract(mystack, lter_sites))
+
+# Reshape data. Col 1:3 are lat, long, and site ID. Col 4:ncol are climate data
+# Column headers include date and climate type info
+data <- data %>% 
+  gather(date, value, 4:ncol(data))
+
+# Remove the extra info from the column header
+data$date <- gsub('PRISM_', '', data$date) %>% 
+  gsub('stable_4kmM3_', '', .) %>% 
+  gsub('stable_4kmM2_', '', .) %>%
+  gsub('_bil', '', .)
+
+# Split header into type, year, and month
+data <- separate(data, 'date', 
+                 into = c('type', 'YearMonth'), 
+                 sep = '_')
+data <- separate(data, 'YearMonth',
+                 into = c('year', 'month'),
+                 sep = 4)
+
+# Reshape data
+data <- unique(data)
+data <- data %>% 
+  spread(type, value) %>%
+  rename(lng = lng_lter, lat = lat_lter, lterid = lter_sites.lterid)
+
+# Order data
+data <- data[order(data$lterid),]
+```
+
+## View Data
+```{r, echo = T}
+head(data)
+str(data)
+
+```
+
+## Some Plots
+```{r, echo = F, warning = F}
+plot_precip <- ggplot(data, aes(x = lterid, y = ppt)) + theme_bw() +
+  geom_boxplot() + 
+  labs(x = 'LTER site ID', y = 'monthly precipitation (mm)') +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+plot_precip
+
+plot_tmean <- ggplot(data, aes(x = lterid, y = tmean)) + theme_bw() +
+  geom_boxplot() +
+  geom_point(aes(color = month)) +
+  labs(x = 'LTER site ID', y = 'monthly mean temperature') +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+plot_tmean
+```
