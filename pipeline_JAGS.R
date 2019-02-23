@@ -3,9 +3,9 @@
 ## Last update: February 13, 2019
 
 ## install popler
-#install.packages("devtools")
-#
-#install.packages("dplyr")
+install.packages("devtools")
+devtools::install_github("AldoCompagnoni/popler", build_vignettes=T, force=T)
+install.packages("dplyr")
 library(popler)
 library(tidyverse)
 library(R2jags)
@@ -15,6 +15,9 @@ library(rstanarm)
 
 ## let's use the heron data set (88) as a guinea pig
 #k <- 88
+obs_studies <- pplr_browse(studytype=="obs" & datatype!="individual" & datatype!="basal_cover",full_tbl = T)
+#write_csv(obs_studies %>% 
+#            select(proj_metadata_key,title,metalink),"obs_studies.csv")
 obs_count <- pplr_browse(studytype=="obs" & datatype == "count")$proj_metadata_key
 
 pipeline <- function(k){
@@ -48,7 +51,9 @@ pipeline <- function(k){
   
   ## if study is experimental, use only the control group
   ## check with Aldo what to specify here
-  if(metadat$studytype=="exp"){}
+
+  ## if abudance_obs is structured, sum over structure
+  ## check with Aldo
 
   ## drop rare spp and prep data for analysis
   newdat <- dat %>% 
