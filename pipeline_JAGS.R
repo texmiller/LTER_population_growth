@@ -4,7 +4,7 @@
 
 ## install popler
 #install.packages("devtools")
-#devtools::install_github("AldoCompagnoni/popler", build_vignettes=T, force=T)
+#
 #install.packages("dplyr")
 library(popler)
 library(tidyverse)
@@ -108,7 +108,9 @@ pipeline <- function(k){
               bayes.p=bayes.p))
 }
 
-test <- pipeline(k = sample(obs_count,1))
+test <- pipeline(k = 834)
+
+sample(obs_count,1)
 
 ## plot r estimates
 test$r.plot
