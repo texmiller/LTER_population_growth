@@ -20,10 +20,11 @@ obs_studies <- pplr_browse(studytype=="obs" & datatype!="individual" & datatype!
 #            select(proj_metadata_key,title,metalink),"obs_studies.csv")
 obs_count <- pplr_browse(studytype=="obs" & datatype == "count")$proj_metadata_key
 
-pipeline <- function(k){
-  
+pipeline <- function(bene){
+  k<-as.numeric(bene)
   ## extract popler project data and metadata
-  metadat <- pplr_browse(proj_metadata_key==as.integer(k), full_tbl = T)
+  metadat <- pplr_browse(proj_metadata_key==k, full_tbl = T)
+ 
   ## diagnose the data type
   type <- metadat$datatype
   ## break out of function if datatype is individual or basal cover
@@ -49,9 +50,6 @@ pipeline <- function(k){
     filter(total_obs_per_year == 0)%>% 
     summarise(unique(sppcode))
   
-  ## if study is experimental, use only the control group
-  ## check with Aldo what to specify here
-
   ## if abudance_obs is structured, sum over structure
   ## check with Aldo
 
@@ -113,7 +111,7 @@ pipeline <- function(k){
               bayes.p=bayes.p))
 }
 
-test <- pipeline(k = 834)
+test <- pipeline(bene=88) #k = 834
 
 sample(obs_count,1)
 
