@@ -1,0 +1,123 @@
+---
+title: "CMIP5 projections exploration"
+author: "Environmental variable team"
+date: "2/25/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## CMIP5 climate projections
+
+Following up on Marion's visualization of the Worldclim projections, which provide an endpoint climate for 2050 or 2070, I wanted to see how to handle getting time series of climate projections. 
+
+In order to get this data, you request data from https://gdo-dcp.ucllnl.org/downscaled_cmip_projections/ which then sends you a data package. I have requested the data based on the individual lat/long of the lter sites, but this has to be done manually.
+
+Here I pull out the coordinates:
+```{r LTER coordinates setup, results='show', message=FALSE, warning=FALSE}
+#devtools::install_github("AldoCompagnoni/popler", build_vignettes=T, force=T)
+library(tidyverse)
+library(popler)
+
+
+# Figuring out the coordinates of the Popler sites
+all_studies <- popler::pplr_browse()
+## select just the lat/long columns
+coords_pop <- all_studies %>% 
+  dplyr::select(lat_lter,lng_lter) 
+## turn this into a dataframe 
+coords_new <- as.data.frame(coords_pop) %>% 
+  mutate(lterid = all_studies$lterid) %>% 
+  mutate(prof_metadata_key = all_studies$proj_metadata_key)
+
+coords_lter <- coords_new %>% 
+  distinct(lat_lter, lng_lter,lterid)
+head(coords_lter)
+# As far as I know, these need to be entered manually to request the data from https://gdo-dcp.ucllnl.org/downscaled_cmip_projections/ 
+# so far I have requested the first 5: SBC, *SEV*, SGS, VCR, AND
+```
+
+Now, we can use the requested data. I requested monthly temp (mean, max, min) and precipitation rate (mm/day) under the BCSD-CMIP5-Climate-monthly option. I then included just the raw time series from all climate model projections. This comes as a series of csv files, and other metadata files, and the requests seem to be filled pretty quickly, ~1 hr.
+
+```{r CMIP5 set up, results='show', message=FALSE, warning=FALSE}
+# Read in average monthly temperature data from the Andrews forest LTER.
+# projections
+AND_tas <- as.data.frame(
+  read.csv("~/Downloads/climate_projections_LTER_AND/bc5/tas.csv"))
+# observed from 1950-2000
+AND_tas_obs <- as.data.frame(
+  read.csv("~/Downloads/climate_projections_LTER_AND/1obs/tas.csv"))
+
+head(AND_tas[,1:10], n=24)
+```
+
+### For the projections, you can see a column for year, a column for month, and then the rest of the columns give the value for a particular climate model. It seems it is common to do some sort of model averaging to have the best possible projection from multiple models, and I'm not sure the best way to handle this for our purposes. I'm taking an unweighted average from all of the climate models:
+
+```{r meantemp, results='hide', message=FALSE, warning=FALSE}
+# Take the average across all of the models for each month
+AND_tas$mean_all_models <- (rowMeans(AND_tas[,3:233]))
+# Use that multi-model average to calculate a yearly average
+
+AND_tas_annual <- AND_tas %>% 
+  dplyr::select(X1950, X1, mean_all_models) %>% 
+  group_by(X1950) %>% 
+  summarize(temp = mean(mean_all_models))
+
+# Getting annual average for just one climate model
+AND_tas_single <- AND_tas %>% 
+  dplyr::select(X1950, X1, X1.28) %>% 
+  group_by(X1950) %>% 
+  summarize(temp = mean(X1.28))
+
+# Calculating the same yearly average with the observed data.
+AND_tas_obs_annual <- AND_tas_obs %>% 
+  dplyr::select(X1950, X1, X.3.315) %>% 
+  group_by(X1950) %>% 
+  summarise(temp = mean(X.3.315))
+```
+
+
+```{r graphs}
+# Here are the observed monthly temperature data that I downloaded.
+ggplot(data = AND_tas_obs) +
+  geom_point(aes(x = X1950, y =X.3.315, color = X1)) +
+  geom_smooth(aes(x = X1950, y =X.3.315, color = X1)) + 
+  scale_color_gradientn(colours = rainbow(12)) +
+  labs(x = "year", y = "avg temp", 
+       title = "observed average monthly temperature")
+# Here are the projected monthly temperature data for a single climate model
+ggplot(data = AND_tas) +
+  geom_point(aes(x = X1950, y =X1.28, color = X1)) +
+  geom_smooth(aes(x = X1950, y =X1.28, color = X1)) +
+  scale_color_gradientn(colours = rainbow(12)) + 
+  labs(x = "year", y = "avg temp", 
+       title = "projected average monthly temperature (avg. from one model)")
+
+# Here is the monthly average for all the models combined. 
+# This is funky, and this is where we need to do a better
+# job knowing how to actually combine models.
+ggplot(data = AND_tas) +
+  geom_point(aes(x = X1950, y =mean_all_models, color = X1)) +
+  geom_smooth(aes(x = X1950, y =mean_all_models, color = X1)) +
+  scale_color_gradientn(colours = rainbow(12)) +
+  labs(x = "year", y = "avg temp", 
+       title = "projected average monthly temperature (avg. from all models)")
+
+
+# Here is the annual calculated annual averages for the 
+# combined (black), observed (blue), and single model (red).
+ggplot() +
+  geom_point(data = AND_tas_annual, aes(x = X1950, y = temp)) +
+  geom_point(data = AND_tas_obs_annual,
+             aes(x = X1950, y = temp), color = "blue")  + 
+  geom_point(data = AND_tas_single, 
+             aes(x = X1950, y = temp), color = "red")  + 
+  labs(x = "year", y = "avg temp", 
+       title = "obs vs proj single model vs proj combined avg. annual temp")
+
+
+```
+
+This last graph is encouraging in that there is interannual variability within the models, although the unweighted mean I took removed this. The amount of variability is likely to be different depending on the site and climate variable that we are looking at.
