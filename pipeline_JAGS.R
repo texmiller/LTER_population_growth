@@ -19,6 +19,9 @@ obs_studies <- pplr_browse(studytype=="obs" & datatype!="individual" & datatype!
 #write_csv(obs_studies %>% 
 #            select(proj_metadata_key,title,metalink),"obs_studies.csv")
 obs_count <- pplr_browse(studytype=="obs" & datatype == "count")$proj_metadata_key
+obs_dens <- pplr_browse(studytype=="obs" & datatype == "density")$proj_metadata_key
+obs_biomass <- pplr_browse(studytype=="obs" & datatype == "biomass")$proj_metadata_key
+obs_cover <- pplr_browse(studytype=="obs" & datatype == "cover")$proj_metadata_key
 
 pipeline <- function(bene){
   k<-as.numeric(bene)
