@@ -1,0 +1,156 @@
+---
+title: "Climate data for LTER sites"
+author: "Shannon Carter"
+date: "March 5, 2019"
+output: pdf_document
+---
+
+```{r prep_workspace, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+## Set working directory and clear environment
+setwd("C:\\Users\\Shannon\\Documents\\F18 Topics in Ecology\\Project")
+rm(list = ls(all = T))
+
+```
+
+## Here, I download climate data for each of the LTER sites from Prism and put it in a long format data frame.
+
+First, load required packages
+```{r, echo = T, message = F, warning = F}
+library(tidyverse)
+library(stringr)
+library(prism)
+library(raster)
+library(magrittr)
+library(popler)
+```
+
+## Fetch Climate Data
+
+Prism has daily, monthly, or annual climate data. Climate measures are tmin, tmax, tmean, and ppt. Here, I've extracted monthly tmean and ppt for from 2000-2005.
+
+```{r get_data, echo = T, results = 'hide'}
+
+# First, set a file path where prism data will be stored
+# I recommend deleting contents this folder before downloading each new batch of data
+options(prism.path = 'C:\\Users\\Shannon\\Documents\\F18 Topics in Ecology\\prism.path')
+
+# Now, select the type and date range
+get_prism_monthlys(type = 'tmean', years = 1990:2016, mo = 1:12, keepZip = F)
+get_prism_monthlys(type = 'ppt', years = 1990:2016, mo = 1:12, keepZip = F)
+
+```
+
+## Process Climate Data
+
+The data is downloaded as a zip folder of raster files. Luckily, R's 'prism' package has some simple functions to compile the files into a format we can work with. Here, I first stack the raster data and then extract coordinates.
+```{r, echo = T}
+
+# Grab the prism data and compile the files
+climate_data <- ls_prism_data() %>%  
+  prism_stack(.)  
+
+# Extract project coordinates from raster stack
+climate_crs <- climate_data@crs@projargs
+
+```
+
+## Fetch & Process LTER Data
+
+Now, make a dataframe of coordinates for each LTER site, put them in the same coordinate reference system (CRS) as the Prism data, and match them
+
+```{r, echo = T, warning = F}
+
+# First, pull the metadata for all LTER sites using pplr_browse
+lter_sites <- popler::pplr_browse()
+
+# Select just the lat/long and site ID (3-letter code for site) columns and make a df
+lter_sites <- lter_sites %>%
+  dplyr::select(lng_lter,lat_lter, lterid)
+lter_sites <- as.data.frame(lter_sites)
+
+# Convert these locations to format that can be matched to Prism climate data
+coordinates(lter_sites) <- c('lng_lter', 'lat_lter')
+proj4string(lter_sites) <- CRS(climate_crs)
+
+```
+
+## Join Climate & LTER data
+
+The Prism climate data comes in pretty nasty shape, so here I wrangle that into a manageable format that I can join with the LTER data.
+
+```{r, echo = T, warning = F}
+
+# Extract the  extracted from the raster stack for those sites 
+climate_lter <- data.frame(coordinates(lter_sites), 
+                   lter_sites$lterid, 
+                   extract(climate_data, lter_sites))
+
+# Reshape data. Col 1:3 are lat, long, and site ID. Col 4:ncol are climate data
+# Column headers include date and climate type info
+climate_lter <- climate_lter %>% 
+  gather(date, value, 4:ncol(climate_lter))
+
+# The column header includes the date and data type, but also some other metadata that we don't need
+# Here, I remove the extra info from the column header
+climate_lter$date <- gsub('PRISM_', '', climate_lter$date) %>% 
+  gsub('stable_4kmM3_', '', .) %>% 
+  gsub('stable_4kmM2_', '', .) %>%
+  gsub('_bil', '', .)
+
+# Split header into type (precipitation or temperature), year, and month
+climate_lter <- separate(climate_lter, 'date', 
+                 into = c('type', 'YearMonth'), 
+                 sep = '_')
+climate_lter <- separate(climate_lter, 'YearMonth',
+                 into = c('year', 'month'),
+                 sep = 4)
+
+# Reshape data-- make a separate column for temperature and precipitation
+climate_lter <- unique(climate_lter)
+climate_lter <- climate_lter %>% 
+  spread(type, value) %>%
+  rename(lng = lng_lter, lat = lat_lter, lterid = lter_sites.lterid)
+
+# Make year and month numeric variables
+climate_lter$year  <- as.numeric(climate_lter$year)
+
+# Order data by LTER site
+climate_lter <- climate_lter[order(climate_lter$lterid),]
+write.csv(climate_lter, "monthlyclimate_lter.csv")
+
+```
+
+## View Data
+
+The final product is a long format dataset with lat/long, LTER site ID code, year and month, precipitation (in mm) and mean temperature (in $^\circ$C) 
+
+```{r, echo = T}
+head(climate_lter)
+str(climate_lter)
+
+```
+
+## Some Plots
+
+**First, precipitation:** CAP, JRN, and SEV are 3 sites in Arizona/New Mexico, and as expected, they look quite dry. The site with the most rainfall, AND, is in Portland. So looks like the precipitation data worked well. The sites that don't have data are either in Antarctica or oceanic islands. So my next step is to figure out why Prism can't produce that data and find a workaround or alternative data source.
+
+```{r, echo = F, warning = F}
+plot_precip <- ggplot(climate_lter, aes(x = lterid, y = ppt)) + theme_bw() +
+  geom_boxplot() + 
+  labs(x = 'LTER site ID', y = 'monthly precipitation (mm)') +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+plot_precip
+```
+
+**Now, temperature:** Here, I colored points by month so we can spot check by seasonal trends as well as sites. It's clear that the blue points that represent summer months are warmer than red/orange points that represent winter months. Good. The hottest sites, CAP and FCE, are in Phoenix and the Florida Everglades.
+
+```{r, echo = F, warning = F}
+plot_tmean <- ggplot(climate_lter, aes(x = lterid, y = tmean)) + theme_bw() +
+  geom_boxplot() +
+  geom_jitter(aes(color = month), alpha = 1/2, width = 0.2) +
+  labs(x = 'LTER site ID', y = 'monthly mean temperature') +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+plot_tmean
+```
