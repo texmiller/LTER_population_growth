@@ -9,11 +9,12 @@ install.packages("dplyr")
 library(popler)
 library(knitr)
 library(dplyr)
+library(tidyverse)
 library(devtools) #needed to download prism from github
 library(reshape2) ##melting dataframes
 library(raster) ##working with raster data
 library(sp) ##manipulationg spatial data
-install_github(repo = "prism", username = "ropensci")
+#install_github(repo = "prism", username = "ropensci")
 library(prism) ##prism data access
 library(segmented) #for peicewise regression
 library(rstan)
@@ -25,11 +26,17 @@ obs_studies <- pplr_browse(studytype=="obs" & datatype!="individual" & datatype!
 #write_csv(obs_studies %>% 
 #            select(proj_metadata_key,title,metalink),"obs_studies.csv")
 
+## we think we want to drop study 300 (end year = 2030)
+
 ## all of our data types
 obs_count <- pplr_browse(studytype=="obs" & datatype == "count")$proj_metadata_key
 obs_cover <- pplr_browse(studytype=="obs" & datatype == "cover")$proj_metadata_key
 obs_density <- pplr_browse(studytype=="obs" & datatype == "density")$proj_metadata_key
 obs_biomass <- pplr_browse(studytype=="obs" & datatype == "biomass")$proj_metadata_key
+
+## climate data, already subsetted for lat/longs of the popler studies (see Bene's script)
+prism <- read_csv("prismdata.csv") 
+
 
 pipeline <- function(k){
 
@@ -110,7 +117,7 @@ if(type=="count" | type=="cover")
   abund_fit<-stan(file=stan_model,data=datalist,iter=5000,chains=3,warmup=500)
   
   ## Bayesian p-value
-  newy<-extract(abund_fit,"newy")[[1]]
+  newy<-rstan::extract(abund_fit,"newy")[[1]]
   new_mean<-apply(newy,2,mean)
   bayes.p<-length(new_mean[new_mean>mean(newdat$abundance_observation)])/length(new_mean)
 
@@ -132,11 +139,48 @@ if(type=="count" | type=="cover")
     facet_wrap(~sp)+
     ggtitle(metadat$title)
   
+  ## climate covariate
+  study_years <- metadat$studystartyr:metadat$studyendyr
+  study_site <- metadat$lterid
+  site_lat <- round(metadat$lat_lter,2)
+  site_long <- round(metadat$lng_lter,2)
+  
+  census_month <- 5 #read_csv("census_months.csv") %>% 
+    #filter(proj_metadata_key == k) %>% 
+    #summary(unique(Census_month))
+  
+  climate <- prism %>% 
+    filter(lter == study_site,
+           #lat == site_lat,
+           #lon == site_long,
+           year %in% study_years) %>% 
+    spread(key = variable, value = value)
+  
+  %>% 
+    ##df with years and months for ppt and temp
+    ## convert calendar year to transition year
+    mutate(climate_year = ifelse(month >=census_month, year+1, year),
+           # Compute potential evapotranspiration (PET) and climatic water balance (BAL)
+           PET = thornthwaite(tmean,site_lat),
+           BAL = ppt-PET) %>% 
+    filter(climate_year>=min(study_years))
+  
+  ## climate data should start 12 months before first abundance observation
+  spei12 <- spei(climate[,'BAL'], 12)
+  
   return(list(metadat=metadat,
               r.out=r.out,
               r.plot=r.plot,
               bayes.p=bayes.p))
 }
+
+
+
+pplr_dictionary(full_tbl = T)
+
+pplr_dictionary(samplefreq)
+
+plot(as.numeric(obs_studies$samplefreq))
 
 thing <- pipeline(k=88) 
 
