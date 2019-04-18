@@ -91,6 +91,10 @@ k <- 88
     }
   }
   
+  temp<-newdat %>% 
+    group_by(sppcode,year) %>%  
+    summarise(n())
+  
   #prep data for stan
   datalist<-list(
     n=nrow(newdat),
@@ -122,7 +126,7 @@ if(type=="count" | type=="cover"){datalist$count<-round(datalist$count)}
   study_site <- metadat$lterid
   site_lat <- round(metadat$lat_lter,2)
   site_long <- round(metadat$lng_lter,2)
-  
+  study_years <- sort(unique(newdat$year)) #metadat$studystartyr:metadat$studyendyr
   census_month <- 5 #read_csv("census_months.csv") %>% 
   #filter(proj_metadata_key == k) %>% 
   #summary(unique(Census_month))
@@ -172,7 +176,7 @@ if(type=="count" | type=="cover"){datalist$count<-round(datalist$count)}
     spei12_pred <- spei(climate_pred[,'BAL'], 12)
     
   ## pull out relevant quantities from Stan output
-  study_years <- sort(unique(newdat$year)) #metadat$studystartyr:metadat$studyendyr
+  
   lambda <- rstan::extract(abund_fit,"lambda")[[1]][,(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1,]
   #atest<-a[,(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1,]
   year<-as.numeric(levels(as.factor(as.character(newdat$year))))[-1][(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1]
@@ -185,15 +189,16 @@ if(type=="count" | type=="cover"){datalist$count<-round(datalist$count)}
     df_i$year <- year
     df_i <- df_i %>% 
       gather(BC:TH,key="species",value="lambda") %>% 
-      mutate(r = log(lambda))
+      mutate(r = log(lambda),
+             species=as.factor(species))
     
-    
-    lambda_clim <- full_join(df_i,
+    lambda_clim_i <- full_join(df_i,
                         tibble(SPEI = spei12$fitted[seq(from=12,to=length(spei12$fitted),by=12)],
                                year = (min(study_years):max(study_years))[-1]),
                         by="year")%>% 
       filter(!is.na(lambda))
-    gam_fit <- gam(lambda ~ species + s(SPEI), data=lambda_clim)
+    
+    gam_fit_i <- gam(r ~ species + s(SPEI, by=species), data=lambda_clim_i)
     
     
   }
