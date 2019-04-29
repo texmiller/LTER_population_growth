@@ -176,7 +176,7 @@ if(type=="count" | type=="cover"){datalist$count<-round(datalist$count)}
     spei12_pred <- spei(climate_pred[,'BAL'], 12)
     
   ## pull out relevant quantities from Stan output
-  
+
   lambda <- rstan::extract(abund_fit,"lambda")[[1]][,(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1,]
   #atest<-a[,(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1,]
   year<-as.numeric(levels(as.factor(as.character(newdat$year))))[-1][(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1]
@@ -200,10 +200,16 @@ if(type=="count" | type=="cover"){datalist$count<-round(datalist$count)}
     
     gam_fit_i <- gam(r ~ species + s(SPEI, by=species), data=lambda_clim_i)
     
+    gam_dat<-plot(gam_fit_i)
     
+    plot(gam_dat[[1]]$x)
   }
   
   
+  set.seed(0)
+  dat <- gamSim(1, n=400, dist="normal", scale=2) 
+  b   <- gam(y~s(x0), data=dat) 
+  plot(b, seWithMean=TRUE)
   
   
   ## collect posterior mean and CI growth rates, convert to year * species matrix
