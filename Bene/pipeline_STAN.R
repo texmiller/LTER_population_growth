@@ -90,11 +90,7 @@ k <- 88
       newdat<-newdat[newdat$abundance_observation<=100,]
     }
   }
-  
-  temp<-newdat %>% 
-    group_by(sppcode,year) %>%  
-    summarise(n())
-  
+
   #prep data for stan
   datalist<-list(
     n=nrow(newdat),
@@ -175,12 +171,35 @@ if(type=="count" | type=="cover"){datalist$count<-round(datalist$count)}
     climate_pred <- climate_pred[-(1:(census_month-1)),]
     spei12_pred <- spei(climate_pred[,'BAL'], 12)
     
-  ## pull out relevant quantities from Stan output
+  ## posterior mean fit
+    r_mean <- data.frame(matrix(rstan::summary(abund_fit,"r")[[1]][,"mean"],nrow=(datalist$nyear-1),ncol=datalist$nsp,byrow = T)[(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1,])
+    year<-as.numeric(levels(as.factor(as.character(newdat$year))))[-1][(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1]
+    sp<-rep(levels(as.factor(as.character(newdat$sppcode))),(datalist$nyear-1))
+    colnames(r_mean) <- levels(as.factor(as.character(newdat$sppcode)))
+    r_mean$year <- year
 
+    r_clim <- full_join(r_mean %>% 
+                             gather(BC:TH,key="species",value="r") %>% 
+                             mutate(lambda = exp(r),
+                                    species=as.factor(species)),
+                               tibble(SPEI = spei12$fitted[seq(from=12,to=length(spei12$fitted),by=12)],
+                                      year = (min(study_years):max(study_years))[-1]),
+                               by="year")%>% 
+      filter(!is.na(lambda))
+    
+    gam_fit_mean <- gam(lambda ~ species + s(SPEI, by=species), data=r_clim)
+    plot(gam_fit_mean)
+    
+    r_clim %>% 
+      ggplot()+
+      geom_point(aes(x=SPEI,y=r))+
+      facet_wrap(.~species)
+    ##PICK UP HERE
+    
+  ## sample posterior values of r
   lambda <- rstan::extract(abund_fit,"lambda")[[1]][,(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1,]
   #atest<-a[,(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1,]
-  year<-as.numeric(levels(as.factor(as.character(newdat$year))))[-1][(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1]
-  sp<-rep(levels(as.factor(as.character(newdat$sppcode))),(datalist$nyear-1))
+  
   
   for(i in 1:abund_fit@sim$iter){
     lambda_i <- lambda[i,,]
