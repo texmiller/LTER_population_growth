@@ -4,8 +4,11 @@
 
 ## install popler and packages
 install.packages("devtools")
-devtools::install_github("AldoCompagnoni/popler", build_vignettes=T, force=T)
-install.packages("dplyr")
+if(!require(devtools, quietly = TRUE)) {
+  install.packages(devtools)
+}
+devtools::install_github('ropensci/popler')
+
 library(popler)
 library(knitr)
 library(dplyr)
@@ -19,7 +22,7 @@ library(prism) ##prism data access
 library(rstan)
 library(SPEI)
 library(mgcv)
-source("API_workaround.R")
+#source("API_workaround.R")
 
 ## Here are all the studies we will use (observational only, excluding individual and basal cover)
 obs_studies <- pplr_browse(studytype=="obs" & datatype!="individual" & datatype!="basal_cover",full_tbl = T)
@@ -52,15 +55,15 @@ k <- 88
   
   ## get data and combine spatial rep info
   n_spat_levels <- metadat$n_spat_levs
-  #dat <- pplr_get_data(metadat,cov_unpack = T) %>% ## API problems, use workaround
-  dat <- query_get(conn, efficienty_query( k )) %>%   
+  dat <- pplr_get_data(metadat,cov_unpack = T) %>% 
+  #dat <- query_get(conn, efficienty_query( k )) %>%   ## API problems, use workaround
     as.data.frame %>% 
     mutate(n_spat_levels = n_spat_levels) %>% 
     mutate(ran_effect = ifelse(n_spat_levels==1,spatial_replication_level_1,
                                ifelse(n_spat_levels==2,interaction(spatial_replication_level_1,spatial_replication_level_2),
                                       ifelse(n_spat_levels==3,interaction(spatial_replication_level_1,spatial_replication_level_2,spatial_replication_level_3),
                                              interaction(spatial_replication_level_1,spatial_replication_level_2,spatial_replication_level_3,spatial_replication_level_4))))) %>% 
-    mutate(abundance_observation = count_observation) %>%  # Aldo's current code in the API bypass calls all abundance obs "count_observation"
+    #mutate(abundance_observation = count_observation) %>%  # Aldo's current code in the API bypass calls all abundance obs "count_observation"
     filter(!is.na(abundance_observation))
   ## filter out NAs and very rare species -- we made a decision to use only the data provided by PIs-- we are not
   ## assumming that NAs are zero
@@ -78,7 +81,7 @@ k <- 88
   newdat <- dat[(dat$sppcode%in%drop_rare$sppcode)==FALSE,] 
   
   ## if abudance_obs is structured, sum over structure
-  ## NEED TO DO -- check with Aldo
+  if(metadat$structured_data=="yes"){}#do something
   
   #cover ranges from 0-100 and sometimes ranges from 0-1.. with a few entries above 1. I still have to go through all of the cover dataset (26ish) to see what else is there.
   if(type=="cover")
@@ -188,13 +191,23 @@ if(type=="count" | type=="cover"){datalist$count<-round(datalist$count)}
       filter(!is.na(lambda))
     
     gam_fit_mean <- gam(lambda ~ species + s(SPEI, by=species), data=r_clim)
-    plot(gam_fit_mean)
+    plot(gam_fit_mean,residuals = T)
+    summary(gam_fit_mean)
+    
+    ## create a new data frame for predicting the gam
+    n_SPEI <- 300
+    SPEI.seq<-data.frame(species=rep(unique(r_clim$species),each=n_SPEI),
+                         SPEI=rep(seq(min(r_clim$SPEI),max(r_clim$SPEI),length=n_SPEI),times=n_SPEI))
+    preds<-predict(gam_fit_mean, type="terms", newdata=SPEI.seq,se.fit=TRUE)
     
     r_clim %>% 
       ggplot()+
       geom_point(aes(x=SPEI,y=r))+
       facet_wrap(.~species)
     ##PICK UP HERE
+    
+    
+    
     
   ## sample posterior values of r
   lambda <- rstan::extract(abund_fit,"lambda")[[1]][,(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1,]
