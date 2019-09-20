@@ -174,7 +174,7 @@ if(type=="count" | type=="cover"){datalist$count<-round(datalist$count)}
     climate_pred <- climate_pred[-(1:(census_month-1)),]
     spei12_pred <- spei(climate_pred[,'BAL'], 12)
     
-  ## posterior mean fit
+    ## posterior mean fit
     r_mean <- data.frame(matrix(rstan::summary(abund_fit,"r")[[1]][,"mean"],nrow=(datalist$nyear-1),ncol=datalist$nsp,byrow = T)[(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1,])
     year<-as.numeric(levels(as.factor(as.character(newdat$year))))[-1][(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1]
     sp<-rep(levels(as.factor(as.character(newdat$sppcode))),(datalist$nyear-1))
@@ -190,6 +190,7 @@ if(type=="count" | type=="cover"){datalist$count<-round(datalist$count)}
                                by="year")%>% 
       filter(!is.na(lambda))
     
+<<<<<<< HEAD
     gam_fit_mean <- gam(lambda ~ species + s(SPEI, by=species), data=r_clim)
     plot(gam_fit_mean,residuals = T)
     summary(gam_fit_mean)
@@ -199,16 +200,54 @@ if(type=="count" | type=="cover"){datalist$count<-round(datalist$count)}
     SPEI.seq<-data.frame(species=rep(unique(r_clim$species),each=n_SPEI),
                          SPEI=rep(seq(min(r_clim$SPEI),max(r_clim$SPEI),length=n_SPEI),times=n_SPEI))
     preds<-predict(gam_fit_mean, type="terms", newdata=SPEI.seq,se.fit=TRUE)
+=======
+    climate_pred_df <- tibble(
+      SPEI = rep(spei12_pred$fitted[seq(from=12,to=length(spei12_pred$fitted),by=12)],times=length(unique(r_clim$species))),
+      species = rep(unique(r_clim$species),each=length(spei12_pred$fitted[seq(from=12,to=length(spei12_pred$fitted),by=12)]))
+      )
+    climate_mean_df <- climate_pred_df %>% 
+      group_by(species) %>% 
+      summarise(SPEI = mean(SPEI))
     
-    r_clim %>% 
-      ggplot()+
-      geom_point(aes(x=SPEI,y=r))+
-      facet_wrap(.~species)
+    gam_fit_mean_lambda <- gam(lambda ~ 0 + species + s(SPEI, by=species), data=r_clim)
+    ##filter species that have non-significant relationships
+    sig_spp_lambda <- unique(r_clim$species)[which(summary(gam_fit_mean_lambda)$s.table[,4] <= 0.1)]
+    
+    gam_fit_mean_r <- gam(r ~ 0 + species + s(SPEI, by=species), data=r_clim)
+    sig_spp_r <- unique(r_clim$species)[which(summary(gam_fit_mean_r)$s.table[,4] <= 0.1)]
+    
+    ## estimate non-linearity
+    climate_pred_df$lambda_pred <- predict.gam(gam_fit_mean_lambda,climate_pred_df)
+    climate_mean_df$lambda_pred <- predict.gam(gam_fit_mean_lambda,climate_mean_df)
+
+    climate_pred_df$r_pred <- predict.gam(gam_fit_mean_r,climate_pred_df)
+    climate_mean_df$r_pred <- predict.gam(gam_fit_mean_r,climate_mean_df)    
+    
+    
+    full_join(climate_mean_df,climate_pred_df %>% 
+                group_by(species) %>% 
+                summarise(lambda_mean = mean(lambda_pred),
+                          r_mean = mean(r_pred)),
+              by="species") %>% 
+      mutate(nonlinearity_lambda = lambda_mean - lambda_pred,
+             nonlinearity_r = r_mean - r_pred)
+    
+>>>>>>> a3233812db9ffceb11db776d02c35da79d931bcd
+    
     ##PICK UP HERE
     
+<<<<<<< HEAD
     
     
     
+=======
+    test_dat <- tibble(x = runif(100),
+           y = 1 + 0.5 * x,
+           y2 = 1 + 0.2*x + 0.9*x^2 + 0.3*x^3)
+    test_gam <- gam(y2 ~ s(x), data = test_dat)
+    plot(test_gam)
+    summary(test_gam)
+>>>>>>> a3233812db9ffceb11db776d02c35da79d931bcd
   ## sample posterior values of r
   lambda <- rstan::extract(abund_fit,"lambda")[[1]][,(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1,]
   #atest<-a[,(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1,]
