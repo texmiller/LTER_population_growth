@@ -14,13 +14,16 @@ parameters {
     matrix[nyear,nsp] a;
     real b[nrep];
     real <lower=0.00001> sigb;
+    real <lower=0.00001> epsilon;
 }
 
 transformed parameters {
    real mu[n];
+   real phi[n];
 for(i in 1:n)
 {
 mu[i]=exp(a[year[i],sp[i]] + b[rep[i]]);
+phi[i]=mu[i]+(mu[i]^2)/epsilon;
 }
 }
 
@@ -28,11 +31,12 @@ model {
 
 to_vector(a)~normal(0,100);
 sigb~gamma(100,100);
+epsilon~gamma(100,100);
 to_vector(b)~normal(0,sigb);
 
 for(i in 1:n)
     {
-    count[i]~poisson(mu[i]);
+    count[i]~neg_binomial_2(mu[i],phi[i]);
     }
 }
 
@@ -40,7 +44,7 @@ generated quantities {
 vector[n] newcount;
 for(i in 1:n)
     {
-newcount[i]=poisson_rng(mu[i]);
+newcount[i]=neg_binomial_2_rng(mu[i],phi[i]);
     }
 }
 
