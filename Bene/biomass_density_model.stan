@@ -1,5 +1,5 @@
 data {
-    int<lower=0> nrep;
+    int<lower=0> nrep ;
     int<lower=0> nyear;
     int<lower=0> n;
     int<lower=0> nsp;
