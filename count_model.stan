@@ -36,7 +36,7 @@ to_vector(b)~normal(0,sigb);
 
 for(i in 1:n)
     {
-    count[i]~neg_binomial_2(mu[i],phi[i]); #negatice binomial
+    count[i]~neg_binomial_2(mu[i],phi[i]); #negative binomial
     }
 }
 
