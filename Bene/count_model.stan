@@ -13,16 +13,17 @@ data {
 parameters {
     matrix[nyear,nsp] a;
     real b[nrep];
-    real <lower=0.00001> phi_od[n];
     real <lower=0.00001> sigb;
-    real <lower=0.00001> phi;
+    real <lower=0.00001> epsilon;
 }
 
 transformed parameters {
    real mu[n];
+   real phi[n];
 for(i in 1:n)
 {
-mu[i]=exp(a[year[i],sp[i]] + b[rep[i]]+phi_od[i]);
+mu[i]=exp(a[year[i],sp[i]] + b[rep[i]]);
+phi[i]=mu[i]+(mu[i]^2)/epsilon;
 }
 }
 
@@ -30,30 +31,21 @@ model {
 
 to_vector(a)~normal(0,100);
 sigb~gamma(100,100);
+epsilon~gamma(100,100);
 to_vector(b)~normal(0,sigb);
-phi~gamma(100,100); 
-to_vector(phi_od)~normal(0,phi);
 
-count~poisson(mu);
-
+for(i in 1:n)
+    {
+    count[i]~neg_binomial_2(mu[i],phi[i]); #negative binomial
+    }
 }
 
 generated quantities { 
-vector[n] newy;
-matrix[nyear-1,nsp] r;
-matrix[nyear-1,nsp] lambda;
+vector[n] newcount;
 for(i in 1:n)
     {
-newy[i]=poisson_rng(mu[i]);
+newcount[i]=neg_binomial_2_rng(mu[i],phi[i]);
     }
-for(j in 1:(nyear-1))
-{
-  for(k in 1:nsp)
-  {
-  r[j,k]=log(exp(a[j+1,k])/exp(a[j,k]));
-  lambda[j,k]=exp(a[j+1,k])/exp(a[j,k]);
-  }
-}
 }
 
 
