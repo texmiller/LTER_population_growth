@@ -1,7 +1,7 @@
 ---
 title: 'LTER Variability: The Pipeline'
 author: "Tom Miller"
-date: "September 20, 2019"
+date: "October 10, 2019"
 output:
   html_document: default
   pdf_document: default
@@ -13,6 +13,7 @@ library(knitr)
 library(dplyr)
 library(tidyverse)
 library(devtools) #needed to download prism from github
+library(bayesplot)
 library(reshape2) ##melting dataframes
 library(raster) ##working with raster data
 library(sp) ##manipulationg spatial data
@@ -111,7 +112,7 @@ plot(clim,log(lambda_clim(x=clim)),type="l")
 However, due to noisiness in real data, it is possible that we could find that both $\lambda$ and $r$ respond linearly to climate variation. We are not sure what we will do in this case but we are calculating both metrics on the front end so that we can deal with this later if it arises.
 
 Now prep the data for the Stan model and run. 
-```{r stan_run, eval=F}
+```{r stan_run}
   #prep data for stan
   datalist<-list(
     n=nrow(newdat),
@@ -135,13 +136,15 @@ if(type=="count" | type=="cover"){datalist$count<-round(datalist$count)}
   abund_fit<-stan(file=stan_model,data=datalist,iter=5000,chains=3,warmup=500)
 ```
 
-Evaluate model fit.
+This code evaluates model fit. We hope for a Bayesian p-value not too far from 0.5 and the ppc overlap should show our data nestled among data simulated by the model. Both of these look good in this case.
 ```{r fit}
   ## Bayesian p-value
   newy<-rstan::extract(abund_fit,"newy")[[1]]
   new_mean<-apply(newy,2,mean)
   (bayes.p<-length(new_mean[new_mean>mean(newdat$abundance_observation)])/length(new_mean))
   
+color_scheme_set("brightblue")
+ppc_dens_overlay(datalist$count, newy[1:500,])
 ```
 
 
@@ -266,13 +269,20 @@ This shows that only one species in this study had a "significant" relationship 
   preds<-predict(gam_fit, type="terms", newdata=SPEI.seq,se.fit=TRUE)
   plot(SPEI.seq$SPEI,preds$fit,type="l",lwd=2)
   points(r_clim$SPEI[r_clim$species==sig_spp],r_clim$r[r_clim$species==sig_spp],pch=16,cex=2)
-
 ```
 
-For that species, I will next fit a gam for each posterior sample. 
-```{r, fig.align = "center", fig.height = 10, fig.width = 10, out.width = "10in"}
+Not sure how I feel about subsetting species with significant gams. Here I will try fitting gams for all species by sampling the full posteriors. I will also calculate the key quantity that we are interested in: $V = \bar{f(x)} - f(\bar{x})$, first using the entire climate record 1915-2018.
+```{r posterior_gams}
 r_posterior <- rstan::extract(abund_fit,"r")[[1]][,(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1,]
+N_draws <- 100
 
+## spei data sets for prediction
+SPEI_allyrs = tibble(SPEI = spei12_pred$fitted[seq(from=12,to=length(spei12_pred$fitted),by=12)],
+                   year = (min(climate_pred$year):max(climate_pred$year))[-1])
+SPEI_mean = data.frame(mean(SPEI_allyrs$SPEI));names(SPEI_mean)[1]="SPEI"
+## create df to store posterior V's
+V <- matrix(NA,nrow = N_draws, ncol = length(spp_names))
+  
 par(mfrow=c(3,3),mar=c(5,4,1,1))
 ## loop over species with significant mean gams
 for (s in 1:length(spp_names)){
@@ -285,7 +295,7 @@ for (s in 1:length(spp_names)){
   title(main = paste("Species: ",spp_names[s]),adj=0)
   
   ## add posterior samples
-  for(i in 1:500){
+  for(i in 1:N_draws){
     df_i <- data.frame(r_posterior[i,,])
     colnames(df_i) <- spp_names#levels(as.factor(as.character(newdat$sppcode)))
     df_i$year <- year
@@ -301,6 +311,10 @@ for (s in 1:length(spp_names)){
       filter(!is.na(r))
     
   gam_fit_i <- gam(r ~ s(SPEI), data=subset(r_clim_i,species==spp_names[s]))
+  ## calculate the V statistic
+  V[i,s] <- mean(predict(gam_fit_i, type="terms", newdata=SPEI_allyrs,se.fit=TRUE)$fit) - 
+  predict(gam_fit_i, type="terms", newdata=SPEI_mean,se.fit=TRUE)$fit
+  ##
   preds<-predict(gam_fit_i, type="terms", newdata=SPEI.seq,se.fit=TRUE)
   lines(SPEI.seq$SPEI,preds$fit,type="l",col=alpha(ifelse(summary(gam_fit)$s.table[4]<0.1,"red","black"),0.1))
   points(r_clim_i$SPEI[r_clim_i$species==spp_names[s]],
@@ -311,13 +325,44 @@ for (s in 1:length(spp_names)){
   points(r_clim$SPEI[r_clim$species==spp_names[s]],r_clim$r[r_clim$species==spp_names[s]],
        pch=16,cex=2)
 }
+
 ```
 
-```{r}
+Here are the posterior distributions of the climate variability effects based on the entire climate record 1915-2018. Peaks at zero correspond to linear gams. 
+```{r V_posterior}
+par(mfrow=c(3,3),mar=c(5,4,1,1))
+for (s in 1:length(spp_names)){
+  hist(V[,s],breaks=30,main=paste("Species: ",spp_names[s]))
+}
+```
 
-  #for(i in 1:abund_fit@sim$iter){
-  #just 100 posterior samples for now
-  for(i in 1:100){
+Lastly, we can look at whether there has been any climate change at this site, and whether climate change might alter the effects of variability. It looks like there is some evidence that the mean and especially variance in SPEI are increasing. 
+```{r climate_change}
+## calculate CV in 25-yr windows
+win_size <- 24
+sigma <- c()
+for(i in 1:(length(SPEI_allyrs$year) - win_size)){
+  sigma[i] <-  sd(SPEI_allyrs$SPEI[i:(i+win_size)])
+}
+par(mfrow=c(1,2))
+plot(SPEI_allyrs$year,SPEI_allyrs$SPEI,type="l")
+abline(coef(lm(SPEI~year,data=SPEI_allyrs)))
+plot(SPEI_allyrs$year[1:(length(SPEI_allyrs$year) - win_size)],sigma,type="l")
+abline(coef(lm(sigma ~ SPEI_allyrs$year[1:(length(SPEI_allyrs$year) - win_size)])))
+
+```
+
+Given that the gams were predominantly linear for these species, we don't expect that increasing variability has had any effect on population growth over the past century, but here's how we would look for it. We will unpack the distributions shown in the histograms to represent a time series of variance effects. 
+```{r V_time_series}
+V_ts <- array(NA,dim = c(length(spp_names), (length(SPEI_allyrs$year) - win_size), N_draws))
+par(mfrow=c(3,3),mar=c(5,4,1,1))
+for (s in 1:length(spp_names)){
+  plot(SPEI_allyrs$year[1:(length(SPEI_allyrs$year) - win_size)],
+       rep(0,(length(SPEI_allyrs$year) - win_size)),
+       ylim=c(min(V[,s]),max(V[,s])),type="n",
+       xlab="year",ylab="V",cex.lab=1.2)
+  title(main = paste("Species: ",spp_names[s]),adj=0)
+  for(i in 1:N_draws){
     df_i <- data.frame(r_posterior[i,,])
     colnames(df_i) <- spp_names#levels(as.factor(as.character(newdat$sppcode)))
     df_i$year <- year
@@ -325,60 +370,28 @@ for (s in 1:length(spp_names)){
       df_i %>% 
       gather(key="species",value="r",1:length(spp_names)) %>% 
       mutate(species=as.factor(species)) %>% 
-      filter(species %in% sig_spp),
+      #filter(species %in% sig_spp),
+      filter(species==spp_names[s]),
       tibble(SPEI = spei12$fitted[seq(from=12,to=length(spei12$fitted),by=12)],
                                year = (min(study_years):max(study_years))[-1]),
       by="year")%>% 
       filter(!is.na(r))
     
-  gam_fit_i <- gam(r ~ s(SPEI), data=subset(r_clim_i,species==sig_spp[s]))
-  preds<-predict(gam_fit_i, type="terms", newdata=SPEI.seq,se.fit=TRUE)
-  lines(SPEI.seq$SPEI,preds$fit,type="l",col=alpha("black",0.5))
-  points(r_clim_i$SPEI[r_clim_i$species==sig_spp[s]],r_clim_i$r[r_clim_i$species==sig_spp[s]],pch=16,col=alpha("red",0.05))
+  gam_fit_i <- gam(r ~ s(SPEI), data=subset(r_clim_i,species==spp_names[s]))
 
+  ## now apply the gam in sliding windows
+  for(t in 1:(length(SPEI_allyrs$year) - win_size)){
+    window_years <- SPEI_allyrs$year[t]:SPEI_allyrs$year[t+win_size]
+    SPEI_window <- SPEI_allyrs %>% filter(year %in% window_years)
+    SPEI_window_mean = data.frame(mean(SPEI_window$SPEI));names(SPEI_window_mean)[1]="SPEI"
+      V_ts[s,t,i] <- mean(predict(gam_fit_i, type="terms", newdata=SPEI_window,se.fit=TRUE)$fit) - 
+  predict(gam_fit_i, type="terms", newdata=SPEI_window_mean,se.fit=TRUE)$fit
   }
-```
-
-
-Fit gam to the posterior mean r-climate relationship.
-```{r}
-    #gam_fit_mean <- gam(lambda ~ species-1 + s(SPEI, by=species), data=r_clim)
-    #having trouble with species as an interaction factor, going with a single species for now
-    gam_fit_mean <- gam(lambda ~ s(SPEI), data=subset(r_clim,species=="BC"))
-    plot(gam_fit_mean,residuals = T)
-    summary(gam_fit_mean)
-    
-    ## create a new data frame for predicting the gam
-    n_SPEI <- 100
-    #SPEI.seq<-data.frame(species=rep(unique(r_clim$species),each=n_SPEI),
-    #                     SPEI=rep(seq(min(r_clim$SPEI),max(r_clim$SPEI),length=n_SPEI),
-    #                              times=length(unique(r_clim$species))))
-    SPEI.seq<-data.frame(SPEI=rep(seq(min(r_clim$SPEI),max(r_clim$SPEI),length=n_SPEI)))
-    preds<-predict(gam_fit_mean, type="terms", newdata=SPEI.seq,se.fit=TRUE)
-    
-    plot(SPEI.seq$SPEI,preds$fit,type="l",lwd=2)
-    points(r_clim$SPEI[r_clim$species=="BC"],r_clim$r[r_clim$species=="BC"],pch=16,cex=2)
-```
-Now calculate the key quantity that we are interested in: $V = \bar{f(x)} - f(\bar{x})$, first using the entire climate record 1915-2018 ($V_{all}$):
-```{r V_all}
-SPEI_allyrs = tibble(SPEI = spei12_pred$fitted[seq(from=12,to=length(spei12_pred$fitted),by=12)],
-                   year = (min(climate_pred$year):max(climate_pred$year))[-1])
-SPEI_mean = data.frame(mean(SPEI_allyrs$SPEI));names(SPEI_mean)[1]="SPEI"
-
-  
-V = mean(predict(gam_fit_mean, type="terms", newdata=SPEI_allyrs,se.fit=TRUE)$fit) - 
-  predict(gam_fit_mean, type="terms", newdata=SPEI_mean,se.fit=TRUE)$fit
-
-plot(SPEI.seq$SPEI,preds$fit,type="l",lwd=2)
-points(r_clim$SPEI[r_clim$species=="BC"],r_clim$r[r_clim$species=="BC"],pch=16,cex=2)
-points(SPEI_mean$SPEI,predict(gam_fit_mean, type="terms", newdata=SPEI_mean,se.fit=TRUE)$fit,col="red",cex=3) 
-points(SPEI_mean$SPEI,mean(predict(gam_fit_mean, type="terms", newdata=SPEI_allyrs,se.fit=TRUE)$fit),col="red",cex=3,pch=16)       
+  lines(SPEI_allyrs$year[1:(length(SPEI_allyrs$year) - win_size)],
+        V_ts[s,,i],col=alpha("black",0.1))
+}
+}
 
 ```
 
-Now calculate as above but in a 30-year sliding window
-```{r}
-hist(SPEI_allyrs$SPEI)
-plot(SPEI_allyrs$year,SPEI_allyrs$SPEI,type="l")
-```
 
