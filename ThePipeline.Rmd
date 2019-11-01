@@ -51,6 +51,7 @@ metadat<-parse(n=1, text=command) %>% eval
   type <- metadat$datatype
   ## break out of function if datatype is individual or basal cover
   ##if(type=="individual" | type=="basal_cover"){return("Non-desired data type")}
+  metadat$taxas
 ```
 Next we download the data and implement a few important manipulations that will allow us to fit random effects for the interaction of spatial replication levels. (This chunk is set to eval=F because get_data can take a while.)
 ```{r get_data}
@@ -140,7 +141,7 @@ This code evaluates model fit. We hope for a Bayesian p-value not too far from 0
 ```{r fit}
   ## Bayesian p-value
   newy<-rstan::extract(abund_fit,"newy")[[1]]
-  new_mean<-apply(newy,2,mean)
+  new_mean<-apply(newy,1,mean)
   (bayes.p<-length(new_mean[new_mean>mean(newdat$abundance_observation)])/length(new_mean))
   
 color_scheme_set("brightblue")
@@ -269,6 +270,13 @@ This shows that only one species in this study had a "significant" relationship 
   preds<-predict(gam_fit, type="terms", newdata=SPEI.seq,se.fit=TRUE)
   plot(SPEI.seq$SPEI,preds$fit,type="l",lwd=2)
   points(r_clim$SPEI[r_clim$species==sig_spp],r_clim$r[r_clim$species==sig_spp],pch=16,cex=2)
+  
+  gam_fit2 <- gam(lambda ~ s(SPEI), data=subset(lambda_clim,species==sig_spp))
+  SPEI.seq<-data.frame(SPEI=rep(seq(min(lambda_clim$SPEI),max(lambda_clim$SPEI),length=100)))
+  preds<-predict(gam_fit2, type="terms", newdata=SPEI.seq,se.fit=TRUE)
+  plot(SPEI.seq$SPEI,preds$fit,type="l",lwd=2)
+  points(lambda_clim$SPEI[lambda_clim$species==sig_spp],lambda_clim$lambda[lambda_clim$species==sig_spp],pch=16,cex=2)
+  
 ```
 
 Not sure how I feel about subsetting species with significant gams. Here I will try fitting gams for all species by sampling the full posteriors. I will also calculate the key quantity that we are interested in: $V = \bar{f(x)} - f(\bar{x})$, first using the entire climate record 1915-2018.
