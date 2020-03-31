@@ -279,6 +279,33 @@ This shows that only one species in this study had a "significant" relationship 
   
 ```
 
+Separate significant linear slope from horizontal slope
+Evaluate derivatives of smooths with associated standard errors by finite differencing.
+```
+    x.mesh <- rep(seq(round(min(r_clim$SPEI)),round(max(r_clim$SPEI)),length=200),length(unique(r_clim$species))) ## where to evaluate derivatives
+    species.mesh<-rep(unique(r_clim$species),each=200) ##for each of the species
+    newd <- data.frame(species= species.mesh, SPEI = x.mesh)
+    X0 <- predict(gam_fit_mean,newd,type="lpmatrix")
+    eps <- 1e-7 ## small finite difference interval
+    x.mesh <- x.mesh + eps ## shift the evaluation mesh
+    newd <- data.frame(species= species.mesh, SPEI = x.mesh)
+    X1 <- predict(gam_fit_mean,newd,type="lpmatrix")
+    Xp <- (X1-X0)/eps ## maps coefficients to (fd approx.) derivatives
+    is.flat<-c() #to flag horizontal GAM
+    for (i in 1:length(unique(r_clim$species))) {  ## plot derivatives and corresponding CIs for each species
+      ## OR WE COULD JUST LOOP THROUGH THE SPECIES FLAGGED AS HAVING LINEAR GAM
+      keep<-grep("SPEI",colnames(X1))
+      keep2<-grep(as.character(unique(r_clim$species)[i]),colnames(X1)[keep])
+      Xi <- Xp*0
+      Xi <- Xp[((200*(i-1)+1):(200*i)),keep[keep2]]
+      df <- Xi%*%coef(gam_fit_mean)[keep[keep2]]              ## ith smooth derivative
+      df.sd <- rowSums(Xi%*%gam_fit_mean$Vp[keep[keep2],keep[keep2]]*Xi)^.5 ## get standard error
+      plot(x.mesh[1:200],df,type="l",ylim=range(c(df+2*df.sd,df-2*df.sd)),main=unique(r_clim$species)[i])
+      lines(x.mesh[1:200],df+2*df.sd,lty=2);lines(x.mesh[1:200],df-2*df.sd,lty=2)
+      is.flat<-c(is.flat,mean(df-2*df.sd)<0 & mean(df+2*df.sd)>0)
+    }
+```
+
 Not sure how I feel about subsetting species with significant gams. Here I will try fitting gams for all species by sampling the full posteriors. I will also calculate the key quantity that we are interested in: $V = \bar{f(x)} - f(\bar{x})$, first using the entire climate record 1915-2018.
 ```{r posterior_gams}
 r_posterior <- rstan::extract(abund_fit,"r")[[1]][,(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1,]
