@@ -23,6 +23,7 @@ library(rstan)
 library(SPEI)
 library(mgcv)
 library(scales)
+library(rsq)
 ```
 ## Set-up
 popler was recently published on ROpenSci, so we have a final legit version to install. You will want to uncomment the installation code and run this chunk. But then recomment it since it takes a little while to run and this only needs to be done once. 
@@ -81,7 +82,11 @@ drop_rare <- dat %>%
     summarise(unique(sppcode))
 newdat <- dat[(dat$sppcode%in%drop_rare$sppcode)==FALSE,] 
   
-if(metadat$structured_data=="yes"){}#do something
+ ## if abudance_obs is structured, sum over structure
+  if (metadat$structured_data=="yes")
+  {dat<- dat %>%
+    group_by(year,month,day,sppcode,ran_effect) %>%
+    summarize(abundance_observation = sum(abundance_observation))}
   
 if(type=="cover")
   {
@@ -390,6 +395,7 @@ abline(coef(lm(sigma ~ SPEI_allyrs$year[1:(length(SPEI_allyrs$year) - win_size)]
 Given that the gams were predominantly linear for these species, we don't expect that increasing variability has had any effect on population growth over the past century, but here's how we would look for it. We will unpack the distributions shown in the histograms to represent a time series of variance effects. 
 ```{r V_time_series}
 V_ts <- array(NA,dim = c(length(spp_names), (length(SPEI_allyrs$year) - win_size), N_draws))
+mean_var_effect<-array(NA,dim=c(length(spp_names),N_draws,3)) # array to store relative effects of mean and var on V
 par(mfrow=c(3,3),mar=c(5,4,1,1))
 for (s in 1:length(spp_names)){
   plot(SPEI_allyrs$year[1:(length(SPEI_allyrs$year) - win_size)],
@@ -415,15 +421,21 @@ for (s in 1:length(spp_names)){
   gam_fit_i <- gam(r ~ s(SPEI), data=subset(r_clim_i,species==spp_names[s]))
 
   ## now apply the gam in sliding windows
+  SPEI_mean<-c() #vector to store mean SPEI
+  SPEI_var<-c() #vector to store var SPEI
   for(t in 1:(length(SPEI_allyrs$year) - win_size)){
     window_years <- SPEI_allyrs$year[t]:SPEI_allyrs$year[t+win_size]
     SPEI_window <- SPEI_allyrs %>% filter(year %in% window_years)
     SPEI_window_mean = data.frame(mean(SPEI_window$SPEI));names(SPEI_window_mean)[1]="SPEI"
+    SPEI_var = c(SPEI_var,var(SPEI_window$SPEI))
+    SPEI_mean = c(SPEI_mean,mean(SPEI_window$SPEI))
       V_ts[s,t,i] <- mean(predict(gam_fit_i, type="terms", newdata=SPEI_window,se.fit=TRUE)$fit) - 
   predict(gam_fit_i, type="terms", newdata=SPEI_window_mean,se.fit=TRUE)$fit
   }
   lines(SPEI_allyrs$year[1:(length(SPEI_allyrs$year) - win_size)],
         V_ts[s,,i],col=alpha("black",0.1))
+  mean_var_effect[s,i,]<-rsq.partial(lm(V_ts[s,,i]~SPEI_mean*SPEI_var))[[3]] #relative effects of mean and variance on V
+  # need to think about how to visualize this last bit of information, boxplot? histogram?
 }
 }
 
