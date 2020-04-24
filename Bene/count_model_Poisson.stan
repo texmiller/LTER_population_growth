@@ -41,7 +41,6 @@ count~poisson(mu);
 generated quantities { 
 vector[n] newy;
 matrix[nyear-1,nsp] r;
-matrix[nyear-1,nsp] lambda;
 for(i in 1:n)
     {
 newy[i]=poisson_rng(mu[i]);
@@ -50,8 +49,7 @@ for(j in 1:(nyear-1))
 {
   for(k in 1:nsp)
   {
-  r[j,k]=log(exp(a[j+1,k])/exp(a[j,k]));
-  lambda[j,k]=exp(a[j+1,k])/exp(a[j,k]);
+  r[j,k]=a[j+1,k]-a[j,k];
   }
 }
 }
