@@ -1,0 +1,503 @@
+---
+title: 'LTER Variability: The Pipeline'
+author: "Tom Miller"
+date: "October 10, 2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, message = F, warning = F)
+library(knitr)
+library(dplyr)
+library(tidyverse)
+library(devtools) #needed to download prism from github
+library(bayesplot)
+library(reshape2) ##melting dataframes
+library(raster) ##working with raster data
+library(sp) ##manipulationg spatial data
+#install_github(repo = "prism", username = "ropensci")
+library(prism) ##prism data access
+library(rstan)
+library(SPEI)
+library(mgcv)
+library(scales)
+library(rsq)
+```
+## Set-up
+Install popler (if you do not already have it) and load. 
+```{r popler_install}
+#install.packages("devtools")
+#if(!require(devtools, quietly = TRUE)) {
+#  install.packages(devtools)
+#}
+#devtools::install_github('ropensci/popler')
+library(popler)
+```
+We will need prism data for calculating SPEI at each site (this file was created by Bene, we'll need to get that code up on github), and eventually we will want a csv that provides the census month of each study. For reasons we will discuss, we currently do not have such a table and populating it will be a little tricky. For now, this is just a place-holder. These data files are in an external dropbox folder, which you will need to navigate to by changing "dir".
+```{r read_files}
+dir <- "C:/Users/tm9/"
+prism <- read_csv(paste0(dir,"Dropbox/LTER Environmental Variability Synthesis Project/prismdata.csv")) 
+#census_months <- read_csv("census_months.csv")
+```
+
+## Fully worked example, step-by-step
+This document will walk through the pipeline using an example data set, the herons from VCR. popler identifies studies by their metadata key. This one is 88. To use this code with a new data set, just replace 88 with your metadata key. Here we identify the target study and pull some important metadata about it. 
+```{r metadata}
+k <- 313
+## extract popler project data and metadata
+command <- paste0('pplr_browse( proj_metadata_key==',k,', full_tbl = T)')
+metadat<-parse(n=1, text=command) %>% eval
+  ## diagnose the data type
+  type <- metadat$datatype
+  ## break out of function if datatype is individual or basal cover
+  ##if(type=="individual" | type=="basal_cover"){return("Non-desired data type")}
+  ##metadat$taxas
+```
+Next we download the data and implement a few important manipulations that will allow us to fit random effects for the interaction of spatial replication levels. (This chunk is set to eval=F because get_data can take a while.)
+```{r get_data}
+## get data and combine spatial rep info
+n_spat_levels <- metadat$n_spat_levs
+dat <- pplr_get_data(metadat,cov_unpack = F) %>% 
+    as.data.frame %>% 
+    mutate(n_spat_levels = n_spat_levels) %>% 
+    mutate(ran_effect = ifelse(n_spat_levels==1,spatial_replication_level_1,
+                               ifelse(n_spat_levels==2,interaction(spatial_replication_level_1,spatial_replication_level_2),
+                                      ifelse(n_spat_levels==3,interaction(spatial_replication_level_1,spatial_replication_level_2,spatial_replication_level_3),
+                                             interaction(spatial_replication_level_1,spatial_replication_level_2,spatial_replication_level_3,spatial_replication_level_4))))) %>% 
+    filter(!is.na(abundance_observation))
+```
+Note that we are filtering out NAs. We were not comfortable with the assumption that NAs are zeros (though we suspect in some cases they are), so we are simply sticking to the data exactly as the originator reported them. 
+
+Some studies use species codes and some use actual species names. For the latter, we are just calling the name a "code" so we will consistently identify species identity based on sppcode.
+```{r sppcode}
+  if("sppcode"%in%colnames(dat)==FALSE) {colnames(dat)[colnames(dat)=="species"]<-"sppcode"}
+```
+A few other miscellany items to take care of. First, we decided to drop species that had zero abundance in any year of the study. This means we are effectively considering common species that are consistently observed (and we should consider what biases this may introduce in the results). Second, if the data are structured (meaning different abundance observations for different size classes, life stages, etc.) then we will sum over structure classes (this code is not written yet and does not apply to the heron data). Third, cover data are sometimes reported from 0 to 100 and sometimes from 0 to 1. Here we scale them all to 100. 
+```{r misc}
+drop_rare <- dat %>% 
+    group_by(sppcode,year) %>% 
+    summarise(total_obs_per_year = sum(abundance_observation))%>% 
+    filter(total_obs_per_year == 0)%>% 
+    summarise(unique(sppcode))
+newdat <- dat[(dat$sppcode%in%drop_rare$sppcode)==FALSE,] 
+  
+ ## if abudance_obs is structured, sum over structure
+  if (metadat$structured_data=="yes")
+  {dat<- dat %>%
+    group_by(year,month,day,sppcode,ran_effect) %>%
+    summarize(abundance_observation = sum(abundance_observation))}
+  
+if(type=="cover")
+  {
+    q<-quantile(newdat$abundance_observation)
+    if(q[4]<1)
+    {
+      newdat$abundance_observation<-newdat$abundance_observation*100
+      newdat<-newdat[newdat$abundance_observation<=100,]
+    }
+}
+
+## look at what we are dropping
+ggplot(dat)+
+  geom_point(aes(x=year,y=abundance_observation))+
+  facet_wrap(sppcode~.)
+```
+
+
+## Statistical model for abundance by year
+We are fitting a relatively simple model for the average abundance in each year for each species, with spatial replicates as a random effect. For count data (like the herons), the number of individuals of species $i$ in spatial replicate $j$ and year $t$ was modeled as a negative binomial process:
+$y_{i,j,t} \sim NegBin(\mu_{i,j,t},\phi_{i})$
+$log(\mu_{i,j,t}) = a_{i,t} + \epsilon_{j}$
+$\epsilon_{j} \sim N(0,\sigma^{2})$
+The expected value is $\mu_{i,j,t}$ and each species gets its own overdispersion term $\phi_{i}$. Note that the random effect for spatial replicate ($\epsilon_{j}$) is shared across species. Thus, we are assuming that good and bad sites are equally good and bad for all species. For other data types, the model is conceptually identical but uses a different distribution. The pipeline code is set up to distinguish which data type you are working with. 
+
+Under this model, the mean abundance of species $i$ in year $t$ is given by $e^{a_{i,t}}$ and the population growth rate is given by $\lambda_{i,t}=\frac{e^{a_{i,t}}}{e^{a_{i,t-1}}}$. The Stan model calculates $\lambda_{i,t}$ as well as $r_{i,t} = log(\lambda_{i,t})$ as derived quantities with full posterior distributions. In theory, $\lambda_{i,t}$ and $r_{i,t}$ provide redundant information. We are asking whether $\lambda_{i,t}$ responds linearly to climate variation, in which case $r_{i,t}$ should -- again, *in theory*, respond non-linearly with a negative second derivative. For example:
+```{r lambda_r}
+clim<-seq(0,10,length.out = 50)
+lambda_clim <- function(x,a=0.5,b=0.8){a+b*x}
+par(mfrow=c(1,2))
+plot(clim,lambda_clim(x=clim),type="l")
+plot(clim,log(lambda_clim(x=clim)),type="l")
+```
+However, due to noisiness in real data, it is possible that we could find that both $\lambda$ and $r$ respond linearly to climate variation. We are not sure what we will do in this case but we are calculating both metrics on the front end so that we can deal with this later if it arises.
+
+Now prep the data for the Stan model and run. 
+```{r stan_run}
+  #prep data for stan
+  datalist<-list(
+    n=nrow(newdat),
+    nyear=length(unique(as.factor(newdat$year))),
+    nrep=length(unique(as.factor(newdat$ran_effect))),
+    nsp=length(unique(as.factor(newdat$sppcode))),
+    year=as.numeric(as.factor(as.character(newdat$year))),
+    rep=as.numeric(as.factor(as.character(newdat$ran_effect))),
+    sp=as.numeric(as.factor(as.character(newdat$sppcode))),
+    count=newdat$abundance_observation)
+  
+  ## send to the appropriate JAGS model, given data type
+  stan_model <- ifelse(type=="count","Bene\\count_model_Poisson.stan",
+                       ifelse(type=="density","Bene\\biomass_density_model.stan",
+                              ifelse(type=="biomass","Bene\\biomass_density_model.stan",
+                                     "Bene\\cover_model.stan")))
+
+## Need to round up count and cover because some entries have decimals  
+if(type=="count" | type=="cover"){datalist$count<-round(datalist$count)}
+
+  abund_fit<-stan(file=stan_model,data=datalist,iter=5000,chains=3,warmup=500)
+```
+
+This code evaluates model fit. We hope for a Bayesian p-value not too far from 0.5 and the ppc overlap should show our data nestled among data simulated by the model. Both of these look good in this case.
+```{r fit}
+  ## Bayesian p-value
+  newy<-rstan::extract(abund_fit,"newy")[[1]]
+  new_mean<-apply(newy,1,mean)
+  (bayes.p<-length(new_mean[new_mean>mean(newdat$abundance_observation)])/length(new_mean))
+  
+color_scheme_set("brightblue")
+ppc_dens_overlay(datalist$count, newy[1:500,])+xlim(0,25)
+```
+
+
+## Climate data
+Now we need to prepare climate data corresponding to the abundance time series that we just fit a model to. This code is a mash-up of contributions from Bene, Linyi, Shannon, and Marion. Thanks y'all! It was a little tricky to line up the timing of climate with the timing of a transition year in the abudance data set, but this works!
+
+There are two climate data sets created below. One corresponds just to the years included in the focal study. The other includes all the years we have available from prism (what are these years??). We will use the latter to draw inferences about climate variability beyond the observation years of the study. 
+
+Note that census_month is typed in for the heron data. This will need to be updated for your studies, and will hopefully get populated authomatically once we finalize the census_months.csv file.
+```{r climate_dat}
+## climate covariate
+  study_site <- metadat$lterid
+  site_lat <- round(metadat$lat_lter,2)
+  site_long <- round(metadat$lng_lter,2)
+  study_years <- sort(unique(newdat$year)) #metadat$studystartyr:metadat$studyendyr
+  census_month <- 8 #read_csv("census_months.csv") %>% 
+  #filter(proj_metadata_key == k) %>% 
+  #summary(unique(Census_month))
+  
+  climate <- prism %>% 
+    dplyr::select(-X1) %>% 
+    filter(LTERlocation.id == study_site,
+           year %in% min(study_years):max(study_years)) %>% 
+    group_by_at(vars(-value)) %>%  # group by everything other than the value column. 
+    mutate(row_id=1:n()) %>% ungroup() %>%  # build group index
+    spread(key = variable, value = value)%>% 
+    dplyr::select(-row_id) %>%
+    ##thornthwaite function does not like NAs
+    filter(!is.na(tmean),
+           !is.na(ppt))%>% 
+    distinct() %>% 
+    ##df with years and months for ppt and temp
+    ## convert calendar year to transition year
+    mutate(climate_year = ifelse(month >=census_month, year+1, year),
+           # Compute potential evapotranspiration (PET) and climatic water balance (BAL)
+           PET = thornthwaite(tmean,site_lat),
+           BAL = ppt-PET) %>% 
+    filter(climate_year>min(study_years) & climate_year<=max(study_years)) 
+  ## climate data should start 12 months before first abundance observation
+  spei12 <- spei(climate[,'BAL'], 12)
+  
+  ## climate data for prediction
+  climate_pred <- prism %>% 
+    dplyr::select(-X1) %>% 
+    filter(LTERlocation.id == study_site) %>% 
+    group_by_at(vars(-value)) %>%  # group by everything other than the value column. 
+    mutate(row_id=1:n()) %>% ungroup() %>%  # build group index
+    spread(key = variable, value = value)%>% 
+    dplyr::select(-row_id) %>%
+    ##thornthwaite function does not like NAs
+    filter(!is.na(tmean),
+           !is.na(ppt))%>% 
+    distinct() %>% 
+    ##df with years and months for ppt and temp
+    ## convert calendar year to transition year
+    mutate(climate_year = ifelse(month >=census_month, year+1, year),
+           # Compute potential evapotranspiration (PET) and climatic water balance (BAL)
+           PET = thornthwaite(tmean,site_lat),
+           BAL = ppt-PET) %>% 
+    filter(climate_year<=max(year))
+    climate_pred <- climate_pred[-(1:(census_month-1)),]
+    spei12_pred <- spei(climate_pred[,'BAL'], 12)
+```
+
+Now connect the fitted estimates of abundance to climate
+```{r}
+spp_names <- levels(as.factor(as.character(newdat$sppcode)))
+r_mean <- data.frame(matrix(rstan::summary(abund_fit,"r")[[1]][,"mean"],nrow=(datalist$nyear-1),ncol=datalist$nsp,byrow = T)[(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1,])
+
+year<-as.numeric(levels(as.factor(as.character(newdat$year))))[-1][(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1]
+sp<-rep(spp_names,(datalist$nyear-1))
+colnames(r_mean) <- levels(as.factor(as.character(newdat$sppcode)))
+r_mean$year <- year
+
+    r_clim <- full_join(r_mean %>% 
+                             gather(key="species",value="r",1:length(spp_names))%>% 
+                             mutate(species=as.factor(species)),
+                               tibble(SPEI = spei12$fitted[seq(from=12,to=length(spei12$fitted),by=12)],
+                                      year = (min(study_years):max(study_years))[-1]),
+                               by="year")%>% 
+      filter(!is.na(r))
+
+```
+
+Now find which species have a "significant" gam fit. The code below is very inefficient but I found the full interaction model (species as factor, interaction with the smooth term) to be difficult to work with. I also do not like the odd mash-up of Bayesian and frequentist methods. Here we exclude gams that are not significant with $\alpha=0.1$ but then go on to estimate posterior estimates for the significant ones. It's a weird approach and we should discuss. 
+
+Also, I am fitting gams to both r and lambda to see if they differ. They do! I think r is the more theoretically defensible response variable, but we will need to discuss. 
+```{r significant_gams}
+spp_gam_p<-c()
+for(i in 1:length(spp_names)){
+  spp_gam_p[i]<- summary(gam(r ~ s(SPEI), data=subset(r_clim,species==spp_names[i])))$s.table[4]
+}
+tibble(species = spp_names,
+       gam_pvalue_r = spp_gam_p)
+## pull out the significant species, going with the r results
+sig_spp<-spp_names[which(spp_gam_p <= 0.1)]
+```
+
+Another problem: it troubles me that we get different p values depending on whether species are fit together or separately. Compare above to: -- Actually, I no longer have this problem with the hopper data
+```{r spp_together}
+summary(gam(r ~ species + s(SPEI, by=species), data=r_clim))$s.table
+```
+
+This shows that only one species in this study had a "significant" relationship between r and SPEI. Here is what that looks like for the posterior mean r values. This shows a linear response.
+```{r post_mean}
+  gam_fit <- gam(r ~ s(SPEI), data=subset(r_clim,species==sig_spp))
+  SPEI.seq<-data.frame(SPEI=rep(seq(min(r_clim$SPEI),max(r_clim$SPEI),length=100)))
+  preds<-predict(gam_fit, type="terms", newdata=SPEI.seq,se.fit=TRUE)
+  plot(SPEI.seq$SPEI,preds$fit,type="l",lwd=2)
+  points(r_clim$SPEI[r_clim$species==sig_spp],r_clim$r[r_clim$species==sig_spp],pch=16,cex=2)
+```
+
+Separate significant linear slope from horizontal slope
+Evaluate derivatives of smooths with associated standard errors by finite differencing.
+```{r gam_slopes}
+    x.mesh <- rep(seq(round(min(r_clim$SPEI)),round(max(r_clim$SPEI)),length=200),length(unique(r_clim$species))) ## where to evaluate derivatives
+    species.mesh<-rep(unique(r_clim$species),each=200) ##for each of the species
+    newd <- data.frame(species= species.mesh, SPEI = x.mesh)
+    X0 <- predict(gam_fit,newd,type="lpmatrix")
+    eps <- 1e-7 ## small finite difference interval
+    x.mesh <- x.mesh + eps ## shift the evaluation mesh
+    newd <- data.frame(species= species.mesh, SPEI = x.mesh)
+    X1 <- predict(gam_fit,newd,type="lpmatrix")
+    Xp <- (X1-X0)/eps ## maps coefficients to (fd approx.) derivatives
+    is.flat<-c() #to flag horizontal GAM
+    for (i in 1:length(unique(r_clim$species))) {  ## plot derivatives and corresponding CIs for each species
+      ## OR WE COULD JUST LOOP THROUGH THE SPECIES FLAGGED AS HAVING LINEAR GAM
+      keep<-grep("SPEI",colnames(X1))
+      keep2<-grep(as.character(unique(r_clim$species)[i]),colnames(X1)[keep])
+      Xi <- Xp*0
+      Xi <- Xp[((200*(i-1)+1):(200*i)),keep[keep2]]
+      df <- Xi%*%coef(gam_fit)[keep[keep2]]              ## ith smooth derivative
+      df.sd <- rowSums(Xi%*%gam_fit$Vp[keep[keep2],keep[keep2]]*Xi)^.5 ## get standard error
+      plot(x.mesh[1:200],df,type="l",ylim=range(c(df+2*df.sd,df-2*df.sd)),main=unique(r_clim$species)[i])
+      lines(x.mesh[1:200],df+2*df.sd,lty=2);lines(x.mesh[1:200],df-2*df.sd,lty=2)
+      is.flat<-c(is.flat,mean(df-2*df.sd)<0 & mean(df+2*df.sd)>0)
+    }
+```
+
+Not sure how I feel about subsetting species with significant gams. Here I will try fitting gams for all species by sampling the full posteriors. I will also calculate the key quantity that we are interested in: $V = \bar{f(x)} - f(\bar{x})$, first using the entire climate record 1915-2018.
+```{r posterior_gams}
+r_posterior <- rstan::extract(abund_fit,"r")[[1]][,(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1,]
+N_draws <- 100
+
+## spei data sets for prediction
+SPEI_allyrs = tibble(SPEI = spei12_pred$fitted[seq(from=12,to=length(spei12_pred$fitted),by=12)],
+                   year = (min(climate_pred$year):max(climate_pred$year))[-1])
+SPEI_mean = data.frame(mean(SPEI_allyrs$SPEI));names(SPEI_mean)[1]="SPEI"
+## create df to store posterior V's
+V <- matrix(NA,nrow = N_draws, ncol = length(spp_names))
+  
+par(mfrow=c(1,2),mar=c(5,4,1,1))
+## loop over species with significant mean gams
+for (s in 1:length(spp_names)){
+  ## here is the posterior mean fit (red is significant)
+  gam_fit <- gam(r ~ s(SPEI), data=subset(r_clim,species==spp_names[s]))
+  SPEI.seq<-data.frame(SPEI=rep(seq(min(r_clim$SPEI),max(r_clim$SPEI),length=100)))
+  preds_mean<-predict(gam_fit, type="terms", newdata=SPEI.seq,se.fit=TRUE)
+  plot(r_clim$SPEI[r_clim$species==spp_names[s]],r_clim$r[r_clim$species==spp_names[s]],
+       cex.lab=2,xlab="SPEI",ylab="r",type="n",ylim=c(-4,4))
+  title(main = paste("Species: ",spp_names[s]),adj=0)
+  
+  ## add posterior samples
+  for(i in 1:N_draws){
+    df_i <- data.frame(r_posterior[i,,])
+    colnames(df_i) <- spp_names#levels(as.factor(as.character(newdat$sppcode)))
+    df_i$year <- year
+    r_clim_i <- full_join(
+      df_i %>% 
+      gather(key="species",value="r",1:length(spp_names)) %>% 
+      mutate(species=as.factor(species)) %>% 
+      #filter(species %in% sig_spp),
+      filter(species==spp_names[s]),
+      tibble(SPEI = spei12$fitted[seq(from=12,to=length(spei12$fitted),by=12)],
+                               year = (min(study_years):max(study_years))[-1]),
+      by="year")%>% 
+      filter(!is.na(r))
+    
+  gam_fit_i <- gam(r ~ s(SPEI), data=subset(r_clim_i,species==spp_names[s]))
+  ## calculate the V statistic
+  V[i,s] <- mean(predict(gam_fit_i, type="terms", newdata=SPEI_allyrs,se.fit=TRUE)$fit) - 
+  predict(gam_fit_i, type="terms", newdata=SPEI_mean,se.fit=TRUE)$fit
+  ##
+  preds<-predict(gam_fit_i, type="terms", newdata=SPEI.seq,se.fit=TRUE)
+  lines(SPEI.seq$SPEI,preds$fit,type="l",col=alpha(ifelse(summary(gam_fit)$s.table[4]<0.1,"red","black"),0.1))
+  points(r_clim_i$SPEI[r_clim_i$species==spp_names[s]],
+         r_clim_i$r[r_clim_i$species==spp_names[s]],pch=".",cex=3,col=alpha("grey40",0.1))
+  }
+  lines(SPEI.seq$SPEI,preds_mean$fit,type="l",lwd=4,
+        col=ifelse(summary(gam_fit)$s.table[4]<0.1,"red","black"))
+  points(r_clim$SPEI[r_clim$species==spp_names[s]],r_clim$r[r_clim$species==spp_names[s]],
+       pch=16,cex=2)
+}
+
+```
+
+Here are the posterior distributions of the climate variability effects based on the entire climate record 1915-2018. Peaks at zero correspond to linear gams. 
+```{r V_posterior}
+par(mfrow=c(1,2),mar=c(5,4,1,1))
+for (s in 1:length(spp_names)){
+  hist(V[,s],breaks=30,main=paste("Species: ",spp_names[s]))
+}
+```
+
+Now do simulation experiment manipulating mean and variance of historical SPEI time series. 
+```{r clim_sim}
+## vector of % perturbation
+sd_perturb <- seq(0,1,by=0.1)
+## create df to store posterior V's
+V_sd_perturb <- array(NA,c(N_draws,length(spp_names),length(clim_perturb)))
+## here is the historical climate time series
+spei_hist <- spei12_pred$fitted[seq(from=12,to=length(spei12_pred$fitted),by=12)]
+
+  for(i in 1:N_draws){
+    df_i <- data.frame(r_posterior[i,,])
+    colnames(df_i) <- spp_names#levels(as.factor(as.character(newdat$sppcode)))
+    df_i$year <- year
+    r_clim_i <- full_join(
+      df_i, 
+      tibble(SPEI = spei12$fitted[seq(from=12,to=length(spei12$fitted),by=12)],
+                               year = (min(study_years):max(study_years))[-1]),
+      by="year") %>% 
+      gather(key="species",value="r",1:length(spp_names)) %>% 
+      mutate(species=as.factor(species))%>% 
+      filter(!is.na(r))
+    
+  for (s in 1:length(spp_names)){
+  gam_fit_i <- gam(r ~ s(SPEI), data=subset(r_clim_i,species==spp_names[s]))
+  
+  for(p in 1:length(sd_perturb)){
+  spei_sim <- data.frame(SPEI = spei_hist * (1 + sd_perturb[p]) + mean(spei_hist) * (1 - (1 + sd_perturb[p])))
+  spei_sim_mean = data.frame(SPEI = mean(spei_sim$SPEI))
+  
+  ## calculate the V statistic
+  V_sd_perturb[i,s,p] <- mean(predict(gam_fit_i, type="terms", newdata=spei_sim,se.fit=TRUE)$fit) - 
+  predict(gam_fit_i, type="terms", newdata=spei_sim_mean,se.fit=TRUE)$fit
+  ##
+
+  } ## end perturbation loop
+
+} ## end species loop
+} ## endposterior sample loop
+
+## now create matrix to hold quantiles
+V_sim_out95 <- V_sim_out75 <- V_sim_out50 <- V_sim_out25 <- V_sim_out5 <- array(NA,c(length(spp_names),length(sd_perturb),2))
+V_sim_out_mean <- matrix(NA,nrow=length(spp_names),ncol=length(sd_perturb))
+  for (s in 1:length(spp_names)){
+  for(p in 1:length(sd_perturb)){
+  V_sim_out_mean[s,p] <- mean(V_sd_perturb[,s,p])
+  V_sim_out95[s,p,] <- quantile(V_sd_perturb[,s,p],probs=c(0.05,0.95))
+  V_sim_out75[s,p,] <- quantile(V_sd_perturb[,s,p],probs=c(0.125,0.875))
+  V_sim_out50[s,p,] <- quantile(V_sd_perturb[,s,p],probs=c(0.25,0.75))
+  V_sim_out25[s,p,] <- quantile(V_sd_perturb[,s,p],probs=c(0.375,0.625))
+  V_sim_out5[s,p,] <- quantile(V_sd_perturb[,s,p],probs=c(0.475,0.525))
+  }
+  }
+```
+
+```{r}
+
+par(mfrow=c(1,2))
+plot(sd_perturb,V_sim_out_mean[1,],type="n",ylim=c(-0.1,1.5))
+polygon(x=c(sd_perturb,rev(sd_perturb)),
+        y=c(V_sim_out95[1,,1],rev(V_sim_out95[1,,2])),
+        col=alpha("black",0.05),border=NA)
+lines(sd_perturb,V_sim_out_mean[1,],type="l",lwd=3)
+
+plot(sd_perturb,V_sim_out_mean[2,],type="n",ylim=c(-0.5,1.8))
+polygon(x=c(sd_perturb,rev(sd_perturb)),
+        y=c(V_sim_out95[2,,1],rev(V_sim_out95[2,,2])),
+        col=alpha("black",0.05),border=NA)
+lines(sd_perturb,V_sim_out_mean[2,],type="l",lwd=3)
+```
+
+
+
+
+Lastly, we can look at whether there has been any climate change at this site, and whether climate change might alter the effects of variability. It looks like there is some evidence that the mean and especially variance in SPEI are increasing. 
+```{r climate_change}
+## calculate CV in 25-yr windows
+win_size <- 24
+sigma <- c()
+for(i in 1:(length(SPEI_allyrs$year) - win_size)){
+  sigma[i] <-  sd(SPEI_allyrs$SPEI[i:(i+win_size)])
+}
+par(mfrow=c(1,2))
+plot(SPEI_allyrs$year,SPEI_allyrs$SPEI,type="l")
+lines(SPEI_allyrs$year,predict(gam(SPEI~s(year),data=SPEI_allyrs)))
+#abline(coef(lm(SPEI~year,data=SPEI_allyrs)))
+plot(SPEI_allyrs$year[1:(length(SPEI_allyrs$year) - win_size)],sigma,type="l")
+abline(coef(lm(sigma ~ SPEI_allyrs$year[1:(length(SPEI_allyrs$year) - win_size)])))
+
+```
+
+Given that the gams were predominantly linear for these species, we don't expect that increasing variability has had any effect on population growth over the past century, but here's how we would look for it. We will unpack the distributions shown in the histograms to represent a time series of variance effects. 
+```{r V_time_series}
+V_ts <- array(NA,dim = c(length(spp_names), (length(SPEI_allyrs$year) - win_size), N_draws))
+mean_var_effect<-array(NA,dim=c(length(spp_names),N_draws,3)) # array to store relative effects of mean and var on V
+par(mfrow=c(3,3),mar=c(5,4,1,1))
+for (s in 1:length(spp_names)){
+  plot(SPEI_allyrs$year[1:(length(SPEI_allyrs$year) - win_size)],
+       rep(0,(length(SPEI_allyrs$year) - win_size)),
+       ylim=c(min(V[,s]),max(V[,s])),type="n",
+       xlab="year",ylab="V",cex.lab=1.2)
+  title(main = paste("Species: ",spp_names[s]),adj=0)
+  for(i in 1:N_draws){
+    df_i <- data.frame(r_posterior[i,,])
+    colnames(df_i) <- spp_names#levels(as.factor(as.character(newdat$sppcode)))
+    df_i$year <- year
+    r_clim_i <- full_join(
+      df_i %>% 
+      gather(key="species",value="r",1:length(spp_names)) %>% 
+      mutate(species=as.factor(species)) %>% 
+      #filter(species %in% sig_spp),
+      filter(species==spp_names[s]),
+      tibble(SPEI = spei12$fitted[seq(from=12,to=length(spei12$fitted),by=12)],
+                               year = (min(study_years):max(study_years))[-1]),
+      by="year")%>% 
+      filter(!is.na(r))
+    
+  gam_fit_i <- gam(r ~ s(SPEI), data=subset(r_clim_i,species==spp_names[s]))
+
+  ## now apply the gam in sliding windows
+  SPEI_mean<-c() #vector to store mean SPEI
+  SPEI_var<-c() #vector to store var SPEI
+  for(t in 1:(length(SPEI_allyrs$year) - win_size)){
+    window_years <- SPEI_allyrs$year[t]:SPEI_allyrs$year[t+win_size]
+    SPEI_window <- SPEI_allyrs %>% filter(year %in% window_years)
+    SPEI_window_mean = data.frame(mean(SPEI_window$SPEI));names(SPEI_window_mean)[1]="SPEI"
+    SPEI_var = c(SPEI_var,var(SPEI_window$SPEI))
+    SPEI_mean = c(SPEI_mean,mean(SPEI_window$SPEI))
+      V_ts[s,t,i] <- mean(predict(gam_fit_i, type="terms", newdata=SPEI_window,se.fit=TRUE)$fit) - 
+  predict(gam_fit_i, type="terms", newdata=SPEI_window_mean,se.fit=TRUE)$fit
+  }
+  lines(SPEI_allyrs$year[1:(length(SPEI_allyrs$year) - win_size)],
+        V_ts[s,,i],col=alpha("black",0.1))
+  mean_var_effect[s,i,]<-rsq.partial(lm(V_ts[s,,i]~SPEI_mean*SPEI_var))[[3]] #relative effects of mean and variance on V
+  # need to think about how to visualize this last bit of information, boxplot? histogram?
+}
+}
+
+```
+
+
