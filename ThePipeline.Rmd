@@ -26,7 +26,7 @@ library(scales)
 library(rsq)
 ```
 ## Set-up
-popler was recently published on ROpenSci, so we have a final legit version to install. You will want to uncomment the installation code and run this chunk. But then recomment it since it takes a little while to run and this only needs to be done once. 
+Install popler (if you do not already have it) and load. 
 ```{r popler_install}
 #install.packages("devtools")
 #if(!require(devtools, quietly = TRUE)) {
@@ -35,9 +35,10 @@ popler was recently published on ROpenSci, so we have a final legit version to i
 #devtools::install_github('ropensci/popler')
 library(popler)
 ```
-We will need prism data for calculating SPEI at each site (this file was created by Bene, we'll need to get that code up on github), and eventually we will want a csv that provides the census month of each study. For reasons we will discuss, we currently do not have such a table and populating it will be a little tricky. For now, this is just a place-holder.
+We will need prism data for calculating SPEI at each site (this file was created by Bene, we'll need to get that code up on github), and eventually we will want a csv that provides the census month of each study. For reasons we will discuss, we currently do not have such a table and populating it will be a little tricky. For now, this is just a place-holder. These data files are in an external dropbox folder, which you will need to navigate to by changing "dir".
 ```{r read_files}
-prism <- read_csv("prismdata.csv") 
+dir <- "C:/Users/tm9/"
+prism <- read_csv(paste0(dir,"Dropbox/LTER Environmental Variability Synthesis Project/prismdata.csv")) 
 #census_months <- read_csv("census_months.csv")
 ```
 
@@ -52,7 +53,7 @@ metadat<-parse(n=1, text=command) %>% eval
   type <- metadat$datatype
   ## break out of function if datatype is individual or basal cover
   ##if(type=="individual" | type=="basal_cover"){return("Non-desired data type")}
-  metadat$taxas
+  ##metadat$taxas
 ```
 Next we download the data and implement a few important manipulations that will allow us to fit random effects for the interaction of spatial replication levels. (This chunk is set to eval=F because get_data can take a while.)
 ```{r get_data}
@@ -219,14 +220,11 @@ Now connect the fitted estimates of abundance to climate
 ```{r}
 spp_names <- levels(as.factor(as.character(newdat$sppcode)))
 r_mean <- data.frame(matrix(rstan::summary(abund_fit,"r")[[1]][,"mean"],nrow=(datalist$nyear-1),ncol=datalist$nsp,byrow = T)[(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1,])
-lambda_mean <- data.frame(matrix(rstan::summary(abund_fit,"lambda")[[1]][,"mean"],nrow=(datalist$nyear-1),ncol=datalist$nsp,byrow = T)[(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1,])
 
 year<-as.numeric(levels(as.factor(as.character(newdat$year))))[-1][(study_years[2:length(study_years)]-study_years[1:(length(study_years)-1)])==1]
 sp<-rep(spp_names,(datalist$nyear-1))
 colnames(r_mean) <- levels(as.factor(as.character(newdat$sppcode)))
 r_mean$year <- year
-colnames(lambda_mean) <- levels(as.factor(as.character(newdat$sppcode)))
-lambda_mean$year <- year
 
     r_clim <- full_join(r_mean %>% 
                              gather(key="species",value="r",1:length(spp_names))%>% 
@@ -235,30 +233,19 @@ lambda_mean$year <- year
                                       year = (min(study_years):max(study_years))[-1]),
                                by="year")%>% 
       filter(!is.na(r))
-    
-    ## and do the same for lambda
-        lambda_clim <- full_join(lambda_mean %>% 
-                             gather(key="species",value="lambda",1:length(spp_names))%>% 
-                             mutate(species=as.factor(species)),
-                               tibble(SPEI = spei12$fitted[seq(from=12,to=length(spei12$fitted),by=12)],
-                                      year = (min(study_years):max(study_years))[-1]),
-                               by="year")%>% 
-      filter(!is.na(lambda))
+
 ```
 
 Now find which species have a "significant" gam fit. The code below is very inefficient but I found the full interaction model (species as factor, interaction with the smooth term) to be difficult to work with. I also do not like the odd mash-up of Bayesian and frequentist methods. Here we exclude gams that are not significant with $\alpha=0.1$ but then go on to estimate posterior estimates for the significant ones. It's a weird approach and we should discuss. 
 
 Also, I am fitting gams to both r and lambda to see if they differ. They do! I think r is the more theoretically defensible response variable, but we will need to discuss. 
 ```{r significant_gams}
-spp_gam_p<-spp_gam_p_lambda<-c()
+spp_gam_p<-c()
 for(i in 1:length(spp_names)){
   spp_gam_p[i]<- summary(gam(r ~ s(SPEI), data=subset(r_clim,species==spp_names[i])))$s.table[4]
-  spp_gam_p_lambda[i]<- summary(gam(lambda ~ s(SPEI), 
-                                    data=subset(lambda_clim,species==spp_names[i])))$s.table[4]
 }
 tibble(species = spp_names,
-       gam_pvalue_r = spp_gam_p,
-       gam_pvalue_lambda = spp_gam_p_lambda)
+       gam_pvalue_r = spp_gam_p)
 ## pull out the significant species, going with the r results
 sig_spp<-spp_names[which(spp_gam_p <= 0.1)]
 ```
@@ -275,26 +262,19 @@ This shows that only one species in this study had a "significant" relationship 
   preds<-predict(gam_fit, type="terms", newdata=SPEI.seq,se.fit=TRUE)
   plot(SPEI.seq$SPEI,preds$fit,type="l",lwd=2)
   points(r_clim$SPEI[r_clim$species==sig_spp],r_clim$r[r_clim$species==sig_spp],pch=16,cex=2)
-  
-  gam_fit2 <- gam(lambda ~ s(SPEI), data=subset(lambda_clim,species==sig_spp))
-  SPEI.seq<-data.frame(SPEI=rep(seq(min(lambda_clim$SPEI),max(lambda_clim$SPEI),length=100)))
-  preds<-predict(gam_fit2, type="terms", newdata=SPEI.seq,se.fit=TRUE)
-  plot(SPEI.seq$SPEI,preds$fit,type="l",lwd=2)
-  points(lambda_clim$SPEI[lambda_clim$species==sig_spp],lambda_clim$lambda[lambda_clim$species==sig_spp],pch=16,cex=2)
-  
 ```
 
 Separate significant linear slope from horizontal slope
 Evaluate derivatives of smooths with associated standard errors by finite differencing.
-```
+```{r gam_slopes}
     x.mesh <- rep(seq(round(min(r_clim$SPEI)),round(max(r_clim$SPEI)),length=200),length(unique(r_clim$species))) ## where to evaluate derivatives
     species.mesh<-rep(unique(r_clim$species),each=200) ##for each of the species
     newd <- data.frame(species= species.mesh, SPEI = x.mesh)
-    X0 <- predict(gam_fit_mean,newd,type="lpmatrix")
+    X0 <- predict(gam_fit,newd,type="lpmatrix")
     eps <- 1e-7 ## small finite difference interval
     x.mesh <- x.mesh + eps ## shift the evaluation mesh
     newd <- data.frame(species= species.mesh, SPEI = x.mesh)
-    X1 <- predict(gam_fit_mean,newd,type="lpmatrix")
+    X1 <- predict(gam_fit,newd,type="lpmatrix")
     Xp <- (X1-X0)/eps ## maps coefficients to (fd approx.) derivatives
     is.flat<-c() #to flag horizontal GAM
     for (i in 1:length(unique(r_clim$species))) {  ## plot derivatives and corresponding CIs for each species
@@ -303,8 +283,8 @@ Evaluate derivatives of smooths with associated standard errors by finite differ
       keep2<-grep(as.character(unique(r_clim$species)[i]),colnames(X1)[keep])
       Xi <- Xp*0
       Xi <- Xp[((200*(i-1)+1):(200*i)),keep[keep2]]
-      df <- Xi%*%coef(gam_fit_mean)[keep[keep2]]              ## ith smooth derivative
-      df.sd <- rowSums(Xi%*%gam_fit_mean$Vp[keep[keep2],keep[keep2]]*Xi)^.5 ## get standard error
+      df <- Xi%*%coef(gam_fit)[keep[keep2]]              ## ith smooth derivative
+      df.sd <- rowSums(Xi%*%gam_fit$Vp[keep[keep2],keep[keep2]]*Xi)^.5 ## get standard error
       plot(x.mesh[1:200],df,type="l",ylim=range(c(df+2*df.sd,df-2*df.sd)),main=unique(r_clim$species)[i])
       lines(x.mesh[1:200],df+2*df.sd,lty=2);lines(x.mesh[1:200],df-2*df.sd,lty=2)
       is.flat<-c(is.flat,mean(df-2*df.sd)<0 & mean(df+2*df.sd)>0)
