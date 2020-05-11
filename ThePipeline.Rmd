@@ -147,7 +147,7 @@ This code evaluates model fit. We hope for a Bayesian p-value not too far from 0
 ```{r fit}
   ## Bayesian p-value
   newy<-rstan::extract(abund_fit,"newy")[[1]]
-  new_mean<-apply(newy,1,mean)
+  new_mean<-apply(newy,2,mean)
   (bayes.p<-length(new_mean[new_mean>mean(newdat$abundance_observation)])/length(new_mean))
   
 color_scheme_set("brightblue")
