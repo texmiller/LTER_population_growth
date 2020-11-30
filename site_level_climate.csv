@@ -1,0 +1,666 @@
+lat,lon,ID,LTER,Spatial_level_names,Project,Notes,ppt_m,tmp_m,ppt_sd,tmp_sd,ppt_nas,tmp_nas,groupings
+34.01681,-119.362097,12,SBC,Anacapa Island CA,SBC LTER: Time series of settlement of urchins and other invertebrates,,306.566893,15.44837409,160.4863212,0.522025432,0,0,1
+34.43085,-119.92408,12,SBC,"Ellwood Pier, Goleta CA",SBC LTER: Time series of settlement of urchins and other invertebrates,,526.129372,14.60737594,252.6317647,0.50944021,0,0,1
+34.46978,-120.22821,12,SBC,"Gaviota Pier, Santa Barbara County CA",SBC LTER: Time series of settlement of urchins and other invertebrates,,515.5538696,14.35476894,241.0984855,0.491182322,0,0,1
+32.74914,-117.25662,12,SBC,"Ocean Beach, San Diego CA",SBC LTER: Time series of settlement of urchins and other invertebrates,,276.037883,17.54214555,112.4669039,0.66536648,0,0,4
+39.35037,-123.82679,12,SBC,"Point Cabrillo, Mendocino County CA",SBC LTER: Time series of settlement of urchins and other invertebrates,,1053.846778,10.80987659,310.8065334,0.53439293,0,0,5
+32.85039,-117.25647,12,SBC,"Scripps Peir, San Diego CA",SBC LTER: Time series of settlement of urchins and other invertebrates,,290.1275623,17.07632493,118.7937663,0.618917151,0,0,4
+34.40934,-119.68493,12,SBC,"Stearns Wharf, Santa Barbara CA",SBC LTER: Time series of settlement of urchins and other invertebrates,,510.5492522,15.6740874,250.3341003,0.534211602,0,0,1
+34.05076667,-119.7414167,13,SBC,BC 1,SBC LTER: Santa Cruz Island: Abundance of Surfperch and Garibaldi,Altitude -30 ft,388.2436382,14.90582879,182.3938375,0.501734306,0,0,1
+34.05035,-119.7406333,13,SBC,BC Point,SBC LTER: Santa Cruz Island: Abundance of Surfperch and Garibaldi,Altitude -30 ft,387.5086554,14.91452603,182.0221179,0.50197094,0,0,1
+34.05815,-119.75745,13,SBC,Diablo,SBC LTER: Santa Cruz Island: Abundance of Surfperch and Garibaldi,Altitude -30 ft,396.1830706,14.75136543,186.4619987,0.499041924,0,0,1
+34.05365,-119.7496333,13,SBC,Fern 1,SBC LTER: Santa Cruz Island: Abundance of Surfperch and Garibaldi,Altitude -30 ft,396.1492671,14.83871094,186.4865579,0.500533147,0,0,1
+34.05291667,-119.7470333,13,SBC,Fern O,SBC LTER: Santa Cruz Island: Abundance of Surfperch and Garibaldi,Altitude -30 ft,393.6542359,14.85706071,185.1772212,0.500755357,0,0,1
+34.05695,-119.7551,13,SBC,Fry's 1,SBC LTER: Santa Cruz Island: Abundance of Surfperch and Garibaldi,Altitude -30 ft,396.2089918,14.77363882,186.4816305,0.498984858,0,0,1
+34.05765,-119.7558833,13,SBC,Fry's 2,SBC LTER: Santa Cruz Island: Abundance of Surfperch and Garibaldi,Altitude -30 ft,395.850839,14.76147172,186.3195919,0.498939522,0,0,1
+34.05776667,-119.7563,13,SBC,Fry's 3,SBC LTER: Santa Cruz Island: Abundance of Surfperch and Garibaldi,Altitude -30 ft,395.9623749,14.7589989,186.3673492,0.498961276,0,0,1
+34.04345,-119.7140833,13,SBC,Twin E,SBC LTER: Santa Cruz Island: Abundance of Surfperch and Garibaldi,Altitude -30 ft,350.2853338,15.087015,164.7611898,0.508854369,0,0,1
+34.0444,-119.7151333,13,SBC,Twin W,SBC LTER: Santa Cruz Island: Abundance of Surfperch and Garibaldi,Altitude -30 ft,352.1077928,15.06941915,165.5222067,0.508191668,0,0,1
+34.05076667,-119.7414167,14,SBC,BC 1,"SBC LTER: Santa Cruz Island: Cover of Algae, Invertebrates and Benthic Substrate",Altitude -30 ft,388.2436382,14.90582879,182.3938375,0.501734306,0,0,1
+34.05116667,-119.7418167,14,SBC,BC 2,"SBC LTER: Santa Cruz Island: Cover of Algae, Invertebrates and Benthic Substrate",Altitude -30 ft,388.4614473,14.89829184,182.5112883,0.501460465,0,0,1
+34.05035,-119.7406333,14,SBC,BC Point,"SBC LTER: Santa Cruz Island: Cover of Algae, Invertebrates and Benthic Substrate",Altitude -30 ft,387.5086554,14.91452603,182.0221179,0.50197094,0,0,1
+34.05815,-119.75745,14,SBC,Diablo,"SBC LTER: Santa Cruz Island: Cover of Algae, Invertebrates and Benthic Substrate",Altitude -30 ft,396.1830706,14.75136543,186.4619987,0.499041924,0,0,1
+34.05365,-119.7496333,14,SBC,Fern 1,"SBC LTER: Santa Cruz Island: Cover of Algae, Invertebrates and Benthic Substrate",Altitude -30 ft,396.1492671,14.83871094,186.4865579,0.500533147,0,0,1
+34.05291667,-119.7470333,14,SBC,Fern O,"SBC LTER: Santa Cruz Island: Cover of Algae, Invertebrates and Benthic Substrate",Altitude -30 ft,393.6542359,14.85706071,185.1772212,0.500755357,0,0,1
+34.05695,-119.7551,14,SBC,Fry's 1,"SBC LTER: Santa Cruz Island: Cover of Algae, Invertebrates and Benthic Substrate",Altitude -30 ft,396.2089918,14.77363882,186.4816305,0.498984858,0,0,1
+34.05765,-119.7558833,14,SBC,Fry's 2,"SBC LTER: Santa Cruz Island: Cover of Algae, Invertebrates and Benthic Substrate",Altitude -30 ft,395.850839,14.76147172,186.3195919,0.498939522,0,0,1
+34.05776667,-119.7563,14,SBC,Fry's 3,"SBC LTER: Santa Cruz Island: Cover of Algae, Invertebrates and Benthic Substrate",Altitude -30 ft,395.9623749,14.7589989,186.3673492,0.498961276,0,0,1
+34.04345,-119.7140833,14,SBC,Twin E,"SBC LTER: Santa Cruz Island: Cover of Algae, Invertebrates and Benthic Substrate",Altitude -30 ft,350.2853338,15.087015,164.7611898,0.508854369,0,0,1
+34.0444,-119.7151333,14,SBC,Twin W,"SBC LTER: Santa Cruz Island: Cover of Algae, Invertebrates and Benthic Substrate",Altitude -30 ft,352.1077928,15.06941915,165.5222067,0.508191668,0,0,1
+46.17417,-122.22423,145,AND,site_and_mt_st_helens_butte_camp_transect_A,Primary succession on Mount St. Helens: long-term permanent plots,,3557.783818,5.114954923,626.3486983,0.572058411,0,0,1
+46.17885,-122.21612,145,AND,site_and_mt_st_helens_butte_camp_transect_B,Primary succession on Mount St. Helens: long-term permanent plots,,3682.449956,4.560055619,654.1738816,0.584957875,0,0,1
+46.18114,-122.21467,145,AND,site_and_mt_st_helens_butte_camp_transect_C,Primary succession on Mount St. Helens: long-term permanent plots,,3718.577285,4.403053941,662.7945729,0.587109713,0,0,1
+46.18049,-122.21561,145,AND,site_and_mt_st_helens_butte_camp_transect_D,Primary succession on Mount St. Helens: long-term permanent plots,,3701.299631,4.475372642,658.7937556,0.585543016,0,0,1
+46.201667,-122.22667,145,AND,site_and_mt_st_helens_lahars,Primary succession on Mount St. Helens: long-term permanent plots,,3651.119058,4.430651671,652.7411024,0.563257926,0,0,1
+46.15334,-122.1523,145,AND,site_and_mt_st_helens_pinecreek_ridge_transect_A,Primary succession on Mount St. Helens: long-term permanent plots,,3941.477237,6.068278492,727.7104083,0.579105922,0,0,1
+46.15443,-122.15837,145,AND,site_and_mt_st_helens_pinecreek_ridge_transect_B,Primary succession on Mount St. Helens: long-term permanent plots,,3953.795973,5.871289154,728.4024859,0.586165971,0,0,1
+46.211667,-122.145,145,AND,site_and_mt_st_helens_plains_of_abraham,Primary succession on Mount St. Helens: long-term permanent plots,,3626.293398,4.667562799,731.7296959,0.607750405,0,0,1
+46.23449,-122.15929,145,AND,site_and_mt_st_helens_pumice_plain,Primary succession on Mount St. Helens: long-term permanent plots,,3236.791678,5.124309739,674.6713716,0.55824478,0,0,1
+46.36957,-122.22354,145,AND,site_and_mt_st_helens_studebaker_ridge,Primary succession on Mount St. Helens: long-term permanent plots,,2267.478224,7.514105729,419.9987226,0.554549908,0,0,10
+46.21814,-122.23514,145,AND,site_and_mt_st_helens_toutle_ridge,Primary succession on Mount St. Helens: long-term permanent plots,,3308.855518,5.307512564,590.1835741,0.533620044,0,0,1
+46.1763,-122.22349,146,AND,site_and_mt_st_helens_lahar_grid_1,Mount St. Helens Vegetation Succession,,3577.277348,5.013324664,630.9289915,0.57278805,0,0,1
+46.1766,-122.22276,146,AND,site_and_mt_st_helens_lahar_grid_2,Mount St. Helens Vegetation Succession,,3587.463629,4.967952216,633.1571107,0.57394513,0,0,1
+46.2124,-122.13956,146,AND,site_and_mt_st_helens_plains_of_abraham_grid,Mount St. Helens Vegetation Succession,,3497.055764,5.036637537,705.685333,0.602013373,0,0,1
+46.23413,-122.15966,146,AND,site_and_mt_st_helens_pumice_plains,Mount St. Helens Vegetation Succession,,3251.233298,5.092596474,677.2049216,0.558988069,0,0,1
+34.05076667,-119.7414167,15,SBC,BC 1,SBC LTER: Santa Cruz Island: Abundance and Biomass of Benthic Organisms (food resource collection),Altitude -30 ft,388.2436382,14.90582879,182.3938375,0.501734306,0,0,1
+34.05116667,-119.7418167,15,SBC,BC 2,SBC LTER: Santa Cruz Island: Abundance and Biomass of Benthic Organisms (food resource collection),Altitude -30 ft,388.4614473,14.89829184,182.5112883,0.501460465,0,0,1
+34.05035,-119.7406333,15,SBC,BC Point,SBC LTER: Santa Cruz Island: Abundance and Biomass of Benthic Organisms (food resource collection),Altitude -30 ft,387.5086554,14.91452603,182.0221179,0.50197094,0,0,1
+34.05815,-119.75745,15,SBC,Diablo,SBC LTER: Santa Cruz Island: Abundance and Biomass of Benthic Organisms (food resource collection),Altitude -30 ft,396.1830706,14.75136543,186.4619987,0.499041924,0,0,1
+34.05365,-119.7496333,15,SBC,Fern 1,SBC LTER: Santa Cruz Island: Abundance and Biomass of Benthic Organisms (food resource collection),Altitude -30 ft,396.1492671,14.83871094,186.4865579,0.500533147,0,0,1
+34.05291667,-119.7470333,15,SBC,Fern O,SBC LTER: Santa Cruz Island: Abundance and Biomass of Benthic Organisms (food resource collection),Altitude -30 ft,393.6542359,14.85706071,185.1772212,0.500755357,0,0,1
+34.05695,-119.7551,15,SBC,Fry's 1,SBC LTER: Santa Cruz Island: Abundance and Biomass of Benthic Organisms (food resource collection),Altitude -30 ft,396.2089918,14.77363882,186.4816305,0.498984858,0,0,1
+34.05765,-119.7558833,15,SBC,Fry's 2,SBC LTER: Santa Cruz Island: Abundance and Biomass of Benthic Organisms (food resource collection),Altitude -30 ft,395.850839,14.76147172,186.3195919,0.498939522,0,0,1
+34.05776667,-119.7563,15,SBC,Fry's 3,SBC LTER: Santa Cruz Island: Abundance and Biomass of Benthic Organisms (food resource collection),Altitude -30 ft,395.9623749,14.7589989,186.3673492,0.498961276,0,0,1
+34.04345,-119.7140833,15,SBC,Twin E,SBC LTER: Santa Cruz Island: Abundance and Biomass of Benthic Organisms (food resource collection),Altitude -30 ft,350.2853338,15.087015,164.7611898,0.508854369,0,0,1
+34.0444,-119.7151333,15,SBC,Twin W,SBC LTER: Santa Cruz Island: Abundance and Biomass of Benthic Organisms (food resource collection),Altitude -30 ft,352.1077928,15.06941915,165.5222067,0.508191668,0,0,1
+34.05076667,-119.7414167,16,SBC,BC 1,SBC LTER: Santa Cruz Island: Abundance of Pycnopodia helianthoides,Altitude -30 ft,388.2436382,14.90582879,182.3938375,0.501734306,0,0,1
+34.05116667,-119.7418167,16,SBC,BC 2,SBC LTER: Santa Cruz Island: Abundance of Pycnopodia helianthoides,Altitude -30 ft,388.4614473,14.89829184,182.5112883,0.501460465,0,0,1
+34.05035,-119.7406333,16,SBC,BC Point,SBC LTER: Santa Cruz Island: Abundance of Pycnopodia helianthoides,Altitude -30 ft,387.5086554,14.91452603,182.0221179,0.50197094,0,0,1
+34.05815,-119.75745,16,SBC,Diablo,SBC LTER: Santa Cruz Island: Abundance of Pycnopodia helianthoides,Altitude -30 ft,396.1830706,14.75136543,186.4619987,0.499041924,0,0,1
+34.05365,-119.7496333,16,SBC,Fern 1,SBC LTER: Santa Cruz Island: Abundance of Pycnopodia helianthoides,Altitude -30 ft,396.1492671,14.83871094,186.4865579,0.500533147,0,0,1
+34.05291667,-119.7470333,16,SBC,Fern O,SBC LTER: Santa Cruz Island: Abundance of Pycnopodia helianthoides,Altitude -30 ft,393.6542359,14.85706071,185.1772212,0.500755357,0,0,1
+34.05695,-119.7551,16,SBC,Fry's 1,SBC LTER: Santa Cruz Island: Abundance of Pycnopodia helianthoides,Altitude -30 ft,396.2089918,14.77363882,186.4816305,0.498984858,0,0,1
+34.05765,-119.7558833,16,SBC,Fry's 2,SBC LTER: Santa Cruz Island: Abundance of Pycnopodia helianthoides,Altitude -30 ft,395.850839,14.76147172,186.3195919,0.498939522,0,0,1
+34.05776667,-119.7563,16,SBC,Fry's 3,SBC LTER: Santa Cruz Island: Abundance of Pycnopodia helianthoides,Altitude -30 ft,395.9623749,14.7589989,186.3673492,0.498961276,0,0,1
+34.04345,-119.7140833,16,SBC,Twin E,SBC LTER: Santa Cruz Island: Abundance of Pycnopodia helianthoides,Altitude -30 ft,350.2853338,15.087015,164.7611898,0.508854369,0,0,1
+34.0444,-119.7151333,16,SBC,Twin W,SBC LTER: Santa Cruz Island: Abundance of Pycnopodia helianthoides,Altitude -30 ft,352.1077928,15.06941915,165.5222067,0.508191668,0,0,1
+34.400275,-119.7445915,18,SBC,ABUR,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,505.7873218,15.23843612,242.4681274,0.548604511,0,0,1
+34.471817,-120.1426165,18,SBC,AHND,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,563.4560362,14.59029961,267.0789138,0.472908155,0,0,1
+34.46774988,-120.11905,18,SBC,AQUE,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,541.8077662,14.33591616,257.7192643,0.488126422,0,0,1
+34.05076667,-119.7414167,18,SBC,BC 1,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,388.2436382,14.90582879,182.3938375,0.501734306,0,0,1
+34.05116667,-119.7418167,18,SBC,BC 2,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,388.4614473,14.89829184,182.5112883,0.501460465,0,0,1
+34.05035,-119.7406333,18,SBC,BC Point,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,387.5086554,14.91452603,182.0221179,0.50197094,0,0,1
+34.45850533,-120.33349,18,SBC,BULL,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,412.9717663,14.12882564,189.8979815,0.497361435,0,0,1
+34.3916319,-119.5416933,18,SBC,CARP,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,533.5038084,15.42472181,259.1613989,0.552697579,0,0,1
+34.05291667,-119.7470333,18,SBC,Fern Offshore,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,393.6542359,14.85706071,185.1772212,0.500755357,0,0,1
+34.05695,-119.7551,18,SBC,Fry's 1,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,396.2089918,14.77363882,186.4816305,0.498984858,0,0,1
+34.05765,-119.7558833,18,SBC,Fry's 2,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,395.850839,14.76147172,186.3195919,0.498939522,0,0,1
+34.05776667,-119.7563,18,SBC,Fry's 3,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,395.9623749,14.7589989,186.3673492,0.498961276,0,0,1
+34.4137165,-119.8221,18,SBC,GOLB,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,497.0561035,14.84418483,239.6930032,0.549412774,0,0,1
+34.402783,-119.85755,18,SBC,IVEE,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,496.0664159,14.63390393,237.6064256,0.564562278,0,0,1
+34.3940708,-119.72957,18,SBC,MOHK,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,501.3399693,15.18025464,241.5170651,0.551083946,0,0,1
+34.4221216,-119.95154,18,SBC,NAPL,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,507.0051657,14.15537143,241.6102114,0.531922671,0,0,1
+34.05865,-119.75763,18,SBC,SCDI,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,395.6670626,14.74360467,186.2353567,0.499110317,0,0,1
+34.0444335,-119.71513,18,SBC,SCTW,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,352.1077618,15.06888784,165.5204305,0.508190518,0,0,1
+34.04345,-119.7140833,18,SBC,Twin E,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,350.2853338,15.087015,164.7611898,0.508854369,0,0,1
+34.0444,-119.7151333,18,SBC,Twin W,"SBC LTER: Reef: Sightings of sea otters (Enhydra lutris) near Santa Barbara and Channel Islands, ongoing since 2007",,352.1077928,15.06941915,165.5222067,0.508191668,0,0,1
+34.400275,-119.74459,2,SBC,ABUR,SBC LTER: Reef: Kelp Forest Community Dynamics: Fish abundance,underwater,505.7872549,15.23844765,242.4682291,0.548603983,0,0,1
+34.471817,-120.14262,2,SBC,AHND,SBC LTER: Reef: Kelp Forest Community Dynamics: Fish abundance,underwater,563.4574207,14.59032004,267.0794928,0.472907128,0,0,1
+34.4677499,-120.11905,2,SBC,AQUE,SBC LTER: Reef: Kelp Forest Community Dynamics: Fish abundance,underwater,541.8078324,14.33591702,257.719294,0.488126375,0,0,1
+34.4585053,-120.33349,2,SBC,BULL,SBC LTER: Reef: Kelp Forest Community Dynamics: Fish abundance,underwater,412.9716593,14.12882469,189.8979393,0.497361487,0,0,1
+34.3916319,-119.54169,2,SBC,CARP,SBC LTER: Reef: Kelp Forest Community Dynamics: Fish abundance,underwater,533.5047573,15.42473524,259.1617176,0.552694168,0,0,1
+34.4137165,-119.8221,2,SBC,GOLB,SBC LTER: Reef: Kelp Forest Community Dynamics: Fish abundance,underwater,497.0561035,14.84418483,239.6930032,0.549412774,0,0,1
+34.402783,-119.85755,2,SBC,IVEE,SBC LTER: Reef: Kelp Forest Community Dynamics: Fish abundance,underwater,496.0664159,14.63390393,237.6064256,0.564562278,0,0,1
+34.3940708,-119.72957,2,SBC,MOHK,SBC LTER: Reef: Kelp Forest Community Dynamics: Fish abundance,underwater,501.3399693,15.18025464,241.5170651,0.551083946,0,0,1
+34.4221216,-119.95154,2,SBC,NAPL,SBC LTER: Reef: Kelp Forest Community Dynamics: Fish abundance,underwater,507.0051657,14.15537143,241.6102114,0.531922671,0,0,1
+34.05865,-119.75763,2,SBC,SCDI,SBC LTER: Reef: Kelp Forest Community Dynamics: Fish abundance,on land,395.6670626,14.74360467,186.2353567,0.499110317,0,0,1
+34.0444335,-119.71513,2,SBC,SCTW,SBC LTER: Reef: Kelp Forest Community Dynamics: Fish abundance,On land,352.1077618,15.06888784,165.5204305,0.508190518,0,0,1
+34.36755,-119.73012,20,SBC,Mohawk Inshore Cross Shelf 1,"SBC LTER: Cross-shelf Study 2008-2009: Profiles of CTD, biogeochemistry, primary production, abundance of phytoplankton groups, and abundance and production of bacteria",,489.7629127,14.63933495,235.5030373,0.576772567,0,0,1
+34.3758,-119.73012,20,SBC,Mohawk Reef Cross Shelf 2,"SBC LTER: Cross-shelf Study 2008-2009: Profiles of CTD, biogeochemistry, primary production, abundance of phytoplankton groups, and abundance and production of bacteria",,490.2496769,14.66181933,235.750786,0.575548069,0,0,1
+34.385,-119.73012,20,SBC,Mohawk Reef Cross Shelf 3,"SBC LTER: Cross-shelf Study 2008-2009: Profiles of CTD, biogeochemistry, primary production, abundance of phytoplankton groups, and abundance and production of bacteria",,495.8474647,14.92038972,238.6210176,0.56239124,0,0,1
+34.39013,-119.73012,20,SBC,Mohawk Reef Cross Shelf 4,"SBC LTER: Cross-shelf Study 2008-2009: Profiles of CTD, biogeochemistry, primary production, abundance of phytoplankton groups, and abundance and production of bacteria",,498.9688399,15.06457082,240.2380292,0.555822251,0,0,1
+34.39338,-119.73012,20,SBC,Mohawk Reef Cross Shelf 5,"SBC LTER: Cross-shelf Study 2008-2009: Profiles of CTD, biogeochemistry, primary production, abundance of phytoplankton groups, and abundance and production of bacteria",,500.9463193,15.15591362,241.2684411,0.551956784,0,0,1
+34.336,-106.722,21,SEV,BOER,"Long-Term Core Site Grasshopper Dynamics for the Sevilleta National Wildlife Refuge, New Mexico (1992-2013)",,281.7638053,13.91459842,57.94718427,0.490828458,0,0,1
+34.336,-106.634,21,SEV,BOGR,"Long-Term Core Site Grasshopper Dynamics for the Sevilleta National Wildlife Refuge, New Mexico (1992-2013)",,314.5748553,13.04190206,59.01619095,0.497231057,0,0,1
+34.333,-106.736,21,SEV,LATR,"Long-Term Core Site Grasshopper Dynamics for the Sevilleta National Wildlife Refuge, New Mexico (1992-2013)",,278.8194461,14.00037685,58.59031757,0.493589392,0,0,1
+34.371,-106.537,21,SEV,PJ,"Long-Term Core Site Grasshopper Dynamics for the Sevilleta National Wildlife Refuge, New Mexico (1992-2013)",,380.4535602,11.58342839,74.3193075,0.605588473,0,0,4
+45.42296,-93.1971,221,CDR,site_cdr_exp001_field_A,"e001: Long-Term Nitrogen Deposition: Population, Community, and Ecosystem Consequences",,782.3018081,6.554088457,147.7595535,1.020176327,0,0,1
+45.42578,-93.2099,221,CDR,site_cdr_exp001_field_B,"e001: Long-Term Nitrogen Deposition: Population, Community, and Ecosystem Consequences",,783.7019534,6.541027484,148.4248439,1.022947034,0,0,1
+45.39772,-93.1917,221,CDR,site_cdr_exp001_field_C,"e001: Long-Term Nitrogen Deposition: Population, Community, and Ecosystem Consequences",,783.2967513,6.609752104,147.7994385,1.01099406,0,0,1
+45.39713,-93.1809,221,CDR,site_cdr_exp001_field_D,"e001: Long-Term Nitrogen Deposition: Population, Community, and Ecosystem Consequences",,782.3683944,6.608313713,147.2454195,1.010965599,0,0,1
+45.42296,-93.1971,223,CDR,site_cdr_exp002_field_A,e002: Long-Term Nitrogen Deposition During Grassland Succession,,782.3018081,6.554088457,147.7595535,1.020176327,0,0,1
+45.42578,-93.2099,223,CDR,site_cdr_exp002_field_B,e002: Long-Term Nitrogen Deposition During Grassland Succession,,783.7019534,6.541027484,148.4248439,1.022947034,0,0,1
+45.39772,-93.1917,223,CDR,site_cdr_exp002_field_C,e002: Long-Term Nitrogen Deposition During Grassland Succession,,783.2967513,6.609752104,147.7994385,1.01099406,0,0,1
+45.42578,-93.2099,225,CDR,site_cdr_exp012_field_B,e012: Effect of Fire Frequency on Grassland Vegetation and Soils,,783.7019534,6.541027484,148.4248439,1.022947034,0,0,1
+45.43459,-93.1957,231,CDR,site_cdr_core_old_field_10,e054: Old-Field Chronosequence: Plant Productivity,,782.1574684,6.502543833,147.125258,1.029013005,0,0,1
+45.4277,-93.2057,231,CDR,site_cdr_core_old_field_24,e054: Old-Field Chronosequence: Plant Productivity,,783.0245622,6.53259351,148.0490493,1.024258592,0,0,1
+45.42444,-93.2048,231,CDR,site_cdr_core_old_field_26,e054: Old-Field Chronosequence: Plant Productivity,,782.9307847,6.547917345,148.1580218,1.021563981,0,0,1
+45.4274,-93.1867,231,CDR,site_cdr_core_old_field_28,e054: Old-Field Chronosequence: Plant Productivity,,781.4156454,6.534607608,146.9434855,1.023047968,0,0,1
+45.41756,-93.2073,231,CDR,site_cdr_core_old_field_35,e054: Old-Field Chronosequence: Plant Productivity,,783.0837472,6.580829826,148.7286528,1.016070496,0,0,1
+45.4198,-93.1902,231,CDR,site_cdr_core_old_field_39,e054: Old-Field Chronosequence: Plant Productivity,,781.7691624,6.566851911,147.5440573,1.017765987,0,0,1
+45.43583,-93.2032,231,CDR,site_cdr_core_old_field_4,e054: Old-Field Chronosequence: Plant Productivity,,782.8443734,6.494954794,147.538645,1.0307626,0,0,1
+45.4198,-93.1902,231,CDR,site_cdr_core_old_field_41,e054: Old-Field Chronosequence: Plant Productivity,,781.7691624,6.566851911,147.5440573,1.017765987,0,0,1
+45.41277,-93.1908,231,CDR,site_cdr_core_old_field_45,e054: Old-Field Chronosequence: Plant Productivity,,782.1213776,6.586366604,147.7298394,1.014579341,0,0,1
+45.43459,-93.1957,231,CDR,site_cdr_core_old_field_5,e054: Old-Field Chronosequence: Plant Productivity,,782.1574684,6.502543833,147.125258,1.029013005,0,0,1
+45.40766,-93.2105,231,CDR,site_cdr_core_old_field_53,e054: Old-Field Chronosequence: Plant Productivity,,784.6319424,6.598516783,148.9317547,1.01325204,0,0,1
+45.3973,-93.1853,231,CDR,site_cdr_core_old_field_70,e054: Old-Field Chronosequence: Plant Productivity,,782.7526095,6.609004079,147.4589967,1.010954605,0,0,1
+45.39903,-93.1827,231,CDR,site_cdr_core_old_field_72,e054: Old-Field Chronosequence: Plant Productivity,,782.4038439,6.60572286,147.3122728,1.011383818,0,0,1
+45.38568,-93.205,231,CDR,site_cdr_core_old_field_77,e054: Old-Field Chronosequence: Plant Productivity,,785.4933949,6.630614867,148.8675647,1.008341084,0,0,1
+45.41328,-93.1844,231,CDR,site_cdr_core_old_field_LS,e054: Old-Field Chronosequence: Plant Productivity,,781.5871611,6.58382572,147.391713,1.014795296,0,0,1
+45.42296,-93.1971,233,CDR,site_cdr_exp097_filed_A,e097: Nitrogen Addition and Dynamics of Recovery from Cessation of N Addition,,782.3018081,6.554088457,147.7595535,1.020176327,0,0,1
+45.39772,-93.1917,233,CDR,site_cdr_exp097_filed_C,e097: Nitrogen Addition and Dynamics of Recovery from Cessation of N Addition,,783.2967513,6.609752104,147.7994385,1.01099406,0,0,1
+45.42578,-93.2099,235,CDR,site_cdr_exp098_field_B,e098: Fire X Nitrogen: Interactive Effects in a Prairie-Like Grassland,,783.7019534,6.541027484,148.4248439,1.022947034,0,0,1
+45.39652,-93.2023,241,CDR,site_cdr_exp133,e133: Effect of Burning Patterns on Vegetation in the Fish Lake Burn Compartments,"Multiple locations in this expriment, this is an aproximate central point",784.3434764,6.613876452,148.4658245,1.010674086,0,0,1
+45.39772,-93.1917,243,CDR,site_crd_exp172_field_C,e172: Herbivory by Nitrogen Interactive Effects on Community and Ecosystem Processes and Dynamics,,783.2967513,6.609752104,147.7994385,1.01099406,0,0,1
+45.40309,-93.189,244,CDR,site_cdr_exp244,"e244: Natural Enemies, Plant Diversity and Plant Community Composition",,782.6717654,6.600852158,147.6118369,1.012264734,0,0,1
+45.40309,-93.189,245,CDR,site_cdr_exp244,"e244: Natural Enemies, Plant Diversity and Plant Community Composition",,782.6717654,6.600852158,147.6118369,1.012264734,0,0,1
+45.38867,-93.1805,245,CDR,site_cdr_exp245,e245: The influence of natural enemies on plant community composition and productivity,,782.8814815,6.621569354,147.3663727,1.009061555,0,0,1
+45.38867,-93.1805,246,CDR,site_cdr_exp245,e245: The influence of natural enemies on plant community composition and productivity,,782.8814815,6.621569354,147.3663727,1.009061555,0,0,1
+45.40309,-93.189,248,CDR,site_cdr_exp249,e249: BAC: Biodiversity and Climate,,782.6717654,6.600852158,147.6118369,1.012264734,0,0,1
+34.336,-106.722,25,SEV,BOER,"Rodent Parasite Data for the Sevilleta National Wildlife Refuge, New Mexico (1990-1998)",,281.7638053,13.91459842,57.94718427,0.490828458,0,0,1
+34.3718,-106.534,25,SEV,goatdraw,"Rodent Parasite Data for the Sevilleta National Wildlife Refuge, New Mexico (1990-1998)",,379.05937,11.63658232,73.88454333,0.596451216,0,0,2
+34.333,-106.736,25,SEV,LATR,"Rodent Parasite Data for the Sevilleta National Wildlife Refuge, New Mexico (1990-1998)",,278.8194461,14.00037685,58.59031757,0.493589392,0,0,1
+34.2916,-106.933,25,SEV,rsgrass,"Rodent Parasite Data for the Sevilleta National Wildlife Refuge, New Mexico (1990-1998)",,242.0687658,14.17395772,57.47594702,0.482624953,0,0,1
+34.286,-106.904,25,SEV,rslarrea,"Rodent Parasite Data for the Sevilleta National Wildlife Refuge, New Mexico (1990-1998)",,236.4088737,14.24460424,58.44265119,0.48409737,0,0,1
+34.3048,-106.614,25,SEV,sepultur,"Rodent Parasite Data for the Sevilleta National Wildlife Refuge, New Mexico (1990-1998)",,347.4279462,12.38243537,64.30462621,0.556731361,0,0,2
+34.4182,-107.029,25,SEV,two22,"Rodent Parasite Data for the Sevilleta National Wildlife Refuge, New Mexico (1990-1998)",,310.5166478,12.39091364,63.02732704,0.488534653,0,0,2
+45.42296,-93.1971,250,CDR,site_cdr_ple003_field_A,e003: Effects of Various Nutrients and Water on Vegetation,,782.3018081,6.554088457,147.7595535,1.020176327,0,0,1
+45.42578,-93.2099,250,CDR,site_cdr_ple003_field_B,e003: Effects of Various Nutrients and Water on Vegetation,,783.7019534,6.541027484,148.4248439,1.022947034,0,0,1
+45.39772,-93.1917,250,CDR,site_cdr_ple003_field_C,e003: Effects of Various Nutrients and Water on Vegetation,,783.2967513,6.609752104,147.7994385,1.01099406,0,0,1
+45.39713,-93.1809,250,CDR,site_cdr_ple003_field_D,e003: Effects of Various Nutrients and Water on Vegetation,,782.3683944,6.608313713,147.2454195,1.010965599,0,0,1
+45.42296,-93.1971,268,CDR,site_cdr_ple011_field_A,e011: Effects of Nitrogen on Vegetation Under Herbivore Pressure,,782.3018081,6.554088457,147.7595535,1.020176327,0,0,1
+45.42578,-93.2099,268,CDR,site_cdr_ple011_field_B,e011: Effects of Nitrogen on Vegetation Under Herbivore Pressure,,783.7019534,6.541027484,148.4248439,1.022947034,0,0,1
+45.39772,-93.1917,268,CDR,site_cdr_ple011_field_C,e011: Effects of Nitrogen on Vegetation Under Herbivore Pressure,,783.2967513,6.609752104,147.7994385,1.01099406,0,0,1
+34.307,-106.677,27,SEV,NA,"2003 Prescribed Burn Effect on Chihuahuan Desert Grasses and Shrubs at the Sevilleta National Wildlife Refuge, New Mexico: Grass Recovery Study (2003- )",,588.4861612,13.50481388,112.9480843,0.479694323,0,0,1
+45.40961,-93.2132,273,CDR,site_cdr_ple055_field_E,e055: Plant Competition Under Different Nitrogen Levels:A Garden Experiment,,785.3439324,6.594906708,149.1018612,1.013834022,0,0,1
+45.42578,-93.2099,276,CDR,site_cdr_exp061_field_B,e061: Effect of Bird Predation on Grasshopper and Plant Communties,,783.7019534,6.541027484,148.4248439,1.022947034,0,0,1
+45.40961,-93.2132,280,CDR,site_cdr_exp070_field_E,e070: Legume Competition Garden,,785.3439324,6.594906708,149.1018612,1.013834022,0,0,1
+45.39772,-93.1917,287,CDR,site_cdr_exp093_field_D,e093: Soil Heterogeneity and Plant Diversity in an Oak Savanna,,783.2967513,6.609752104,147.7994385,1.01099406,0,0,1
+45.40214,-93.191,289,CDR,site_cdr_exp123,e123: The Small Biodiversity Experiment,,782.9118828,6.602791663,147.7264129,1.012022,0,0,1
+34.401,-106.677,29,SEV,F,"Nitrogen Fertilization Experiment (NFert): Net Primary Production Quadrat Data at the Sevilleta National Wildlife Refuge, New Mexico (2004-present)",,270.1516292,13.7963781,57.34263074,0.471945866,0,0,1
+45.40214,-93.191,290,CDR,site_cdr_exp123,e123: The Small Biodiversity Experiment,,782.9118828,6.602791663,147.7264129,1.012022,0,0,1
+45.39713,-93.1809,292,CDR,site_cdr_exp142,e142: Effects of Long Term Fertilization and Oak Canopy Cover on Plant Communities and Ecosystem Processes,,782.3683944,6.608313713,147.2454195,1.010965599,0,0,1
+31.540321,-81.419506,295,GCE,GCE1,"Long-term Plant Biomass Monitoring Data from the Georgia Coastal Ecosystems LTER Project on Sapelo Island, Georgia",,1237.60803,19.44784355,242.1881791,0.527241361,0,0,1
+31.48169,-81.275928,295,GCE,GCE10,"Long-term Plant Biomass Monitoring Data from the Georgia Coastal Ecosystems LTER Project on Sapelo Island, Georgia",,1215.066219,19.5784007,250.3829404,0.581236562,0,0,1
+31.542803,-81.304664,295,GCE,GCE2,"Long-term Plant Biomass Monitoring Data from the Georgia Coastal Ecosystems LTER Project on Sapelo Island, Georgia",,1232.586322,19.54581023,233.1095609,0.541239208,0,0,1
+31.534771,-81.215763,295,GCE,GCE3,"Long-term Plant Biomass Monitoring Data from the Georgia Coastal Ecosystems LTER Project on Sapelo Island, Georgia",,1155.631485,19.58802365,265.586407,0.570652201,0,0,1
+31.456326,-81.364286,295,GCE,GCE4,"Long-term Plant Biomass Monitoring Data from the Georgia Coastal Ecosystems LTER Project on Sapelo Island, Georgia",,1241.391794,19.60549194,256.4500962,0.542726337,0,0,1
+31.430951,-81.341052,295,GCE,GCE5,"Long-term Plant Biomass Monitoring Data from the Georgia Coastal Ecosystems LTER Project on Sapelo Island, Georgia",,1221.033517,19.60374243,259.9958515,0.566554209,0,0,1
+31.38256,-81.280885,295,GCE,GCE6,"Long-term Plant Biomass Monitoring Data from the Georgia Coastal Ecosystems LTER Project on Sapelo Island, Georgia",,1194.692327,19.63089489,265.8136694,0.63074321,0,0,1
+31.342283,-81.48361,295,GCE,GCE7,"Long-term Plant Biomass Monitoring Data from the Georgia Coastal Ecosystems LTER Project on Sapelo Island, Georgia",,1181.74917,19.55996749,213.7915773,0.525801512,0,0,1
+31.311116,-81.418801,295,GCE,GCE8,"Long-term Plant Biomass Monitoring Data from the Georgia Coastal Ecosystems LTER Project on Sapelo Island, Georgia",,1203.528672,19.65751761,216.1577575,0.528785816,0,0,1
+31.348796,-81.335514,295,GCE,GCE9,"Long-term Plant Biomass Monitoring Data from the Georgia Coastal Ecosystems LTER Project on Sapelo Island, Georgia",,1210.071483,19.64350773,248.2396051,0.579720969,0,0,1
+31.48169,-81.275928,296,GCE,site_gce_sapelo_island,"Visual survey of insect communities on Iva frutescens in summer 2013 and 2014 on Sapelo Island, Georgia",,1215.066219,19.5784007,250.3829404,0.581236562,0,0,1
+31.540321,-81.419506,297,GCE,GCE1,"Crab population monitoring: mid-marsh and creek bank abundance based on crab hole counts at GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1237.60803,19.44784355,242.1881791,0.527241361,0,0,1
+31.48169,-81.275928,297,GCE,GCE10,"Crab population monitoring: mid-marsh and creek bank abundance based on crab hole counts at GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1215.066219,19.5784007,250.3829404,0.581236562,0,0,1
+31.542803,-81.304664,297,GCE,GCE2,"Crab population monitoring: mid-marsh and creek bank abundance based on crab hole counts at GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1232.586322,19.54581023,233.1095609,0.541239208,0,0,1
+31.534771,-81.215763,297,GCE,GCE3,"Crab population monitoring: mid-marsh and creek bank abundance based on crab hole counts at GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1155.631485,19.58802365,265.586407,0.570652201,0,0,1
+31.456326,-81.364286,297,GCE,GCE4,"Crab population monitoring: mid-marsh and creek bank abundance based on crab hole counts at GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1241.391794,19.60549194,256.4500962,0.542726337,0,0,1
+31.430951,-81.341052,297,GCE,GCE5,"Crab population monitoring: mid-marsh and creek bank abundance based on crab hole counts at GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1221.033517,19.60374243,259.9958515,0.566554209,0,0,1
+31.38256,-81.280885,297,GCE,GCE6,"Crab population monitoring: mid-marsh and creek bank abundance based on crab hole counts at GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1194.692327,19.63089489,265.8136694,0.63074321,0,0,1
+31.342283,-81.48361,297,GCE,GCE7,"Crab population monitoring: mid-marsh and creek bank abundance based on crab hole counts at GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1181.74917,19.55996749,213.7915773,0.525801512,0,0,1
+31.311116,-81.418801,297,GCE,GCE8,"Crab population monitoring: mid-marsh and creek bank abundance based on crab hole counts at GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1203.528672,19.65751761,216.1577575,0.528785816,0,0,1
+31.348796,-81.335514,297,GCE,GCE9,"Crab population monitoring: mid-marsh and creek bank abundance based on crab hole counts at GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1210.071483,19.64350773,248.2396051,0.579720969,0,0,1
+31.540321,-81.419506,298,GCE,GCE1,"Mollusc population abundance monitoring: mid-marsh and creekbank infaunal and epifaunal mollusc abundance based on collections from GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1237.60803,19.44784355,242.1881791,0.527241361,0,0,1
+31.48169,-81.275928,298,GCE,GCE10,"Mollusc population abundance monitoring: mid-marsh and creekbank infaunal and epifaunal mollusc abundance based on collections from GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1215.066219,19.5784007,250.3829404,0.581236562,0,0,1
+31.542803,-81.304664,298,GCE,GCE2,"Mollusc population abundance monitoring: mid-marsh and creekbank infaunal and epifaunal mollusc abundance based on collections from GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1232.586322,19.54581023,233.1095609,0.541239208,0,0,1
+31.534771,-81.215763,298,GCE,GCE3,"Mollusc population abundance monitoring: mid-marsh and creekbank infaunal and epifaunal mollusc abundance based on collections from GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1155.631485,19.58802365,265.586407,0.570652201,0,0,1
+31.456326,-81.364286,298,GCE,GCE4,"Mollusc population abundance monitoring: mid-marsh and creekbank infaunal and epifaunal mollusc abundance based on collections from GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1241.391794,19.60549194,256.4500962,0.542726337,0,0,1
+31.430951,-81.341052,298,GCE,GCE5,"Mollusc population abundance monitoring: mid-marsh and creekbank infaunal and epifaunal mollusc abundance based on collections from GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1221.033517,19.60374243,259.9958515,0.566554209,0,0,1
+31.38256,-81.280885,298,GCE,GCE6,"Mollusc population abundance monitoring: mid-marsh and creekbank infaunal and epifaunal mollusc abundance based on collections from GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1194.692327,19.63089489,265.8136694,0.63074321,0,0,1
+31.342283,-81.48361,298,GCE,GCE7,"Mollusc population abundance monitoring: mid-marsh and creekbank infaunal and epifaunal mollusc abundance based on collections from GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1181.74917,19.55996749,213.7915773,0.525801512,0,0,1
+31.311116,-81.418801,298,GCE,GCE8,"Mollusc population abundance monitoring: mid-marsh and creekbank infaunal and epifaunal mollusc abundance based on collections from GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1203.528672,19.65751761,216.1577575,0.528785816,0,0,1
+31.348796,-81.335514,298,GCE,GCE9,"Mollusc population abundance monitoring: mid-marsh and creekbank infaunal and epifaunal mollusc abundance based on collections from GCE marsh, monitoring sites 1-10 (All sampling intervals)",,1210.071483,19.64350773,248.2396051,0.579720969,0,0,1
+34.335,-106.696,30,SEV,G,"Burn Study Sites Quadrat Data for the Net Primary Production Study at the Sevilleta National Wildlife Refuge, New Mexico (2004-present)",,286.2143549,13.74853606,56.8829203,0.485689464,0,0,1
+34.336,-106.702,30,SEV,MG,"Burn Study Sites Quadrat Data for the Net Primary Production Study at the Sevilleta National Wildlife Refuge, New Mexico (2004-present)",,285.7877481,13.78656943,57.12961543,0.487060857,0,0,1
+34.316,-106.696,30,SEV,MS,"Burn Study Sites Quadrat Data for the Net Primary Production Study at the Sevilleta National Wildlife Refuge, New Mexico (2004-present)",,289.6135241,13.67138059,56.57011069,0.482551871,0,0,1
+31.540321,-81.419506,300,GCE,GCE1,Surface water bacterial abundance at ten Georgia Coastal Ecosystems LTER sampling sites (All sampling intervals),,1237.60803,19.44784355,242.1881791,0.527241361,0,0,1
+31.48169,-81.275928,300,GCE,GCE10,Surface water bacterial abundance at ten Georgia Coastal Ecosystems LTER sampling sites (All sampling intervals),,1215.066219,19.5784007,250.3829404,0.581236562,0,0,1
+31.542803,-81.304664,300,GCE,GCE2,Surface water bacterial abundance at ten Georgia Coastal Ecosystems LTER sampling sites (All sampling intervals),,1232.586322,19.54581023,233.1095609,0.541239208,0,0,1
+31.534771,-81.215763,300,GCE,GCE3,Surface water bacterial abundance at ten Georgia Coastal Ecosystems LTER sampling sites (All sampling intervals),,1155.631485,19.58802365,265.586407,0.570652201,0,0,1
+31.456326,-81.364286,300,GCE,GCE4,Surface water bacterial abundance at ten Georgia Coastal Ecosystems LTER sampling sites (All sampling intervals),,1241.391794,19.60549194,256.4500962,0.542726337,0,0,1
+31.430951,-81.341052,300,GCE,GCE5,Surface water bacterial abundance at ten Georgia Coastal Ecosystems LTER sampling sites (All sampling intervals),,1221.033517,19.60374243,259.9958515,0.566554209,0,0,1
+31.38256,-81.280885,300,GCE,GCE6,Surface water bacterial abundance at ten Georgia Coastal Ecosystems LTER sampling sites (All sampling intervals),,1194.692327,19.63089489,265.8136694,0.63074321,0,0,1
+31.342283,-81.48361,300,GCE,GCE7,Surface water bacterial abundance at ten Georgia Coastal Ecosystems LTER sampling sites (All sampling intervals),,1181.74917,19.55996749,213.7915773,0.525801512,0,0,1
+31.311116,-81.418801,300,GCE,GCE8,Surface water bacterial abundance at ten Georgia Coastal Ecosystems LTER sampling sites (All sampling intervals),,1203.528672,19.65751761,216.1577575,0.528785816,0,0,1
+31.348796,-81.335514,300,GCE,GCE9,Surface water bacterial abundance at ten Georgia Coastal Ecosystems LTER sampling sites (All sampling intervals),,1210.071483,19.64350773,248.2396051,0.579720969,0,0,1
+34.342,-106.696,31,SEV,removal_1,"Plant Removal Study: Recovery of Vegetation Following Disturbance at the Sevilleta National Wildlife Refuge, New Mexico (1995-2010)",,284.164945,13.76996556,56.99575697,0.485135733,0,0,1
+34.34,-106.697,31,SEV,removal_2,"Plant Removal Study: Recovery of Vegetation Following Disturbance at the Sevilleta National Wildlife Refuge, New Mexico (1995-2010)",,284.7150953,13.76972631,56.99796145,0.485537194,0,0,1
+34.338,-106.698,31,SEV,removal_3,"Plant Removal Study: Recovery of Vegetation Following Disturbance at the Sevilleta National Wildlife Refuge, New Mexico (1995-2010)",,285.2783353,13.76943227,57.00249957,0.485935204,0,0,1
+34.327,-106.703,31,SEV,removal_4,"Plant Removal Study: Recovery of Vegetation Following Disturbance at the Sevilleta National Wildlife Refuge, New Mexico (1995-2010)",,287.4175542,13.75934435,56.95795943,0.485962028,0,0,1
+34.322,-106.702,31,SEV,removal_5,"Plant Removal Study: Recovery of Vegetation Following Disturbance at the Sevilleta National Wildlife Refuge, New Mexico (1995-2010)",,288.1356255,13.73367129,56.81129003,0.484640042,0,0,1
+34.342,-106.621,31,SEV,removal_6,"Plant Removal Study: Recovery of Vegetation Following Disturbance at the Sevilleta National Wildlife Refuge, New Mexico (1995-2010)",,323.9789018,12.82368688,60.63659787,0.505753008,0,0,1
+31.38256,-81.280885,313,GCE,CGE6,Grasshopper monitoring -- mid-marsh grasshopper abundance and species diversity at eight GCE LTER sampling sites (All sampling intervals),,1194.692327,19.63089489,265.8136694,0.63074321,0,0,1
+31.540321,-81.419506,313,GCE,GCE1,Grasshopper monitoring -- mid-marsh grasshopper abundance and species diversity at eight GCE LTER sampling sites (All sampling intervals),,1237.60803,19.44784355,242.1881791,0.527241361,0,0,1
+31.48169,-81.275928,313,GCE,GCE10,Grasshopper monitoring -- mid-marsh grasshopper abundance and species diversity at eight GCE LTER sampling sites (All sampling intervals),,1215.066219,19.5784007,250.3829404,0.581236562,0,0,1
+31.542803,-81.304664,313,GCE,GCE2,Grasshopper monitoring -- mid-marsh grasshopper abundance and species diversity at eight GCE LTER sampling sites (All sampling intervals),,1232.586322,19.54581023,233.1095609,0.541239208,0,0,1
+31.534771,-81.215763,313,GCE,GCE3,Grasshopper monitoring -- mid-marsh grasshopper abundance and species diversity at eight GCE LTER sampling sites (All sampling intervals),,1155.631485,19.58802365,265.586407,0.570652201,0,0,1
+31.456326,-81.364286,313,GCE,GCE4,Grasshopper monitoring -- mid-marsh grasshopper abundance and species diversity at eight GCE LTER sampling sites (All sampling intervals),,1241.391794,19.60549194,256.4500962,0.542726337,0,0,1
+31.430951,-81.341052,313,GCE,GCE5,Grasshopper monitoring -- mid-marsh grasshopper abundance and species diversity at eight GCE LTER sampling sites (All sampling intervals),,1221.033517,19.60374243,259.9958515,0.566554209,0,0,1
+31.348796,-81.335514,313,GCE,GCE9,Grasshopper monitoring -- mid-marsh grasshopper abundance and species diversity at eight GCE LTER sampling sites (All sampling intervals),,1210.071483,19.64350773,248.2396051,0.579720969,0,0,1
+34.36,-106.691,34,SEV,W,"Warming-El Nino-Nitrogen Deposition Experiment (WENNDEx): Net Primary Production Quadrat Data at the Sevilleta National Wildlife Refuge, New Mexico (2006 -present)",,279.3992537,13.79428253,57.20840354,0.482698258,0,0,1
+25.1908049,-80.639105,365,FCE,site_fce_TS/Ph7a,"Florida Bay Braun Blanquet, Everglades National Park (FCE), South Florida from September 2000 to Present",,1185.693623,24.44738341,249.5224539,0.377657657,0,0,1
+25.2326975,-80.524557,365,FCE,site_fce_TS/Ph8,"Florida Bay Braun Blanquet, Everglades National Park (FCE), South Florida from September 2000 to Present",,1122.98482,24.43130581,269.1198287,0.377927793,0,0,1
+25.1769287,-80.489782,365,FCE,site_fce_TS/Ph9,"Florida Bay Braun Blanquet, Everglades National Park (FCE), South Florida from September 2000 to Present",,1098.594765,24.48189415,240.7212989,0.385518809,0,0,1
+25.006,-80.573,366,FCE,site_fce_bird_stake_1,"Cross Bank Benthic Aboveground biomass, Everglades National Park (FCE), South Florida from 1983 to 2014",,1101.942172,25.31189175,219.6292927,0.444314455,0,0,1
+25.008,-80.578,366,FCE,site_fce_bird_stake_2,"Cross Bank Benthic Aboveground biomass, Everglades National Park (FCE), South Florida from 1983 to 2014",,1099.542818,25.31426857,219.5620567,0.44336095,0,0,1
+25.01,-80.583,366,FCE,site_fce_bird_stake_3,"Cross Bank Benthic Aboveground biomass, Everglades National Park (FCE), South Florida from 1983 to 2014",,1097.29083,25.31790555,219.6127075,0.442617513,0,0,1
+25.011,-80.589,366,FCE,site_fce_bird_stake_4,"Cross Bank Benthic Aboveground biomass, Everglades National Park (FCE), South Florida from 1983 to 2014",,1097.145938,25.31819282,219.6203084,0.442575306,0,0,1
+25.011,-80.595,366,FCE,site_fce_bird_stake_5,"Cross Bank Benthic Aboveground biomass, Everglades National Park (FCE), South Florida from 1983 to 2014",,1097.145938,25.31819282,219.6203084,0.442575306,0,0,1
+34.344,-106.727,37,SEV,M,"Monsoon Rainfall Manipulation Experiment (MRME): Net Primary Production Quadrat Data at the Sevilleta National Wildlife Refuge, New Mexico (2006-present)",,277.4229113,13.96905012,58.34165811,0.490632667,0,0,1
+25.359,-81.119,379,FCE,site_fce_DR,"Bull shark catches, water temperatures, salinities, and dissolved oxygen levels in the Shark River Slough, Everglades National Park (FCE) , from May 2005 to May 2009",,1294.45462,24.26885624,226.640267,0.428615561,0,0,1
+25.44,-80.98,379,FCE,site_fce_OC,"Bull shark catches, water temperatures, salinities, and dissolved oxygen levels in the Shark River Slough, Everglades National Park (FCE) , from May 2005 to May 2009",,1418.369019,24.286845,257.6816936,0.414898457,0,0,1
+25.4097642,-80.96431,379,FCE,site_fce_SRS4,"Bull shark catches, water temperatures, salinities, and dissolved oxygen levels in the Shark River Slough, Everglades National Park (FCE) , from May 2005 to May 2009",,1431.320958,24.25599911,260.5682539,0.412553533,0,0,1
+25.3770226,-81.032347,379,FCE,site_fce_SRS5,"Bull shark catches, water temperatures, salinities, and dissolved oxygen levels in the Shark River Slough, Everglades National Park (FCE) , from May 2005 to May 2009",,1395.236242,24.19780742,254.9906166,0.416986515,0,0,1
+25.45,-80.92,379,FCE,site_fce_UR,"Bull shark catches, water temperatures, salinities, and dissolved oxygen levels in the Shark River Slough, Everglades National Park (FCE) , from May 2005 to May 2009",,1444.043597,24.30992405,269.9803827,0.416040225,0,0,1
+25.41,-80.97,384,FCE,site_fce_TB,"Seasonal Electrofishing Data from Rookery Branch and the North, Watson, and Roberts Rivers Everglades National Park (FCE) from November 2004 to Present",This refers to Tarpon Bay. The point given is for site TB1.,1428.830942,24.25377325,259.7486476,0.412710776,0,0,1
+25.35739,-80.90072,385,FCE,site_fce_north_river_1,"Minnowtrap Data from Rookery Branch and the North, Watson, and Roberts Rivers National Park (FCE) from November 2004 to April 2008",,1423.734398,24.24674061,261.0535822,0.404863263,0,0,1
+25.35353,-80.89604,385,FCE,site_fce_north_river_2,"Minnowtrap Data from Rookery Branch and the North, Watson, and Roberts Rivers National Park (FCE) from November 2004 to April 2008",,1421.979514,24.25003228,260.9632086,0.4039416,0,0,1
+25.34379,-80.89984,385,FCE,site_fce_north_river_3,"Minnowtrap Data from Rookery Branch and the North, Watson, and Roberts Rivers National Park (FCE) from November 2004 to April 2008",,1418.162678,24.23974994,260.1574879,0.403036652,0,0,1
+25.335113,-80.89904,385,FCE,site_fce_roberts_river_4,"Minnowtrap Data from Rookery Branch and the North, Watson, and Roberts Rivers National Park (FCE) from November 2004 to April 2008",,1414.510878,24.23597418,260.0346063,0.401977983,0,0,1
+25.3284496,-80.900844,385,FCE,site_fce_roberts_river_5,"Minnowtrap Data from Rookery Branch and the North, Watson, and Roberts Rivers National Park (FCE) from November 2004 to April 2008",,1409.959563,24.22622394,258.1528193,0.401820689,0,0,1
+25.46305,-80.86603,385,FCE,site_fce_rookery_branch_10,"Minnowtrap Data from Rookery Branch and the North, Watson, and Roberts Rivers National Park (FCE) from November 2004 to April 2008",,1454.882612,24.30664324,267.7872513,0.419061654,0,0,1
+25.46331,-80.87609,385,FCE,site_fce_rookery_branch_11,"Minnowtrap Data from Rookery Branch and the North, Watson, and Roberts Rivers National Park (FCE) from November 2004 to April 2008",,1457.925934,24.31164082,271.9258788,0.419247744,0,0,1
+25.45753,-80.91776,385,FCE,site_fce_rookery_branch_12,"Minnowtrap Data from Rookery Branch and the North, Watson, and Roberts Rivers National Park (FCE) from November 2004 to April 2008",,1446.422531,24.317516,275.0189367,0.41673215,0,0,1
+25.447693,-80.892671,385,FCE,site_fce_rookery_branch_13,"Minnowtrap Data from Rookery Branch and the North, Watson, and Roberts Rivers National Park (FCE) from November 2004 to April 2008",,1452.598438,24.30027818,267.0113221,0.417102207,0,0,1
+25.4267808,-80.926103,385,FCE,site_fce_rookery_branch_14,"Minnowtrap Data from Rookery Branch and the North, Watson, and Roberts Rivers National Park (FCE) from November 2004 to April 2008",,1439.295788,24.28541545,260.792971,0.414063397,0,0,1
+25.4180045,-80.951017,385,FCE,site_fce_rookery_branch_15,"Minnowtrap Data from Rookery Branch and the North, Watson, and Roberts Rivers National Park (FCE) from November 2004 to April 2008",,1435.153803,24.27025085,260.7802571,0.413003081,0,0,1
+25.4526794,-80.944239,385,FCE,site_fce_rookery_branch_16,"Minnowtrap Data from Rookery Branch and the North, Watson, and Roberts Rivers National Park (FCE) from November 2004 to April 2008",,1431.535499,24.3117092,264.854533,0.415547864,0,0,1
+25.42974,-80.89903,385,FCE,site_fce_rookery_branch_7,"Minnowtrap Data from Rookery Branch and the North, Watson, and Roberts Rivers National Park (FCE) from November 2004 to April 2008",,1445.721651,24.28514768,260.1926495,0.415266518,0,0,1
+25.45575,-80.87381,385,FCE,site_fce_rookery_branch_8,"Minnowtrap Data from Rookery Branch and the North, Watson, and Roberts Rivers National Park (FCE) from November 2004 to April 2008",,1460.786085,24.30152868,270.8955116,0.418881504,0,0,1
+25.46013,-80.86304,385,FCE,site_fce_rookery_branch_9,"Minnowtrap Data from Rookery Branch and the North, Watson, and Roberts Rivers National Park (FCE) from November 2004 to April 2008",,1455.955792,24.30127758,267.1902186,0.418877337,0,0,1
+25.36945,-80.94319,385,FCE,site_fce_watson_river_4,"Minnowtrap Data from Rookery Branch and the North, Watson, and Roberts Rivers National Park (FCE) from November 2004 to April 2008",,1428.268989,24.21917195,262.8748252,0.409325145,0,0,1
+25.37609,-80.94354,385,FCE,site_fce_watson_river_5,"Minnowtrap Data from Rookery Branch and the North, Watson, and Roberts Rivers National Park (FCE) from November 2004 to April 2008",,1430.783,24.22879724,263.8130906,0.409606589,0,0,1
+25.37443,-80.95053,385,FCE,site_fce_watson_river_6,"Minnowtrap Data from Rookery Branch and the North, Watson, and Roberts Rivers National Park (FCE) from November 2004 to April 2008",,1430.604232,24.22184617,264.5977089,0.410061077,0,0,1
+34.400275,-119.7445915,4,SBC,ABUR,"SBC LTER: Reef: Kelp Forest Community Dynamics: Cover of sessile organisms, Uniform Point Contact",,505.7873218,15.23843612,242.4681274,0.548604511,0,0,1
+34.471817,-120.1426165,4,SBC,AHND,"SBC LTER: Reef: Kelp Forest Community Dynamics: Cover of sessile organisms, Uniform Point Contact",,563.4560362,14.59029961,267.0789138,0.472908155,0,0,1
+34.46774988,-120.11905,4,SBC,AQUE,"SBC LTER: Reef: Kelp Forest Community Dynamics: Cover of sessile organisms, Uniform Point Contact",,541.8077662,14.33591616,257.7192643,0.488126422,0,0,1
+34.45850533,-120.33349,4,SBC,BULL,"SBC LTER: Reef: Kelp Forest Community Dynamics: Cover of sessile organisms, Uniform Point Contact",,412.9717663,14.12882564,189.8979815,0.497361435,0,0,1
+34.3916319,-119.5416933,4,SBC,CARP,"SBC LTER: Reef: Kelp Forest Community Dynamics: Cover of sessile organisms, Uniform Point Contact",,533.5038084,15.42472181,259.1613989,0.552697579,0,0,1
+34.4137165,-119.8221,4,SBC,GOLB,"SBC LTER: Reef: Kelp Forest Community Dynamics: Cover of sessile organisms, Uniform Point Contact",,497.0561035,14.84418483,239.6930032,0.549412774,0,0,1
+34.402783,-119.85755,4,SBC,IVEE,"SBC LTER: Reef: Kelp Forest Community Dynamics: Cover of sessile organisms, Uniform Point Contact",,496.0664159,14.63390393,237.6064256,0.564562278,0,0,1
+34.3940708,-119.72957,4,SBC,MOHK,"SBC LTER: Reef: Kelp Forest Community Dynamics: Cover of sessile organisms, Uniform Point Contact",,501.3399693,15.18025464,241.5170651,0.551083946,0,0,1
+34.3940708,-119.95154,4,SBC,NAPL,"SBC LTER: Reef: Kelp Forest Community Dynamics: Cover of sessile organisms, Uniform Point Contact",,498.2159145,13.96553882,236.9965365,0.546052502,0,0,1
+34.05865,-119.75763,4,SBC,SCDI,"SBC LTER: Reef: Kelp Forest Community Dynamics: Cover of sessile organisms, Uniform Point Contact",,395.6670626,14.74360467,186.2353567,0.499110317,0,0,1
+34.0444335,-119.71513,4,SBC,SCTW,"SBC LTER: Reef: Kelp Forest Community Dynamics: Cover of sessile organisms, Uniform Point Contact",,352.1077618,15.06888784,165.5204305,0.508190518,0,0,1
+41.28107,-72.7084,408,HFR,site_hfr_builford,Stand and Community Response to Hemlock Woolly Adelgid in Southern New England since 1995 (hf021-02-shrubs.csv),,1223.659708,11.0368627,173.4693243,0.567535995,0,0,1
+41.45926,-72.3328,408,HFR,site_hfr_burnham_brook,Stand and Community Response to Hemlock Woolly Adelgid in Southern New England since 1995 (hf021-02-shrubs.csv),,1333.072863,9.78358953,180.7561298,0.638892482,0,0,2
+41.44143,-72.4446,408,HFR,site_hfr_chapman_pond,Stand and Community Response to Hemlock Woolly Adelgid in Southern New England since 1995 (hf021-02-shrubs.csv),,1363.647771,9.801248401,180.8645122,0.70748184,0,0,2
+41.35884,-72.5869,408,HFR,site_hfr_fosters_pond,Stand and Community Response to Hemlock Woolly Adelgid in Southern New England since 1995 (hf021-02-shrubs.csv),,1317.56042,10.24221273,174.8296666,0.606095798,0,0,1
+41.44082,-72.4742,408,HFR,site_hfr_ruth_hill,Stand and Community Response to Hemlock Woolly Adelgid in Southern New England since 1995 (hf021-02-shrubs.csv),,1378.820024,9.76252839,181.6433876,0.729715266,0,0,2
+41.56264,-72.4353,408,HFR,site_hfr_salmon_river,Stand and Community Response to Hemlock Woolly Adelgid in Southern New England since 1995 (hf021-02-shrubs.csv),,1318.833311,9.673593493,169.4335869,0.66789701,0,0,2
+41.40365,-72.398,408,HFR,site_hfr_selden_neck_creek,Stand and Community Response to Hemlock Woolly Adelgid in Southern New England since 1995 (hf021-02-shrubs.csv),,1328.6848,10.06633833,177.078993,0.640252446,0,0,1
+41.43732,-72.7324,408,HFR,site_hfr_tri_mountain,Stand and Community Response to Hemlock Woolly Adelgid in Southern New England since 1995 (hf021-02-shrubs.csv),,1320.82593,10.13807769,185.5125026,0.623514964,0,0,1
+41.45926,-72.3328,410,HFR,site_hfr_burnham_brook,Stand and Community Response to Hemlock Woolly Adelgid in Southern New England since 1995 (hf021-04-herbs.csv),,1333.072863,9.78358953,180.7561298,0.638892482,0,0,1
+41.44143,-72.4446,410,HFR,site_hfr_chapman_pond,Stand and Community Response to Hemlock Woolly Adelgid in Southern New England since 1995 (hf021-04-herbs.csv),,1363.647771,9.801248401,180.8645122,0.70748184,0,0,1
+41.35884,-72.5869,410,HFR,site_hfr_fosters_pond,Stand and Community Response to Hemlock Woolly Adelgid in Southern New England since 1995 (hf021-04-herbs.csv),,1317.56042,10.24221273,174.8296666,0.606095798,0,0,1
+41.28107,-72.7084,410,HFR,site_hfr_guilford,Stand and Community Response to Hemlock Woolly Adelgid in Southern New England since 1995 (hf021-04-herbs.csv),,1223.659708,11.0368627,173.4693243,0.567535995,0,0,1
+41.44082,-72.4742,410,HFR,site_hfr_ruth_hill,Stand and Community Response to Hemlock Woolly Adelgid in Southern New England since 1995 (hf021-04-herbs.csv),,1378.820024,9.76252839,181.6433876,0.729715266,0,0,1
+41.56264,-72.4353,410,HFR,site_hfr_salmon_river,Stand and Community Response to Hemlock Woolly Adelgid in Southern New England since 1995 (hf021-04-herbs.csv),,1318.833311,9.673593493,169.4335869,0.66789701,0,0,1
+41.40365,-72.398,410,HFR,site_hfr_selden_neck_creek,Stand and Community Response to Hemlock Woolly Adelgid in Southern New England since 1995 (hf021-04-herbs.csv),,1328.6848,10.06633833,177.078993,0.640252446,0,0,1
+41.43732,-72.7324,410,HFR,site_hfr_tri_mountain,Stand and Community Response to Hemlock Woolly Adelgid in Southern New England since 1995 (hf021-04-herbs.csv),,1320.82593,10.13807769,185.5125026,0.623514964,0,0,1
+34.338,-106.63,42,SEV,M_pdog,"Gunnison's Prairie Dog Relocation Project: Vegetation Cover Data from the Sevilleta National Wildife Refuge, New Mexico (2005-2013 )",,316.5037385,13.00241563,59.41239706,0.498745849,0,0,1
+34.343,-106.624,42,SEV,N_pdog,"Gunnison's Prairie Dog Relocation Project: Vegetation Cover Data from the Sevilleta National Wildife Refuge, New Mexico (2005-2013 )",,318.1678015,12.95707175,59.78391181,0.500259554,0,0,1
+34.338,-106.63,42,SEV,S_pdog,"Gunnison's Prairie Dog Relocation Project: Vegetation Cover Data from the Sevilleta National Wildife Refuge, New Mexico (2005-2013 )",,316.5037385,13.00241563,59.41239706,0.498745849,0,0,1
+42.47,-72.22,453,HFR,site_hfr_simes_tract,Seed Bank in Hemlock Removal Experiment at Harvard Forest 2004-2010 (hf105-05-seed-rain.csv),,1196.193885,7.796089024,156.2045743,0.658338038,0,0,1
+42.47,-72.22,454,HFR,site_hfr_simes_tract,Understory Vegetation in Hemlock Removal Experiment at Harvard Forest since 2003 (hf106-03-shrub.csv),,1196.193885,7.796089024,156.2045743,0.658338038,0,0,1
+42.47,-72.22,455,HFR,site_hfr_simes_tract,Understory Vegetation in Hemlock Removal Experiment at Harvard Forest since 2003 (hf106-04-seedling-density.csv),,1196.193885,7.796089024,156.2045743,0.658338038,0,0,1
+42.47,-72.22,456,HFR,site_hfr_simes_tract,Understory Vegetation in Hemlock Removal Experiment at Harvard Forest since 2003 (hf106-05-seedling-cover.csv),,1196.193885,7.796089024,156.2045743,0.658338038,0,0,1
+42.53,-72.19,459,HFR,site_hfr_prospect_hill_tract,Ants Under Climate Change at Harvard Forest and Duke Forest since 2009 (hf113-18-hf-cham-ants.csv),,1179.04058,7.451905018,160.5667266,0.655058896,0,0,1
+34.36,-106.691,46,SEV,N,"Effects of Multiple Resource Additions on Community and Ecosystem Processes: NutNet NPP Quadrat Sampling at the Sevilleta National Wildlife Refuge, New Mexico (2007-present)",,279.3992537,13.79428253,57.20840354,0.482698258,0,0,1
+42.53,-72.19,463,HFR,site_hfr_prospect_hill_tract,Ants Under Climate Change at Harvard Forest and Duke Forest since 2009 (hf113-32-hf-cham-spiders.csv),,1179.04058,7.451905018,160.5667266,0.655058896,0,0,1
+42.53,-72.19,465,HFR,site_hfr_simes_tract,Ant Assemblages in Hemlock Removal Experiment at Harvard Forest since 2003 (hf118-01-ants.csv),,1179.04058,7.451905018,160.5667266,0.655058896,0,0,1
+34.337,-106.625,48,SEV,A_pdog_veg,"Gunnison's Prairie Dog Restoration Experiment (GPDREx): Vegetation Cover Data from the Sevilleta National Wildlife Refuge, New Mexico",,321.463668,12.90816138,60.37919844,0.502916139,0,0,1
+34.333,-106.628,48,SEV,B_pdog_veg,"Gunnison's Prairie Dog Restoration Experiment (GPDREx): Vegetation Cover Data from the Sevilleta National Wildlife Refuge, New Mexico",,321.9319504,12.90337191,60.35902856,0.503581774,0,0,1
+34.329,-106.632,48,SEV,C_pdog_veg,"Gunnison's Prairie Dog Restoration Experiment (GPDREx): Vegetation Cover Data from the Sevilleta National Wildlife Refuge, New Mexico",,319.9269854,12.94089167,59.83506345,0.504240796,0,0,1
+34.324,-106.636,48,SEV,D_pdog_veg,"Gunnison's Prairie Dog Restoration Experiment (GPDREx): Vegetation Cover Data from the Sevilleta National Wildlife Refuge, New Mexico",,318.2552997,12.97323562,59.40768644,0.504956576,0,0,1
+42.53,-72.19,483,HFR,site_hfr_simes_tract,Ants and Ecosystem Function in Hemlock Removal Experiment at Harvard Forest since 2006 (hf160-03-ants.csv),,1179.04058,7.451905018,160.5667266,0.655058896,0,0,1
+34.371,-106.537,53,SEV,P,"Pinon-Juniper (Core Site) Quadrat Data for the Net Primary Production Study at the Sevilleta National Wildlife Refuge, New Mexico (2003-present )",,380.4535602,11.58342839,74.3193075,0.605588473,0,0,1
+34.336,-106.722,54,SEV,BOER,"Ground Arthropod Community Survey in Grassland, Shrubland, and Woodland at the Sevilleta National Wildlife Refuge, New Mexico (1992-2004)",,281.7638053,13.91459842,57.94718427,0.490828458,0,0,1
+34.336,-106.634,54,SEV,BOGR,"Ground Arthropod Community Survey in Grassland, Shrubland, and Woodland at the Sevilleta National Wildlife Refuge, New Mexico (1992-2004)",,314.5748553,13.04190206,59.01619095,0.497231057,0,0,1
+34.333,-106.736,54,SEV,LATR,"Ground Arthropod Community Survey in Grassland, Shrubland, and Woodland at the Sevilleta National Wildlife Refuge, New Mexico (1992-2004)",,278.8194461,14.00037685,58.59031757,0.493589392,0,0,1
+34.369,-106.533,54,SEV,PJ,"Ground Arthropod Community Survey in Grassland, Shrubland, and Woodland at the Sevilleta National Wildlife Refuge, New Mexico (1992-2004)",,378.7347014,11.63875047,73.78189623,0.594677311,0,0,4
+34.51271,-83.47465,542,CWT,site_cwt_chattahoochee_national_forest,Tipularia discolor plant demography 1999-2004 (1203_1_0.csv),,1376.88483,15.06872852,250.3239394,0.512285784,0,0,1
+35.060037,-83.43044,542,CWT,site_cwt_hydrologic_laboratory,Tipularia discolor plant demography 1999-2004 (1203_1_0.csv),,1826.709415,12.42806864,347.5318899,0.630460272,0,0,2
+33.884774,-83.357527,542,CWT,site_cwt_whitehall_forest,Tipularia discolor plant demography 1999-2004 (1203_1_0.csv),,1204.811733,16.50267225,221.3385691,0.493104799,0,0,3
+34.342,-106.623,55,SEV,EB,"Extreme Drought in Grassland Ecosystems (EDGE) Net Primary Production Quadrat Data at the Sevilleta National Wildlife Refuge, New Mexico (2012-present)",,320.6583088,12.9026303,60.15093649,0.502523934,0,0,1
+34.338,-106.729,55,SEV,EG,"Extreme Drought in Grassland Ecosystems (EDGE) Net Primary Production Quadrat Data at the Sevilleta National Wildlife Refuge, New Mexico (2012-present)",,279.0381784,13.96641935,58.31710796,0.491709575,0,0,2
+35.051025,-83.43417,589,CWT,site_cwt_terrestrial_gradient_118,Seed production and dispersal for Tsuga canadiensis (1008_1_0.csv),,1888.285242,12.22482137,356.0290312,0.61139429,0,0,1
+35.049007,-83.434013,589,CWT,site_cwt_terrestrial_gradient_218,Seed production and dispersal for Tsuga canadiensis (1008_1_0.csv),,1895.284034,12.20209473,356.9145813,0.608858821,0,0,1
+35.047616,-83.433849,589,CWT,site_cwt_terrestrial_gradient_318,Seed production and dispersal for Tsuga canadiensis (1008_1_0.csv),,1899.673782,12.18821294,357.461951,0.607234099,0,0,1
+35.038205,-83.459382,589,CWT,site_cwt_terrestrial_gradient_427,Seed production and dispersal for Tsuga canadiensis (1008_1_0.csv),,2110.888433,11.38792651,391.1388753,0.556650152,0,0,1
+35.0310037,-83.461895,589,CWT,site_cwt_terrestrial_gradient_527,Seed production and dispersal for Tsuga canadiensis (1008_1_0.csv),,2105.905942,11.47771988,390.7123545,0.55413259,0,0,1
+34.282,-106.905,62,SEV,C_ant_cnt,"Small Mammal Exclosure Study (SMES) Ant Data from Chihuahuan Desert Grassland and Shrubland at the Sevilleta National Wildlife Refuge, New Mexico (1995-2005)",,236.3624074,14.24406684,58.54044397,0.483506805,0,0,1
+34.282,-106.905,62,SEV,C_ant_cnt,"Small Mammal Exclosure Study (SMES) Vegetation Data from the Chihuahuan Desert Grassland and Shrubland at the Sevilleta National Wildlife Refuge, New Mexico (1995-2009)",,236.3624074,14.24406684,58.54044397,0.483506805,0,0,1
+34.338,-106.722,62,SEV,G_ant_cnt,"Small Mammal Exclosure Study (SMES) Ant Data from Chihuahuan Desert Grassland and Shrubland at the Sevilleta National Wildlife Refuge, New Mexico (1995-2005)",,281.0508031,13.92019417,57.98306638,0.490604265,0,0,1
+34.338,-106.722,62,SEV,G_ant_cnt,"Small Mammal Exclosure Study (SMES) Vegetation Data from the Chihuahuan Desert Grassland and Shrubland at the Sevilleta National Wildlife Refuge, New Mexico (1995-2009)",,281.0508031,13.92019417,57.98306638,0.490604265,0,0,1
+43.962128,-71.804985,622,HBR,site_hbr_hubbard_brook,Long-term trends in abundance of Lepidoptera larvae in northern hardwood forests (leps.txt),,1440.058396,4.76461575,222.7387442,0.666855091,0,0,1
+43.990567,-71.773936,622,HBR,site_hbr_moosilauke,Long-term trends in abundance of Lepidoptera larvae in northern hardwood forests (leps.txt),,1483.576635,4.468764583,227.1386232,0.674235781,0,0,1
+44.004677,-71.645864,622,HBR,site_hbr_russell_pond,Long-term trends in abundance of Lepidoptera larvae in northern hardwood forests (leps.txt),,1345.7489,5.500591801,208.5018276,0.71633468,0,0,1
+43.835,-71.773936,622,HBR,site_hbr_stinson_mountain,Long-term trends in abundance of Lepidoptera larvae in northern hardwood forests (leps.txt),,1297.123122,5.377089653,207.7996134,0.72146395,0,0,1
+43.957001,-71.743462,625,HBR,site_hbr_bear_brook_watershed,"Gastropod abundance on W1 and west of W6, 1997-2006 (gastropods.txt)",,1388.448379,4.783811459,218.3847887,0.708302925,0,0,1
+43.959356,-71.730866,625,HBR,site_hbr_watershed_1,"Gastropod abundance on W1 and west of W6, 1997-2006 (gastropods.txt)",,1340.230816,5.038031504,212.188889,0.71685448,0,0,1
+32.61127,-106.852,677,JRN,site_jrn_a1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,277.736207,15.38059405,71.79044765,0.617022935,0,0,1
+32.6185,-106.858,677,JRN,site_jrn_a2,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,277.5123079,15.38338409,71.09782506,0.6169582,0,0,1
+32.6243,-106.862,677,JRN,site_jrn_a3,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,277.2891264,15.37958129,70.44782654,0.617236506,0,0,1
+32.6302,-106.867,677,JRN,site_jrn_a4,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,277.1432939,15.3920385,70.03433051,0.615973758,0,0,1
+32.6364,-106.87,677,JRN,site_jrn_a5,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,276.8308079,15.39149615,69.59316558,0.615013353,0,0,1
+32.6658,-106.843,677,JRN,site_jrn_ar1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,273.9817063,15.14192212,66.73286385,0.623708703,0,0,1
+32.6649,-106.841,677,JRN,site_jrn_ar2,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,273.9828819,15.13276996,66.7654871,0.624427774,0,0,1
+32.6649,-106.839,677,JRN,site_jrn_ar3,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,273.936893,15.12116423,66.73813527,0.625181716,0,0,1
+32.6117,-106.842,677,JRN,site_jrn_ar4,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,277.1243416,15.31213874,71.28789455,0.620101989,0,0,1
+32.614,-106.841,677,JRN,site_jrn_ar5,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,276.8825607,15.29421992,71.00547076,0.620919223,0,0,1
+32.6141,-106.841,677,JRN,site_jrn_ar6,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,276.8745605,15.29372904,70.99507104,0.620941423,0,0,1
+32.6004,-106.842,677,JRN,site_jrn_b1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,278.0276221,15.36774811,72.5439208,0.617708485,0,0,1
+32.5959,-106.836,677,JRN,site_jrn_b2,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,278.0468547,15.34894727,72.6341985,0.618695081,0,0,1
+32.5929,-106.839,677,JRN,site_jrn_b2a,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,278.4574912,15.38407239,73.18190297,0.617149239,0,0,1
+32.5914,-106.83,677,JRN,site_jrn_b3,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,278.4062326,15.33579568,72.7200179,0.619662049,0,0,1
+32.587,-106.823,677,JRN,site_jrn_b4,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,279.0808866,15.32086485,72.79830008,0.620876023,0,0,1
+32.5824,-106.817,677,JRN,site_jrn_b5,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,279.7152555,15.3121948,72.80057344,0.621547015,0,0,1
+32.6209,-106.748,677,JRN,site_jrn_g1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,276.5333108,15.00276098,71.13221034,0.613713181,0,0,1
+32.6244,-106.755,677,JRN,site_jrn_g2,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,276.462641,15.00357151,70.70897978,0.616031802,0,0,1
+32.6287,-106.761,677,JRN,site_jrn_g3,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,276.1759151,14.99399221,70.01546422,0.619329275,0,0,1
+32.6333,-106.769,677,JRN,site_jrn_g4,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,275.9259914,14.98553144,69.26512443,0.623626489,0,0,1
+32.6375,-106.775,677,JRN,site_jrn_g5,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,275.665439,14.9780011,68.72425564,0.626455192,0,0,1
+32.6291,-106.762,677,JRN,site_jrn_g6,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,276.1606783,14.99338064,69.92968423,0.619910056,0,0,1
+32.5612,-106.796,677,JRN,site_jrn_h1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,281.648267,15.32471513,70.98202598,0.61872072,0,0,1
+32.5643,-106.803,677,JRN,site_jrn_h2,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,281.2671339,15.34676907,71.20440771,0.618023689,0,0,1
+32.568,-106.81,677,JRN,site_jrn_h3,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,280.8255156,15.36399245,71.55080114,0.617577409,0,0,1
+32.6095,-106.74,677,JRN,site_jrn_i1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,276.8422482,15.00327616,71.38142128,0.614323495,0,0,1
+32.6025,-106.74,677,JRN,site_jrn_i2,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,277.8548298,15.02092364,71.78100966,0.615015333,0,0,1
+32.5959,-106.74,677,JRN,site_jrn_i3,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,278.8095496,15.03756269,72.22402805,0.615705861,0,0,1
+32.5891,-106.74,677,JRN,site_jrn_i4,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,279.7932004,15.05470596,72.74647407,0.616455981,0,0,1
+32.589,-106.75,677,JRN,site_jrn_i5,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,281.4741907,15.09056037,73.58130497,0.623456776,0,0,1
+32.5961,-106.761,677,JRN,site_jrn_i6,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,280.2506456,15.08704489,72.27384231,0.624279622,0,0,1
+32.5968,-106.762,677,JRN,site_jrn_i7,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,280.142808,15.08635231,72.16106283,0.624451808,0,0,1
+32.5737,-106.761,677,JRN,site_jrn_j1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,282.1926925,15.17034845,73.10273835,0.621127413,0,0,1
+32.5739,-106.76,677,JRN,site_jrn_j12,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,282.2177228,15.16746426,73.17377857,0.621098493,0,0,1
+32.5996,-106.725,677,JRN,site_jrn_j22,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,275.770239,14.9749913,71.12518832,0.608156598,0,0,1
+32.5716,-106.747,677,JRN,site_jrn_j8,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,282.1510891,15.14838479,73.59187941,0.616085608,0,0,1
+32.5985,-106.725,677,JRN,site_jrn_j9,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,275.9298053,14.97774787,71.17328756,0.607941112,0,0,1
+32.6243,-106.736,677,JRN,site_jrn_k1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,274.0309315,14.95186553,70.70773853,0.613071606,0,0,1
+32.6307,-106.731,677,JRN,site_jrn_k2,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,272.8223226,14.91641093,70.1108237,0.614151293,0,0,1
+32.6138,-106.732,677,JRN,site_jrn_l1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,274.8816464,14.96415339,70.88984603,0.61237534,0,0,1
+32.6103,-106.723,677,JRN,site_jrn_l2,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,273.8836361,14.94109981,70.70505994,0.609799723,0,0,1
+32.6062,-106.716,677,JRN,site_jrn_l3,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,273.3087805,14.9265656,70.5678288,0.606424827,0,0,1
+32.6062,-106.716,677,JRN,site_jrn_l3a,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,273.3087805,14.9265656,70.5678288,0.606424827,0,0,1
+32.6028,-106.708,677,JRN,site_jrn_l4,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,272.5488595,14.90728312,70.35190459,0.602207226,0,0,1
+32.4876,-106.751,677,JRN,site_jrn_m5,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,286.1303348,15.70123762,71.29811846,0.586771281,0,0,1
+32.4872,-106.751,677,JRN,site_jrn_m6,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,286.1446347,15.70547724,71.29782933,0.586844303,0,0,1
+32.6629,-106.746,677,JRN,site_jrn_mg1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,272.6089123,14.86793127,67.93836608,0.612401695,0,0,1
+32.6657,-106.756,677,JRN,site_jrn_mg2,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,272.8095856,14.87771887,67.5695928,0.612861394,0,0,1
+32.669,-106.762,677,JRN,site_jrn_mg3,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,272.9574005,14.88132481,67.18294775,0.615271978,0,0,1
+32.6764,-106.758,677,JRN,site_jrn_mg4,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,273.4117102,14.87227264,67.14742652,0.614289818,0,0,1
+32.6764,-106.749,677,JRN,site_jrn_mg5,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,273.4091313,14.858524,67.43462371,0.612637312,0,0,1
+32.6669,-106.756,677,JRN,site_jrn_mg6,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,272.7410303,14.87462271,67.50332072,0.612812496,0,0,1
+32.6774,-106.75,677,JRN,site_jrn_mg7,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,273.540062,14.85925315,67.43171002,0.612437812,0,0,1
+32.5421,-106.744,677,JRN,site_jrn_n1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,282.7826968,15.27420706,73.52201041,0.598152207,0,0,1
+32.567,-106.734,677,JRN,site_jrn_n3,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,280.5226387,15.1237878,72.72587689,0.603773859,0,0,1
+32.5671,-106.735,677,JRN,site_jrn_n3a,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,280.6534184,15.12684908,72.7830146,0.604568428,0,0,1
+32.5414,-106.743,677,JRN,site_jrn_n4,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,282.7248473,15.27434944,73.49121444,0.597150861,0,0,1
+32.5486,-106.742,677,JRN,site_jrn_n5,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,282.3443461,15.23718341,73.33590972,0.600109676,0,0,1
+32.5606,-106.737,677,JRN,site_jrn_n6,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,281.2454757,15.16407455,72.95186691,0.602713211,0,0,1
+32.5687,-106.67,677,JRN,site_jrn_p1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,280.9050683,14.96719128,68.48107009,0.603358044,0,0,1
+32.5625,-106.673,677,JRN,site_jrn_p2,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,281.6623322,14.99684723,69.02567351,0.598730268,0,0,1
+32.5548,-106.674,677,JRN,site_jrn_p3,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,282.8629314,15.0298081,69.57960751,0.594431524,0,0,1
+32.5482,-106.676,677,JRN,site_jrn_p4,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,283.6999083,15.06046075,70.17066195,0.590413526,0,0,1
+32.5583,-106.681,677,JRN,site_jrn_p5,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,281.3784997,15.02753866,69.81265485,0.593099645,0,0,1
+32.6149,-106.803,677,JRN,site_jrn_pbr1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,277.5802772,15.10720204,69.76298279,0.633688841,0,0,1
+32.6146,-106.804,677,JRN,site_jrn_pbr2,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,277.5660826,15.11276464,69.79446932,0.633266169,0,0,1
+32.6352,-106.728,677,JRN,site_jrn_psg1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,272.1719506,14.89371748,69.68728431,0.61535877,0,0,1
+32.6373,-106.726,677,JRN,site_jrn_psg10,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,271.8031655,14.88132103,69.49250889,0.616149496,0,0,1
+32.6374,-106.726,677,JRN,site_jrn_psg11,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,271.7995056,14.88104832,69.48399455,0.616171992,0,0,1
+32.6378,-106.726,677,JRN,site_jrn_psg12,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,271.784866,14.87995751,69.45001921,0.616262039,0,0,1
+32.637,-106.728,677,JRN,site_jrn_psg13,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,272.0984266,14.88874204,69.53283252,0.6157193,0,0,1
+32.6341,-106.726,677,JRN,site_jrn_psg14,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,271.9202824,14.89004755,69.76927738,0.615432941,0,0,1
+32.6353,-106.728,677,JRN,site_jrn_psg2,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,272.1678659,14.89344106,69.6786355,0.615378746,0,0,1
+32.6358,-106.727,677,JRN,site_jrn_psg3,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,272.0027533,14.88873529,69.62786952,0.615645556,0,0,1
+32.6359,-106.728,677,JRN,site_jrn_psg4,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,272.1433579,14.89178259,69.62691077,0.615498734,0,0,1
+32.6361,-106.727,677,JRN,site_jrn_psg5,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,271.9911365,14.88791162,69.60203847,0.615709199,0,0,1
+32.6362,-106.727,677,JRN,site_jrn_psg6,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,271.9872642,14.88763706,69.5934443,0.615730426,0,0,1
+32.6368,-106.727,677,JRN,site_jrn_psg7,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,271.9640305,14.88598971,69.54204934,0.615857919,0,0,1
+32.6368,-106.727,677,JRN,site_jrn_psg8,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,271.9640305,14.88598971,69.54204934,0.615857919,0,0,1
+32.6374,-106.726,677,JRN,site_jrn_psg9,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,271.7995056,14.88104832,69.48399455,0.616171992,0,0,1
+32.5979,-106.724,677,JRN,site_jrn_r1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,275.8499482,14.97570018,71.14841022,0.607317565,0,0,1
+32.5852,-106.716,677,JRN,site_jrn_r2,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,276.3601602,14.97900081,71.31989507,0.598652807,0,0,1
+32.5786,-106.716,677,JRN,site_jrn_r3,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,277.0492837,15.00587705,71.49824671,0.595790301,0,0,1
+32.572,-106.719,677,JRN,site_jrn_r4,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,278.0681268,15.04746797,71.80445666,0.595020329,0,0,1
+32.5799,-106.528,677,JRN,site_jrn_s1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,347.8279242,14.81815602,82.09419274,0.555877241,0,0,1
+32.5804,-106.528,677,JRN,site_jrn_s2,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,347.7893588,14.81665525,82.09217658,0.55568614,0,0,1
+32.6776,-106.576,677,JRN,site_jrn_s3,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,334.0683769,15.43292618,79.62646286,0.574711651,0,0,1
+32.6776,-106.576,677,JRN,site_jrn_s4,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,334.0683769,15.43292618,79.62646286,0.574711651,0,0,1
+32.677,-106.573,677,JRN,site_jrn_s5,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,337.6284242,15.29302649,80.17681135,0.566858431,0,0,1
+32.6471,-106.761,677,JRN,site_jrn_t10,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,274.5421852,14.93923028,68.57794947,0.617021048,0,0,1
+32.6665,-106.774,677,JRN,site_jrn_t11,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,273.0294036,14.89767843,66.86138957,0.620302761,0,0,1
+32.7145,-106.799,677,JRN,site_jrn_t4,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,272.8191963,14.97317826,66.59415687,0.60693026,0,0,1
+32.7055,-106.794,677,JRN,site_jrn_t5,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,272.8763894,14.94709971,66.90774206,0.609412093,0,0,1
+32.6999,-106.792,677,JRN,site_jrn_t6,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,273.0437703,14.93647273,66.85413842,0.612186835,0,0,1
+32.626,-106.752,677,JRN,site_jrn_t7,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,276.2300424,14.99731482,70.77935184,0.613865846,0,0,1
+32.6317,-106.759,677,JRN,site_jrn_t8,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,275.8695642,14.98381321,69.87222079,0.617700494,0,0,1
+32.6336,-106.764,677,JRN,site_jrn_t9,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,275.8001868,14.98138604,69.46486813,0.62051528,0,0,1
+32.566,-106.759,677,JRN,site_jrn_u1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,282.4772046,15.20375591,73.04519495,0.616638788,0,0,1
+32.5591,-106.759,677,JRN,site_jrn_u2,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,282.6767719,15.23711939,72.92717185,0.612942648,0,0,1
+32.5565,-106.763,677,JRN,site_jrn_u3,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,282.6587978,15.2590603,72.59364005,0.612326405,0,0,1
+32.5503,-106.759,677,JRN,site_jrn_u4,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,282.9312924,15.27966992,72.84718479,0.608337144,0,0,1
+32.5444,-106.754,677,JRN,site_jrn_u5,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,283.1916355,15.29497358,73.2812622,0.604210999,0,0,1
+32.6079,-106.671,677,JRN,site_jrn_v1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,274.7898614,14.82485443,68.13392299,0.624069442,0,0,1
+32.6022,-106.656,677,JRN,site_jrn_v2,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,279.5214238,14.93087384,67.74808398,0.62156178,0,0,1
+32.6043,-106.648,677,JRN,site_jrn_v3,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,282.0617069,14.99620966,67.88922327,0.621534889,0,0,1
+32.6043,-106.647,677,JRN,site_jrn_v4,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,282.4058852,15.00513645,67.90881998,0.621468923,0,0,1
+32.6019,-106.64,677,JRN,site_jrn_v5,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,284.9262689,15.07210736,68.05962943,0.620853138,0,0,1
+32.5993,-106.633,677,JRN,site_jrn_v6,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,287.3351852,15.13720656,68.30620225,0.621126709,0,0,1
+32.4977,-106.739,677,JRN,site_jrn_y1,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,284.9169018,15.52638229,71.94614841,0.57793954,0,0,1
+32.4977,-106.739,677,JRN,site_jrn_y2,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,284.9169018,15.52638229,71.94614841,0.57793954,0,0,1
+32.613,-106.705,677,JRN,site_jrn_y3,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,271.3097358,14.87575379,70.16795271,0.609182352,0,0,1
+32.6118,-106.705,677,JRN,site_jrn_y7,Jornada Experimental Range Permanent Quadrat Chart Data beginning 1915,,271.483656,14.87884543,70.15119474,0.608527858,0,0,1
+32.51251,-106.7961,679,JRN,site_jrn_zone_creosotebush,Spatial and Temporal Patterns of Net Primary Production in Chihuahuan Desert Ecosystems (NPP Study): NPP Study: Quadrat field measurement data,,291.2859453,15.95674443,71.4605258,0.62450248,0,0,1
+32.58928,-106.84459,679,JRN,site_jrn_zone_grassland,Spatial and Temporal Patterns of Net Primary Production in Chihuahuan Desert Ecosystems (NPP Study): NPP Study: Quadrat field measurement data,,279.0623701,15.44035921,74.09379641,0.614715556,0,0,1
+32.61908,-106.78779,679,JRN,site_jrn_zone_mesquite_dune,Spatial and Temporal Patterns of Net Primary Production in Chihuahuan Desert Ecosystems (NPP Study): NPP Study: Quadrat field measurement data,,277.6145088,15.03979752,69.59251668,0.636463951,0,0,1
+32.53256,-106.79042,679,JRN,site_jrn_zone_playa,Spatial and Temporal Patterns of Net Primary Production in Chihuahuan Desert Ecosystems (NPP Study): NPP Study: Quadrat field measurement data,,285.2501668,15.57136771,70.56816482,0.612533667,0,0,1
+32.51539,-106.74078,679,JRN,site_jrn_zone_tarbush,Spatial and Temporal Patterns of Net Primary Production in Chihuahuan Desert Ecosystems (NPP Study): NPP Study: Quadrat field measurement data,,284.0805645,15.42144394,72.2922571,0.584579829,0,0,1
+32.52159,-106.79465,681,JRN,site_jrn_transect_line_intercept_alternate_control,Transect Plant Line Intercepts: Transect plant line intercepts - percent cover by species,,288.5433666,15.79039471,70.91244484,0.617594871,0,0,1
+32.5221,-106.79612,681,JRN,site_jrn_transect_line_intercept_control,Transect Plant Line Intercepts: Transect plant line intercepts - percent cover by species,,288.4119326,15.78618799,70.90571184,0.617019435,0,0,1
+32.52185,-106.79529,681,JRN,site_jrn_transect_line_intercept_treatment,Transect Plant Line Intercepts: Transect plant line intercepts - percent cover by species,,288.4751337,15.78785578,70.90760774,0.617319049,0,0,1
+32.51251,-106.7961,686,JRN,site_jrn_zone_creosotebush,Animal Transect Data,,291.2859453,15.95674443,71.4605258,0.62450248,0,0,1
+32.58928,-106.84459,686,JRN,site_jrn_zone_grassland,Animal Transect Data,,279.0623701,15.44035921,74.09379641,0.614715556,0,0,1
+32.61908,-106.78779,686,JRN,site_jrn_zone_mesquite_dune,Animal Transect Data,,277.6145088,15.03979752,69.59251668,0.636463951,0,0,1
+32.53256,-106.79042,686,JRN,site_jrn_zone_playa,Animal Transect Data,,285.2501668,15.57136771,70.56816482,0.612533667,0,0,1
+32.51539,-106.74078,686,JRN,site_jrn_zone_tarbush,Animal Transect Data,,284.0805645,15.42144394,72.2922571,0.584579829,0,0,1
+32.51251,-106.7961,689,JRN,site_jrn_zone_creosotebush,Arthropod Pitfall Traps-II in 4x4 grid at LTER II NPP sites,,291.2859453,15.95674443,71.4605258,0.62450248,0,0,1
+32.58928,-106.84459,689,JRN,site_jrn_zone_grassland,Arthropod Pitfall Traps-II in 4x4 grid at LTER II NPP sites,,279.0623701,15.44035921,74.09379641,0.614715556,0,0,1
+32.61908,-106.78779,689,JRN,site_jrn_zone_mesquite_dune,Arthropod Pitfall Traps-II in 4x4 grid at LTER II NPP sites,,277.6145088,15.03979752,69.59251668,0.636463951,0,0,1
+32.51539,-106.74078,689,JRN,site_jrn_zone_tarbush,Arthropod Pitfall Traps-II in 4x4 grid at LTER II NPP sites,,284.0805645,15.42144394,72.2922571,0.584579829,0,0,1
+34.46774988,-120.11905,7,SBC,AQUE,SBC LTER: Reef: Long-term experiment: Kelp removal: Invertebrate and algal density,,541.8077662,14.33591616,257.7192643,0.488126422,0,0,1
+34.3916319,-119.5416933,7,SBC,CARP,SBC LTER: Reef: Long-term experiment: Kelp removal: Invertebrate and algal density,,533.5038084,15.42472181,259.1613989,0.552697579,0,0,2
+34.402783,-119.85755,7,SBC,IVEE,SBC LTER: Reef: Long-term experiment: Kelp removal: Invertebrate and algal density,,496.0664159,14.63390393,237.6064256,0.564562278,0,0,1
+34.3940708,-119.72957,7,SBC,MOHK,SBC LTER: Reef: Long-term experiment: Kelp removal: Invertebrate and algal density,,501.3399693,15.18025464,241.5170651,0.551083946,0,0,1
+34.4221216,-119.95154,7,SBC,NAPL,SBC LTER: Reef: Long-term experiment: Kelp removal: Invertebrate and algal density,,507.0051657,14.15537143,241.6102114,0.531922671,0,0,1
+32.51454,-106.77335,700,JRN,site_jrn_creosotebush_086_plant_cover_quad,Small Mammal Exclosure Study: SMES vegetation quadrat data,,287.9920499,15.71465844,71.26697291,0.606251957,0,0,1
+32.59444,-106.8578,700,JRN,site_jrn_grassland_086_plant_cover_quad,Small Mammal Exclosure Study: SMES vegetation quadrat data,,279.3991378,15.50518908,74.59095071,0.611862002,0,0,1
+33.9,-120.1,742,CCE,site_cce_picoplankton_083.3_051.0,Picoplankton and Bacteria Abundance (CalCOFI Cruise) 159,,360.0980446,14.54812125,179.1125919,0.502039377,0,0,1
+39.0687837,-96.608737,748,KNZ,001a,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,"this is an old watershed code, is now called R20a",874.8055752,12.40057767,165.3624621,0.748410514,0,0,1
+39.0685665,-96.574814,748,KNZ,001c,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,"this is an old watershed code, is now called R20b",877.0397973,12.30947526,165.1492013,0.750343719,0,0,1
+39.0781649,-96.562241,748,KNZ,001d,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,877.5935476,12.27192192,165.6312454,0.750536609,0,0,1
+39.068899,-96.58152,748,KNZ,002c,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,876.8842432,12.33562284,165.276894,0.749811228,0,0,1
+39.0789191,-96.557399,748,KNZ,002d,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,877.7253734,12.2572639,165.6806106,0.750949119,0,0,1
+39.0756013,-96.605691,748,KNZ,004a,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,874.9086211,12.39198977,165.8147873,0.747608343,0,0,1
+39.0752943,-96.597805,748,KNZ,004b,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,875.6574646,12.37417968,165.7237884,0.74792886,0,0,1
+39.0736073,-96.571005,748,KNZ,004f,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,877.2675933,12.29771875,165.3888594,0.750154666,0,0,1
+39.0711778,-96.579805,748,KNZ,00fa,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,876.9895514,12.32903849,165.3677006,0.749687019,0,0,1
+39.0701659,-96.56988,748,KNZ,00fb,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,877.2034257,12.29132354,165.1757795,0.750594293,0,0,1
+39.0719642,-96.574569,748,KNZ,00wa,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,877.1378025,12.30980993,165.332813,0.750014546,0,0,1
+39.0710781,-96.565652,748,KNZ,00wb,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,877.3301461,12.27615866,165.1917915,0.750890536,0,0,1
+39.0724318,-96.611536,748,KNZ,020a,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,"This is an old watershed code, is now called R1A",874.4600998,12.40603919,165.6414966,0.747925775,0,0,1
+39.0733326,-96.577536,748,KNZ,020b,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,877.1037244,12.32096962,165.4550148,0.749638219,0,0,1
+39.0755651,-96.552555,748,KNZ,020d,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,"this is an old watershed code, is now called R1B",877.7566908,12.23550589,165.4556732,0.751793042,0,0,1
+39.0731247,-96.591931,748,KNZ,0spa,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,876.1900806,12.36133132,165.5508303,0.748524198,0,0,1
+39.0709371,-96.587308,748,KNZ,0spb,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,876.5607703,12.35128961,165.4144559,0.749117276,0,0,1
+39.067624,-96.569508,748,KNZ,0sua,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,877.1453298,12.28808917,165.0348683,0.750885869,0,0,1
+39.0740056,-96.567323,748,KNZ,0sub,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,877.3661391,12.28492569,165.380906,0.750447619,0,0,1
+39.0926098,-96.592635,748,KNZ,n01a,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,876.0762684,12.42822005,167.3314553,0.750269398,0,0,1
+39.080811,-96.572092,748,KNZ,n01b,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,877.4343044,12.30552147,165.8818228,0.749384469,0,0,1
+39.0804682,-96.606669,748,KNZ,n04a,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,874.7052143,12.39302389,166.2195464,0.747016855,0,0,1
+39.0803892,-96.582856,748,KNZ,n04d,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,877.1747324,12.33883665,166.0005059,0.748535471,0,0,1
+39.0966325,-96.599401,748,KNZ,n20a,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,875.1589748,12.46758945,167.9282116,0.751570859,0,0,1
+39.0873189,-96.569957,748,KNZ,site_knz_n20b,PVC02 Plant Species Composition on Selected Watersheds at Konza Prairie,,877.6412937,12.32111407,166.4552402,0.750253681,0,0,1
+39.0778089,-96.543539,750,KNZ,c01a,PBG01 Plant species composition in the patch burning-grazing experiment at Konza Prairie,,878.0220504,12.20999999,165.682666,0.752583468,0,0,1
+39.0944668,-96.545855,750,KNZ,c03a,PBG01 Plant species composition in the patch burning-grazing experiment at Konza Prairie,,878.8773412,12.23361648,167.1298601,0.75449763,0,0,1
+39.0905497,-96.544818,750,KNZ,c03b,PBG01 Plant species composition in the patch burning-grazing experiment at Konza Prairie,,878.641013,12.22791092,166.7561213,0.753635152,0,0,1
+39.084388,-96.547587,750,KNZ,c03c,PBG01 Plant species composition in the patch burning-grazing experiment at Konza Prairie,,878.1281117,12.23601266,166.165908,0.751800576,0,0,1
+39.1107942,-96.568993,750,KNZ,c1sb,PBG01 Plant species composition in the patch burning-grazing experiment at Konza Prairie,,878.2514272,12.4334656,169.1623486,0.757042477,0,0,1
+39.1086628,-96.55999,750,KNZ,c3sa,PBG01 Plant species composition in the patch burning-grazing experiment at Konza Prairie,,878.8498749,12.35093337,168.7576487,0.756646736,0,0,1
+39.1021196,-96.549267,750,KNZ,c3sb,PBG01 Plant species composition in the patch burning-grazing experiment at Konza Prairie,,879.2106397,12.25872962,167.924059,0.756018576,0,0,1
+39.1118663,-96.545248,750,KNZ,c3sc,PBG01 Plant species composition in the patch burning-grazing experiment at Konza Prairie,,880.1444646,12.23359968,169.0051181,0.759308273,0,0,1
+39.068899,-96.58152,752,KNZ,site_knz_ppl01,PPL01 Konza Prairie Long-Term Phosphorus Plots Study,This is located in watershed 2C,876.8842432,12.33562284,165.276894,0.749811228,0,0,1
+39.0987156,-96.567112,763,KNZ,site_knz_K2A,CFP01 Fish population on selected watersheds at Konza Prairie,6 sites in kings creek watershed,878.0520084,12.36251974,167.6688138,0.753406186,0,0,1
+39.102075,-96.594689,763,KNZ,site_knz_MID,CFP01 Fish population on selected watersheds at Konza Prairie,"6 sites in kings creek watershed;According to our researchers, the MID was part of Grad student thesis, it is in the AL pasture somewhere near the USGS stream flow station, most the time that site was dry when they sampled. Since that site was only sampled a few times and is typically dry, so we've never used the data; point taken from the USGS stream gage",875.6680046,12.49954155,168.5372744,0.753853043,0,0,1
+39.080811,-96.572092,763,KNZ,site_knz_N1B,CFP01 Fish population on selected watersheds at Konza Prairie,6 sites in kings creek watershed,877.4343044,12.30552147,165.8818228,0.749384469,0,0,1
+39.0803892,-96.582856,763,KNZ,site_knz_N4D,CFP01 Fish population on selected watersheds at Konza Prairie,6 sites in kings creek watershed,877.1747324,12.33883665,166.0005059,0.748535471,0,0,1
+39.1089339,-96.597256,763,KNZ,site_knz_NT,CFP01 Fish population on selected watersheds at Konza Prairie,"6 sites in kings creek watershed, Nature Trail",875.1913868,12.55067591,169.5121806,0.756880831,0,0,1
+39.0687837,-96.608737,764,KNZ,001a,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,"this is an old watershed code, is now called R20a",874.8055752,12.40057767,165.3624621,0.748410514,0,0,1
+39.0695182,-96.598815,764,KNZ,001b,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,,875.5946878,12.3777972,165.3511412,0.748582005,0,0,1
+39.0685665,-96.574814,764,KNZ,001c,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,"this is an old watershed code, is now called R20b",877.0397973,12.30947526,165.1492013,0.750343719,0,0,1
+39.0781649,-96.562241,764,KNZ,001d,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,,877.5935476,12.27192192,165.6312454,0.750536609,0,0,1
+39.0756013,-96.605691,764,KNZ,004a,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,,874.9086211,12.39198977,165.8147873,0.747608343,0,0,1
+39.0752943,-96.597805,764,KNZ,004b,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,,875.6574646,12.37417968,165.7237884,0.74792886,0,0,1
+39.0731247,-96.591931,764,KNZ,004c,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,"this is an old watershed code, is now called 0SpA",876.1900806,12.36133132,165.5508303,0.748524198,0,0,1
+39.0736073,-96.571005,764,KNZ,004f,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,,877.2675933,12.29771875,165.3888594,0.750154666,0,0,1
+39.0710781,-96.565652,764,KNZ,004g,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,"this is an old watershed code, is now called 00WB",877.3301461,12.27615866,165.1917915,0.750890536,0,0,1
+39.0789191,-96.557399,764,KNZ,004h,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,"this is an old watershed code, is now called 002D",877.7253734,12.2572639,165.6806106,0.750949119,0,0,1
+39.0731247,-96.591931,764,KNZ,010a,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,"this is an old watershed code, is now called 0SpA",876.1900806,12.36133132,165.5508303,0.748524198,0,0,1
+39.066859,-96.59415,764,KNZ,010b,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,"this is an old watershed code, is now called 002B",875.9629174,12.36776151,165.1903331,0.74914595,0,0,1
+39.067624,-96.569508,764,KNZ,010c,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,"this is an old watershed code, is now called 0SuA",877.1453298,12.28808917,165.0348683,0.750885869,0,0,1
+39.067624,-96.569508,764,KNZ,010d,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,"this is an old watershed code, is now called 0SuA",877.1453298,12.28808917,165.0348683,0.750885869,0,0,1
+39.0724318,-96.611536,764,KNZ,020a,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,"This is an old watershed code, is now called R1A",874.4600998,12.40603919,165.6414966,0.747925775,0,0,1
+39.0733326,-96.577536,764,KNZ,020b,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,,877.1037244,12.32096962,165.4550148,0.749638219,0,0,1
+39.0695943,-96.562073,764,KNZ,020c,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,,877.3791835,12.26098949,165.0856161,0.751388404,0,0,1
+39.0755651,-96.552555,764,KNZ,020d,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,"this is an old watershed code, is now called R1B",877.7566908,12.23550589,165.4556732,0.751793042,0,0,1
+39.067624,-96.569508,764,KNZ,0sua,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,,877.1453298,12.28808917,165.0348683,0.750885869,0,0,1
+39.0740056,-96.567323,764,KNZ,0sub,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,,877.3661391,12.28492569,165.380906,0.750447619,0,0,1
+39.0778089,-96.543539,764,KNZ,c01a,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,,878.0220504,12.20999999,165.682666,0.752583468,0,0,1
+39.1060629,-96.586497,764,KNZ,k01a,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,,876.7333237,12.52032303,168.9116917,0.755763433,0,0,1
+39.0979673,-96.579787,764,KNZ,k04a,CGP01 Gall-insect Densities on Selected Plant Species in Watersheds with Different Fire Frequencies,,877.3796499,12.43330548,167.7763424,0.752658402,0,0,1
+39.0733326,-96.577536,765,KNZ,site_knz_000B,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),"this is an old watershed code, is now called 020b",877.1037244,12.32096962,165.4550148,0.749638219,0,0,1
+39.0781649,-96.562241,765,KNZ,site_knz_001D,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),,877.5935476,12.27192192,165.6312454,0.750536609,0,0,1
+39.068899,-96.58152,765,KNZ,site_knz_002C,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),,876.8842432,12.33562284,165.276894,0.749811228,0,0,1
+39.0789191,-96.557399,765,KNZ,site_knz_002D,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),,877.7253734,12.2572639,165.6806106,0.750949119,0,0,1
+39.0752943,-96.597805,765,KNZ,site_knz_004B,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),,875.6574646,12.37417968,165.7237884,0.74792886,0,0,1
+39.0709371,-96.587308,765,KNZ,site_knz_004D,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),"this is an old watershed code, is now called 0SpB",876.5607703,12.35128961,165.4144559,0.749117276,0,0,1
+39.0736073,-96.571005,765,KNZ,site_knz_004F,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),,877.2675933,12.29771875,165.3888594,0.750154666,0,0,1
+39.0710781,-96.565652,765,KNZ,site_knz_004G,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),"this is an old watershed code, is now called 00WB",877.3301461,12.27615866,165.1917915,0.750890536,0,0,1
+39.067624,-96.569508,765,KNZ,site_knz_010D,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),"this is an old watershed code, is now called 0suA",877.1453298,12.28808917,165.0348683,0.750885869,0,0,1
+39.0733326,-96.577536,765,KNZ,site_knz_020B,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),,877.1037244,12.32096962,165.4550148,0.749638219,0,0,1
+39.0709371,-96.587308,765,KNZ,site_knz_0SPB,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),,876.5607703,12.35128961,165.4144559,0.749117276,0,0,1
+39.0740056,-96.567323,765,KNZ,site_knz_0SUB,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),,877.3661391,12.28492569,165.380906,0.750447619,0,0,1
+39.0873189,-96.569957,765,KNZ,site_knz_N00B,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),"this is an old watershed code, is now called N20B",877.6412937,12.32111407,166.4552402,0.750253681,0,0,1
+39.0926098,-96.592635,765,KNZ,site_knz_N01A,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),,876.0762684,12.42822005,167.3314553,0.750269398,0,0,1
+39.080811,-96.572092,765,KNZ,site_knz_N01B,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),,877.4343044,12.30552147,165.8818228,0.749384469,0,0,1
+39.0804682,-96.606669,765,KNZ,site_knz_N04A,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),,874.7052143,12.39302389,166.2195464,0.747016855,0,0,1
+39.0803892,-96.582856,765,KNZ,site_knz_N04D,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),,877.1747324,12.33883665,166.0005059,0.748535471,0,0,1
+39.0966325,-96.599401,765,KNZ,site_knz_N20A,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),,875.1589748,12.46758945,167.9282116,0.751570859,0,0,1
+39.0873189,-96.569957,765,KNZ,site_knz_N20B,CGR02 Sweep Sampling of Grasshoppers on Konza Prairie LTER watersheds (1982-present),,877.6412937,12.32111407,166.4552402,0.750253681,0,0,1
+39.0695182,-96.598815,766,KNZ,site_knz_001B,CMY01 Mycorrhizal Colonization and Plant Community Responses to Long-term Suppression of Mycorrhizal Fungi,,875.5946878,12.3777972,165.3511412,0.748582005,0,0,1
+39.0781649,-96.562241,766,KNZ,site_knz_001D,CMY01 Mycorrhizal Colonization and Plant Community Responses to Long-term Suppression of Mycorrhizal Fungi,,877.5935476,12.27192192,165.6312454,0.750536609,0,0,1
+39.066859,-96.59415,766,KNZ,site_knz_010B,CMY01 Mycorrhizal Colonization and Plant Community Responses to Long-term Suppression of Mycorrhizal Fungi,"this is an old watershed code, is now called 002B",875.9629174,12.36776151,165.1903331,0.74914595,0,0,1
+39.0755651,-96.552555,766,KNZ,site_knz_020D,CMY01 Mycorrhizal Colonization and Plant Community Responses to Long-term Suppression of Mycorrhizal Fungi,"this is an old watershed code, is now called R1B",877.7566908,12.23550589,165.4556732,0.751793042,0,0,1
+39.1041885,-96.609918,766,KNZ,site_knz_HQB,CMY01 Mycorrhizal Colonization and Plant Community Responses to Long-term Suppression of Mycorrhizal Fungi,,873.5630026,12.53077518,169.1508491,0.754756099,0,0,1
+39.0755651,-96.552555,767,KNZ,CPC01,CPC01 Annual Census of Greater Prairie Chickens on Leks at Konza Prairie,"this GPS point is the centroid of 020D, which is an old watershed code, is now called R1B. The following is the description of the observational transects:Transect 1: Northward along trail from the fireguard on the east side of 020D (grid X-28), then westward on the main ridge trail (U-23 to G-26), then northward to the site manager's house (D-16). Transect 2: Northward, then eastward on the trail starting just north of the Hokanson house (H-15), eventually moving southward on the margin of Campbell pasture to junction with main ridge trail (U-23).",877.7566908,12.23550589,165.4556732,0.751793042,0,0,1
+46.0091,-89.6995,815,NTL,site_ntl_sparkling_lake,Biocomplexity at North Temperate Lakes LTER; Whole Lake Manipulations: Aquatic Macrophytes 2001 - 2010,,775.1833317,4.390373051,130.6183914,0.959322575,0,0,1
+46.2424,-89.499,817,NTL,site_ntl_bay,Cascade Project at North Temperate Lakes LTER: Piscivore Fish 1984 - 2003,"Lat and Long info does not appear in metadata, obtained myself from google maps",785.1631207,4.147786718,113.018226,0.927355589,0,0,1
+46.236,-89.4987,817,NTL,site_ntl_central_long_lake,Cascade Project at North Temperate Lakes LTER: Piscivore Fish 1984 - 2003,"Lat and Long info does not appear in metadata, obtained myself from google maps, used same lat/long for all long lake",786.0021913,4.151579269,113.0726478,0.926866727,0,0,1
+46.2097,-89.473,817,NTL,site_ntl_crampton_lake,Cascade Project at North Temperate Lakes LTER: Piscivore Fish 1984 - 2003,,790.9630826,4.132001474,114.4251992,0.920665993,0,0,1
+46.236,-89.4987,817,NTL,site_ntl_east_long_lake,Cascade Project at North Temperate Lakes LTER: Piscivore Fish 1984 - 2003,"Lat and Long info does not appear in metadata, obtained myself from google maps, used same lat/long for all long lake",786.0021913,4.151579269,113.0726478,0.926866727,0,0,1
+46.2437,-89.506,817,NTL,site_ntl_hummingbird_lake,Cascade Project at North Temperate Lakes LTER: Piscivore Fish 1984 - 2003,,785.3354424,4.15456443,113.2490234,0.927972676,0,0,1
+46.236,-89.4987,817,NTL,site_ntl_long_lake,Cascade Project at North Temperate Lakes LTER: Piscivore Fish 1984 - 2003,"Lat and Long info does not appear in metadata, obtained myself from google maps, used same lat/long for all long lake",786.0021913,4.151579269,113.0726478,0.926866727,0,0,1
+46.2515,-89.504,817,NTL,site_ntl_paul_lake,Cascade Project at North Temperate Lakes LTER: Piscivore Fish 1984 - 2003,"Lat and Long info does not appear in metadata, obtained myself from google maps",784.615854,4.149570813,113.1861558,0.928381108,0,0,1
+46.253,-89.504,817,NTL,site_ntl_peter_lake,Cascade Project at North Temperate Lakes LTER: Piscivore Fish 1984 - 2003,"Lat and Long info does not appear in metadata, obtained myself from google maps",784.7337675,4.151031176,113.1737242,0.928517751,0,0,1
+46.2514,-89.497,817,NTL,site_ntl_tuesday_lake,Cascade Project at North Temperate Lakes LTER: Piscivore Fish 1984 - 2003,,784.1446482,4.142908868,112.9748129,0.927863644,0,0,1
+46.236,-89.4987,817,NTL,site_ntl_west_long_lake,Cascade Project at North Temperate Lakes LTER: Piscivore Fish 1984 - 2003,"Lat and Long info does not appear in metadata, obtained myself from google maps, used same lat/long for all long lake",786.0021913,4.151579269,113.0726478,0.926866727,0,0,1
+45.997,-89.702,818,NTL,site_ntl_little_rock_lake,Little Rock Lake Experiment at North Temperate Lakes LTER: Zooplankton 1983 - 2000,,774.900506,4.401874814,130.3875205,0.96042785,0,0,1
+43.1113,-89.4255,819,NTL,site_ntl_mendota_lake,Madison Wisonsin Lakes Zooplankton 1976 - 1994,,910.3174849,7.992467156,142.9504902,0.825606349,0,0,1
+43.0678,-89.3626,819,NTL,site_ntl_monona_lake,Madison Wisonsin Lakes Zooplankton 1976 - 1994,,916.8750805,8.001471738,144.0576393,0.81882607,0,0,1
+43.01,-89.32025,819,NTL,site_ntl_waubesa_lake,Madison Wisonsin Lakes Zooplankton 1976 - 1994,,907.1687115,8.011219282,142.9469528,0.825243998,0,0,1
+46.0018,-89.61365,822,NTL,site_ntl_crystal_lake,North Temperate Lakes LTER: Benthic Macroinvertebrates 1981 - current,,775.6139549,4.263152704,129.3471191,0.937342594,0,0,1
+46.0091,-89.6995,822,NTL,site_ntl_sparkling_lake,North Temperate Lakes LTER: Benthic Macroinvertebrates 1981 - current,,775.1833317,4.390373051,130.6183914,0.959322575,0,0,1
+46.04605,-89.6751,822,NTL,site_ntl_trout_lake,North Temperate Lakes LTER: Benthic Macroinvertebrates 1981 - current,,776.6384502,4.359785636,130.7082095,0.957041802,0,0,1
+46.03665,-89.6291,823,NTL,site_ntl_allequash_lake,North Temperate Lakes LTER: Crayfish Abundance 1981 - current,,775.9048305,4.293341404,128.4711418,0.943919053,0,0,1
+46.0162,-89.6135,823,NTL,site_ntl_big_muskellunge_lake,North Temperate Lakes LTER: Crayfish Abundance 1981 - current,,775.7542388,4.261506793,128.8394539,0.938013289,0,0,1
+43.28715,-89.65305,823,NTL,site_ntl_fish_lake,North Temperate Lakes LTER: Crayfish Abundance 1981 - current,,845.5777012,8.052126354,145.7309251,0.782918703,0,0,3
+43.1113,-89.4255,823,NTL,site_ntl_mendota_lake,North Temperate Lakes LTER: Crayfish Abundance 1981 - current,,910.3174849,7.992467156,142.9504902,0.825606349,0,0,3
+43.0678,-89.3626,823,NTL,site_ntl_monona_lake,North Temperate Lakes LTER: Crayfish Abundance 1981 - current,,916.8750805,8.001471738,144.0576393,0.81882607,0,0,3
+46.0091,-89.6995,823,NTL,site_ntl_sparkling_lake,North Temperate Lakes LTER: Crayfish Abundance 1981 - current,,775.1833317,4.390373051,130.6183914,0.959322575,0,0,1
+46.04605,-89.6751,823,NTL,site_ntl_trout_lake,North Temperate Lakes LTER: Crayfish Abundance 1981 - current,,776.6384502,4.359785636,130.7082095,0.957041802,0,0,1
+43.0534,-89.41815,823,NTL,site_ntl_wingra_lake,North Temperate Lakes LTER: Crayfish Abundance 1981 - current,,931.1447068,7.970055309,145.0163868,0.840149586,0,0,3
+46.03665,-89.6291,825,NTL,site_ntl_allequash_lake,North Temperate Lakes LTER: Fish Length Frequency 1981 - current,,775.9048305,4.293341404,128.4711418,0.943919053,0,0,1
+46.0162,-89.6135,825,NTL,site_ntl_big_muskellunge_lake,North Temperate Lakes LTER: Fish Length Frequency 1981 - current,,775.7542388,4.261506793,128.8394539,0.938013289,0,0,1
+46.00755,-89.60625,825,NTL,site_ntl_crystal_bog_lake,North Temperate Lakes LTER: Fish Length Frequency 1981 - current,,775.8446889,4.246052272,129.1448481,0.935477018,0,0,1
+46.0018,-89.61365,825,NTL,site_ntl_crystal_lake,North Temperate Lakes LTER: Fish Length Frequency 1981 - current,,775.6139549,4.263152704,129.3471191,0.937342594,0,0,1
+43.28715,-89.65305,825,NTL,site_ntl_fish_lake,North Temperate Lakes LTER: Fish Length Frequency 1981 - current,,845.5777012,8.052126354,145.7309251,0.782918703,0,0,5
+43.1113,-89.4255,825,NTL,site_ntl_mendota_lake,North Temperate Lakes LTER: Fish Length Frequency 1981 - current,,910.3174849,7.992467156,142.9504902,0.825606349,0,0,5
+43.0678,-89.3626,825,NTL,site_ntl_monona_lake,North Temperate Lakes LTER: Fish Length Frequency 1981 - current,,916.8750805,8.001471738,144.0576393,0.81882607,0,0,5
+46.0091,-89.6995,825,NTL,site_ntl_sparkling_lake,North Temperate Lakes LTER: Fish Length Frequency 1981 - current,,775.1833317,4.390373051,130.6183914,0.959322575,0,0,1
+46.0412,-89.68615,825,NTL,site_ntl_trout_bog_lake,North Temperate Lakes LTER: Fish Length Frequency 1981 - current,,776.5556832,4.366657754,131.6214476,0.958022926,0,0,1
+46.04605,-89.6751,825,NTL,site_ntl_trout_lake,North Temperate Lakes LTER: Fish Length Frequency 1981 - current,,776.6384502,4.359785636,130.7082095,0.957041802,0,0,1
+43.0534,-89.41815,825,NTL,site_ntl_wingra_lake,North Temperate Lakes LTER: Fish Length Frequency 1981 - current,,931.1447068,7.970055309,145.0163868,0.840149586,0,0,5
+43.28715,-89.65305,827,NTL,site_ntl_fish_lake,North Temperate Lakes LTER: Macrophyte Rating - Madison Lakes Area 1995 - current,,845.5777012,8.052126354,145.7309251,0.782918703,0,0,1
+43.1113,-89.4255,827,NTL,site_ntl_mendota_lake,North Temperate Lakes LTER: Macrophyte Rating - Madison Lakes Area 1995 - current,,910.3174849,7.992467156,142.9504902,0.825606349,0,0,1
+43.0678,-89.3626,827,NTL,site_ntl_monona_lake,North Temperate Lakes LTER: Macrophyte Rating - Madison Lakes Area 1995 - current,,916.8750805,8.001471738,144.0576393,0.81882607,0,0,1
+43.0534,-89.41815,827,NTL,site_ntl_wingra_lake,North Temperate Lakes LTER: Macrophyte Rating - Madison Lakes Area 1995 - current,,931.1447068,7.970055309,145.0163868,0.840149586,0,0,1
+46.03665,-89.6291,828,NTL,site_ntl_allequash_lake,North Temperate Lakes LTER: Pelagic Macroinvertebrate Abundance 1983 - current,,775.9048305,4.293341404,128.4711418,0.943919053,0,0,1
+46.0162,-89.6135,828,NTL,site_ntl_big_muskellunge_lake,North Temperate Lakes LTER: Pelagic Macroinvertebrate Abundance 1983 - current,,775.7542388,4.261506793,128.8394539,0.938013289,0,0,1
+46.00755,-89.60625,828,NTL,site_ntl_crystal_bog_lake,North Temperate Lakes LTER: Pelagic Macroinvertebrate Abundance 1983 - current,,775.8446889,4.246052272,129.1448481,0.935477018,0,0,1
+46.0018,-89.61365,828,NTL,site_ntl_crystal_lake,North Temperate Lakes LTER: Pelagic Macroinvertebrate Abundance 1983 - current,,775.6139549,4.263152704,129.3471191,0.937342594,0,0,1
+46.0091,-89.6995,828,NTL,site_ntl_sparkling_lake,North Temperate Lakes LTER: Pelagic Macroinvertebrate Abundance 1983 - current,,775.1833317,4.390373051,130.6183914,0.959322575,0,0,1
+46.0412,-89.68615,828,NTL,site_ntl_trout_bog_lake,North Temperate Lakes LTER: Pelagic Macroinvertebrate Abundance 1983 - current,,776.5556832,4.366657754,131.6214476,0.958022926,0,0,1
+46.04605,-89.6751,828,NTL,site_ntl_trout_lake,North Temperate Lakes LTER: Pelagic Macroinvertebrate Abundance 1983 - current,,776.6384502,4.359785636,130.7082095,0.957041802,0,0,1
+46.0018,-89.61365,830,NTL,site_ntl_crystal_lake,North Temperate Lakes LTER: Pelagic Prey - Sonar Data 2001 - current,,775.6139549,4.263152704,129.3471191,0.937342594,0,0,1
+43.1113,-89.4255,830,NTL,site_ntl_mendota_lake,North Temperate Lakes LTER: Pelagic Prey - Sonar Data 2001 - current,,910.3174849,7.992467156,142.9504902,0.825606349,0,0,2
+46.0091,-89.6995,830,NTL,site_ntl_sparkling_lake,North Temperate Lakes LTER: Pelagic Prey - Sonar Data 2001 - current,,775.1833317,4.390373051,130.6183914,0.959322575,0,0,1
+46.04605,-89.6751,830,NTL,site_ntl_trout_lake,North Temperate Lakes LTER: Pelagic Prey - Sonar Data 2001 - current,,776.6384502,4.359785636,130.7082095,0.957041802,0,0,1
+43.28715,-89.65305,831,NTL,site_ntl_fish_lake,North Temperate Lakes LTER: Phytoplankton - Madison Lakes Area 1995 - current,,845.5777012,8.052126354,145.7309251,0.782918703,0,0,1
+43.1113,-89.4255,831,NTL,site_ntl_mendota_lake,North Temperate Lakes LTER: Phytoplankton - Madison Lakes Area 1995 - current,,910.3174849,7.992467156,142.9504902,0.825606349,0,0,1
+43.0678,-89.3626,831,NTL,site_ntl_monona_lake,North Temperate Lakes LTER: Phytoplankton - Madison Lakes Area 1995 - current,,916.8750805,8.001471738,144.0576393,0.81882607,0,0,1
+43.0534,-89.41815,831,NTL,site_ntl_wingra_lake,North Temperate Lakes LTER: Phytoplankton - Madison Lakes Area 1995 - current,,931.1447068,7.970055309,145.0163868,0.840149586,0,0,1
+46.03665,-89.6291,832,NTL,site_ntl_allequash_lake,North Temperate Lakes LTER: Phytoplankton - Trout Lake Area 1984 - current,,775.9048305,4.293341404,128.4711418,0.943919053,0,0,1
+46.0162,-89.6135,832,NTL,site_ntl_big_muskellunge_lake,North Temperate Lakes LTER: Phytoplankton - Trout Lake Area 1984 - current,,775.7542388,4.261506793,128.8394539,0.938013289,0,0,1
+46.00755,-89.60625,832,NTL,site_ntl_crystal_bog_lake,North Temperate Lakes LTER: Phytoplankton - Trout Lake Area 1984 - current,,775.8446889,4.246052272,129.1448481,0.935477018,0,0,1
+46.0018,-89.61365,832,NTL,site_ntl_crystal_lake,North Temperate Lakes LTER: Phytoplankton - Trout Lake Area 1984 - current,,775.6139549,4.263152704,129.3471191,0.937342594,0,0,1
+46.0091,-89.6995,832,NTL,site_ntl_sparkling_lake,North Temperate Lakes LTER: Phytoplankton - Trout Lake Area 1984 - current,,775.1833317,4.390373051,130.6183914,0.959322575,0,0,1
+46.0412,-89.68615,832,NTL,site_ntl_trout_bog_lake,North Temperate Lakes LTER: Phytoplankton - Trout Lake Area 1984 - current,,776.5556832,4.366657754,131.6214476,0.958022926,0,0,1
+46.04605,-89.6751,832,NTL,site_ntl_trout_lake,North Temperate Lakes LTER: Phytoplankton - Trout Lake Area 1984 - current,,776.6384502,4.359785636,130.7082095,0.957041802,0,0,1
+46.0091,-89.6995,833,NTL,site_ntl_sparkling_lake,North Temperate Lakes LTER: Sparkling Lake Crayfish 2001 - 2010,,775.1833317,4.390373051,130.6183914,0.959322575,0,0,1
+46.0091,-89.6995,834,NTL,site_ntl_sparkling_lake,North Temperate Lakes LTER: Sparkling Lake Invertebrates 1994 - 2010,,775.1833317,4.390373051,130.6183914,0.959322575,0,0,1
+46.0091,-89.6995,835,NTL,site_ntl_sparkling_lake,North Temperate Lakes LTER: Sparkling Lake Macrophytes 2001 - 2010,,775.1833317,4.390373051,130.6183914,0.959322575,0,0,1
+43.28715,-89.65305,836,NTL,site_ntl_fish_lake,North Temperate Lakes LTER: Zooplankton - Madison Lakes Area 1997 - current,,845.5777012,8.052126354,145.7309251,0.782918703,0,0,1
+43.1113,-89.4255,836,NTL,site_ntl_mendota_lake,North Temperate Lakes LTER: Zooplankton - Madison Lakes Area 1997 - current,,910.3174849,7.992467156,142.9504902,0.825606349,0,0,1
+43.0678,-89.3626,836,NTL,site_ntl_monona_lake,North Temperate Lakes LTER: Zooplankton - Madison Lakes Area 1997 - current,,916.8750805,8.001471738,144.0576393,0.81882607,0,0,1
+43.0534,-89.41815,836,NTL,site_ntl_wingra_lake,North Temperate Lakes LTER: Zooplankton - Madison Lakes Area 1997 - current,,931.1447068,7.970055309,145.0163868,0.840149586,0,0,1
+46.03665,-89.6291,837,NTL,site_ntl_allequash_lake,North Temperate Lakes LTER: Zooplankton - Trout Lake Area 1982 - current,,775.9048305,4.293341404,128.4711418,0.943919053,0,0,1
+46.0162,-89.6135,837,NTL,site_ntl_big_muskellunge_lake,North Temperate Lakes LTER: Zooplankton - Trout Lake Area 1982 - current,,775.7542388,4.261506793,128.8394539,0.938013289,0,0,1
+46.00755,-89.60625,837,NTL,site_ntl_crystal_bog_lake,North Temperate Lakes LTER: Zooplankton - Trout Lake Area 1982 - current,,775.8446889,4.246052272,129.1448481,0.935477018,0,0,1
+46.0018,-89.61365,837,NTL,site_ntl_crystal_lake,North Temperate Lakes LTER: Zooplankton - Trout Lake Area 1982 - current,,775.6139549,4.263152704,129.3471191,0.937342594,0,0,1
+46.0091,-89.6995,837,NTL,site_ntl_sparkling_lake,North Temperate Lakes LTER: Zooplankton - Trout Lake Area 1982 - current,,775.1833317,4.390373051,130.6183914,0.959322575,0,0,1
+46.0412,-89.68615,837,NTL,site_ntl_trout_bog_lake,North Temperate Lakes LTER: Zooplankton - Trout Lake Area 1982 - current,,776.5556832,4.366657754,131.6214476,0.958022926,0,0,1
+46.04605,-89.6751,837,NTL,site_ntl_trout_lake,North Temperate Lakes LTER: Zooplankton - Trout Lake Area 1982 - current,,776.6384502,4.359785636,130.7082095,0.957041802,0,0,1
+37.97,-75.32,88,VCR,CausewayN,"Annual heron counts on Chincoteague Island, Virginia 1992-2011",Guess as to general area,1052.966377,14.3992171,205.2449905,0.555611554,0,0,1
+37.9937657,-75.325526,88,VCR,CoardsMarshes,"Annual heron counts on Chincoteague Island, Virginia 1992-2011",,1062.967656,14.36807491,201.4081573,0.552749242,0,0,1
+37.9937521,-75.419222,88,VCR,QueenSound,"Annual heron counts on Chincoteague Island, Virginia 1992-2011",,1069.032067,13.92055807,204.333978,0.564294501,0,0,1
+37.9098411,-75.428779,88,VCR,Willis_Creek,"Annual heron counts on Chincoteague Island, Virginia 1992-2011",,1047.269019,14.14701703,207.2876099,0.584468643,0,0,1
+37.305273,-75.792273,89,VCR,site_vcr_cobb_island,Biomass of benthic macroalgae in Virginia Coastal Bays 1998-2007,,1098.951129,15.02843659,188.1795928,0.526518114,0,0,1
+37.48451,-75.80706,89,VCR,site_vcr_creek_2_greens,Biomass of benthic macroalgae in Virginia Coastal Bays 1998-2007,,1128.859608,14.78162276,192.3336301,0.5542085,0,0,1
+37.46149,-75.806651,89,VCR,site_vcr_creek_redbank,Biomass of benthic macroalgae in Virginia Coastal Bays 1998-2007,,1126.971369,14.79929152,194.3411753,0.550603423,0,0,1
+37.38199,-75.71811,89,VCR,site_vcr_hog_island,Biomass of benthic macroalgae in Virginia Coastal Bays 1998-2007,,1111.438393,14.98988031,190.7248872,0.545733506,0,0,1
+37.45,-75.68,89,VCR,site_vcr_machipongo_mach_island,Biomass of benthic macroalgae in Virginia Coastal Bays 1998-2007,,1118.017391,14.92301209,196.3408766,0.554709646,0,0,1
+37.28919,-75.92427,89,VCR,site_vcr_oyster_harbor,Biomass of benthic macroalgae in Virginia Coastal Bays 1998-2007,,1121.107439,14.87686602,190.0029155,0.522884226,0,0,1
+37.417,-75.7611,89,VCR,site_vcr_shoal_1,Biomass of benthic macroalgae in Virginia Coastal Bays 1998-2007,,1121.731982,14.88760589,193.2993638,0.546533604,0,0,1
+37.417,-75.7611,89,VCR,site_vcr_shoal_2,Biomass of benthic macroalgae in Virginia Coastal Bays 1998-2007,,1121.731982,14.88760589,193.2993638,0.546533604,0,0,1
+37.417,-75.7611,89,VCR,site_vcr_shoal_est,Biomass of benthic macroalgae in Virginia Coastal Bays 1998-2007,,1121.731982,14.88760589,193.2993638,0.546533604,0,0,1
+37.4725761,-75.8165,89,VCR,site_vcr_upshur_creek,Biomass of benthic macroalgae in Virginia Coastal Bays 1998-2007,,1127.65277,14.77691099,192.8982416,0.552511979,0,0,1
+37.499,-75.8,89,VCR,site_vcr_willis_wharf,Biomass of benthic macroalgae in Virginia Coastal Bays 1998-2007,,1130.126786,14.78453416,191.5249151,0.556388761,0,0,1
+37.38199,-75.71811,90,VCR,site_vcr_hog_island,"Density of Seagrass in Hog Island Bay, VA 2007-2010",,1111.438393,14.98988031,190.7248872,0.545733506,0,0,1
+37.25,-75.85,90,VCR,site_vcr_south_bay,"Density of Seagrass in Hog Island Bay, VA 2007-2010",Describes General area - not specific location,1108.138351,15.02467458,191.3682803,0.517410707,0,0,1
+37.41038,-75.72969,91,VCR,site_vcr_HI_10,"Fish Counts and Lengths in South Bay and Hog Island Bay, Virginia 2012-2015",,1118.972596,14.92977505,193.5424005,0.548268141,0,0,1
+37.41627,-75.72551,91,VCR,site_vcr_HI_72,"Fish Counts and Lengths in South Bay and Hog Island Bay, Virginia 2012-2015",,1120.00075,14.92457282,194.6015627,0.549340449,0,0,1
+37.41632,-75.71703,91,VCR,site_vcr_HI_77,"Fish Counts and Lengths in South Bay and Hog Island Bay, Virginia 2012-2015",,1119.400338,14.93467374,195.2344101,0.550054556,0,0,1
+37.41739,-75.73315,91,VCR,site_vcr_HI_81,"Fish Counts and Lengths in South Bay and Hog Island Bay, Virginia 2012-2015",,1120.734076,14.91409165,194.1503493,0.548820703,0,0,1
+37.416,-75.717,91,VCR,site_vcr_HI_Bare_1,"Fish Counts and Lengths in South Bay and Hog Island Bay, Virginia 2012-2015",,1119.322973,14.93523372,195.1889123,0.550014947,0,0,1
+37.416,-75.717,91,VCR,site_vcr_HI_Bare_2,"Fish Counts and Lengths in South Bay and Hog Island Bay, Virginia 2012-2015",,1119.322973,14.93523372,195.1889123,0.550014947,0,0,1
+37.416,-75.717,91,VCR,site_vcr_HI_Bare_4,"Fish Counts and Lengths in South Bay and Hog Island Bay, Virginia 2012-2015",,1119.322973,14.93523372,195.1889123,0.550014947,0,0,1
+37.416,-75.717,91,VCR,site_vcr_HI_Bare_6,"Fish Counts and Lengths in South Bay and Hog Island Bay, Virginia 2012-2015",,1119.322973,14.93523372,195.1889123,0.550014947,0,0,1
+37.26574,-75.81267,91,VCR,site_vcr_SB_106,"Fish Counts and Lengths in South Bay and Hog Island Bay, Virginia 2012-2015",,1096.617477,15.05267408,189.0934768,0.520819653,0,0,1
+37.26418,-75.81353,91,VCR,site_vcr_SB_128,"Fish Counts and Lengths in South Bay and Hog Island Bay, Virginia 2012-2015",,1096.550493,15.05362795,189.1592703,0.520681761,0,0,1
+37.36252,-75.81307,91,VCR,site_vcr_SB_148,"Fish Counts and Lengths in South Bay and Hog Island Bay, Virginia 2012-2015",,1115.644004,14.91040924,189.7840897,0.531910892,0,0,1
+37.26682,-75.81253,91,VCR,site_vcr_SB_91,"Fish Counts and Lengths in South Bay and Hog Island Bay, Virginia 2012-2015",,1096.824466,15.05120147,189.0730261,0.520834144,0,0,1
+37.23919,-75.86117,91,VCR,site_vcr_SB_Bare_1,"Fish Counts and Lengths in South Bay and Hog Island Bay, Virginia 2012-2015",,1112.059448,15.03738077,191.5770487,0.517219916,0,0,1
+37.24,-75.85764,91,VCR,site_vcr_SB_Bare_2,"Fish Counts and Lengths in South Bay and Hog Island Bay, Virginia 2012-2015",,1110.431182,15.03946449,191.4862656,0.517263588,0,0,1
+37.24241,-75.85725,91,VCR,site_vcr_SB_Bare_7,"Fish Counts and Lengths in South Bay and Hog Island Bay, Virginia 2012-2015",,1110.569263,15.03450323,191.457574,0.517286899,0,0,1
+37.2452,-75.85554,91,VCR,site_vcr_SB_Bare_8,"Fish Counts and Lengths in South Bay and Hog Island Bay, Virginia 2012-2015",,1110.122079,15.03003915,191.4141407,0.517326554,0,0,1
+37.46,-75.834,92,VCR,UPC,"Vegetation and Ground Cover of Permanent Plots for Upper Phillips Creek Marsh, Nassawadox, VA 1990-2014",Describes General area - not specific location,1126.00266,14.76828915,193.1076904,0.550823348,0,0,1
+37.4453412,-75.664105,96,VCR,site_vcr_frank_day_well_2,"Dune Biomass on Hog Island, Virginia Coastal Barrier Islands, 1993-2012",,1113.505547,14.93524805,196.3556381,0.555346085,0,0,1
+37.4464957,-75.66651,96,VCR,site_vcr_frank_day_well_3,"Dune Biomass on Hog Island, Virginia Coastal Barrier Islands, 1993-2012",,1114.712113,14.93363153,197.1406376,0.555366288,0,0,1
+37.4480663,-75.671776,96,VCR,site_vcr_frank_day_well_4,"Dune Biomass on Hog Island, Virginia Coastal Barrier Islands, 1993-2012",,1116.087671,14.9289549,196.8962227,0.555122586,0,0,1
+37.445,-75.66,96,VCR,site_vcr_hog_island_North,"Dune Biomass on Hog Island, Virginia Coastal Barrier Islands, 1993-2012",Describes General area - not specific location,1111.812075,14.9349795,195.304882,0.555419157,0,0,1
+37.44,-75.663,97,VCR,R1,"Long-term N-fertilized vegetation plots on Hog Island, Virginia Coastal Barrier Islands, 1992-2014",,1112.003222,14.94383344,195.339405,0.55507056,0,0,1
+37.4453412,-75.664105,97,VCR,site_vcr_frank_day_well_2,"Long-term N-fertilized vegetation plots on Hog Island, Virginia Coastal Barrier Islands, 1992-2014",,1113.505547,14.93524805,196.3556381,0.555346085,0,0,1
+37.4464957,-75.66651,97,VCR,site_vcr_frank_day_well_3,"Long-term N-fertilized vegetation plots on Hog Island, Virginia Coastal Barrier Islands, 1992-2014",,1114.712113,14.93363153,197.1406376,0.555366288,0,0,1
+37.4480663,-75.671776,97,VCR,site_vcr_frank_day_well_4,"Long-term N-fertilized vegetation plots on Hog Island, Virginia Coastal Barrier Islands, 1992-2014",,1116.087671,14.9289549,196.8962227,0.555122586,0,0,1
