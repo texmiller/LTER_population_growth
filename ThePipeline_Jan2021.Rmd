@@ -143,8 +143,8 @@ yearTest <- function(x, n, incr = 1L) {
 
 drop_rare <- dat %>% 
     group_by(sppcode,year) %>% 
-    summarise(total_obs_per_year = sum(abundance_observation)) %>%
-    filter(total_obs_per_year != 0)
+    dplyr::summarise(total_obs_per_year = sum(abundance_observation)) %>%
+    dplyr::filter(total_obs_per_year != 0)
 ConsecutiveYear<-by(drop_rare$year,drop_rare$sppcode,yearTest,n=5)
 sppcode_drop<-dimnames(ConsecutiveYear)[[1]][ConsecutiveYear==FALSE]
   
