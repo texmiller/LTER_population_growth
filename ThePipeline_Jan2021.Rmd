@@ -247,6 +247,13 @@ if(("ran_effect"%in%colnames(newdat))==FALSE)
 ## Need to round up count and cover because some entries have decimals  
 if(type=="count" | type=="cover"){datalist$count<-round(datalist$count)}
 
+
+## run this code to optimize computer system settings for MCMC
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+set.seed(123)
+
+
   abund_fit<-stan(file=stan_model,data=datalist,iter=5000,chains=3,warmup=500)
 ```
 
