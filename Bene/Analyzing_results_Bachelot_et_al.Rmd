@@ -1,0 +1,1766 @@
+---
+title: 'Many North American plant and animal populations are sensitive to climate variability: Figures'
+author: "Benedicte Bachelot, Aldo Compagnoni, Pedro F.P.  Brandão-Dias, Shannon K. Carter, Marion L. Donald, Joshua C. Fowler, Daniel Gorczynski, Carsten G.B. Grupstra, Zoey R. Neale, Linyi Zhang, Jennifer A. Rudgers, Kai Zhu and Thomas E. Miller"
+date: "July 11, 2022"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(popler)
+library(dplyr)
+library(plyr)
+library(tidyverse)
+library(maps)
+library(ggplot2)
+library(scatterpie)
+library(mgcv)
+library(usmap)
+library(lme4)
+library(gridExtra)
+library(SPEI)
+library(rsq)
+library(rWBclimate)
+```
+
+## Model fit
+
+We analyzed 45 studies. First, let's see how the models fit the data. We do this quickly by looking at the Bayesian p value. We can also investigate other measures of goodness of fit, but the B p is a good first pass. 
+
+```{r load results, echo=FALSE}
+setwd("/path/RESULTS")
+studies<-list.files()
+RESULTS<-list()
+bp<-c()
+study_length<-c()
+type<-c()
+ID<-c()
+for(i in 1:length(studies))
+{
+  load(studies[i])
+  command <- paste0('pplr_browse( proj_metadata_key==',output$k,', full_tbl = T)')
+  ID<-c(ID,output$k)
+  metadat<-parse(n=1, text=command) %>% eval
+  type <- c(type,metadat$datatype)
+  RESULTS[[i]]<-output
+  bp<-c(bp,output$bayes.p)
+  study_length<-c(study_length,length(unique(output$r_clim$year)))
+}
+
+results<-cbind(studies,bp,study_length,type)
+results<-data.frame(results)
+print(results)
+
+print(summary(lm(as.numeric(as.character(results$bp))~as.numeric(as.character(results$study_length)))))
+
+hist(as.numeric(results$bp), main="Bayesian p value")
+
+organism<-c("insect","plant","plant","plant","plant","plant","animal","plant","plant","animal","animal","insect","bacteria","insect","mollusc","plant","plant","animal","arthorpods","plant","insect","animal","animal","animal","insect","animal","animal","plant","animal","chormiste","animal","animal","animal","animal","animal","plant","birds","birds","birds","insect","plant","plant","plant","animal","animal","animal")
+
+hist(as.numeric(as.character(results$study_length)),xlab="Study duration",main="",xlim=c(0,65),breaks=20)
+
+```
+
+Overall, the models did a decent job: Mean Bayesian p value of `mean(as.numeric(results$bp))` with a range of `range(as.numeric(results$bp))`.
+
+## Jensen's inequality sign
+
+Let's look at the Jensen's inequality. As a reminder, a negative V means that climate variability has a negative effects of species growth rate. We can look at the V statistics in two ways: across the entire posterior distributions:
+
+```{r V statistics, echo=FALSE}
+par(mfrow=c(2,2),mar=c(3,3,3,0))
+ss<-as.numeric(rep(results$study_length[1],ncol(RESULTS[[1]]$gam_type)))
+V<-RESULTS[[1]]$V
+Type<-RESULTS[[1]]$gam_type
+K<-rep(as.numeric(RESULTS[[1]][2]),ncol(RESULTS[[1]]$gam_type))
+  hist(RESULTS[[1]]$V,main=studies[1],xlab="",ylab="")
+  abline(v=0,col="red",lwd=2)
+for( i in 2:length(studies))
+{ 
+  V<-cbind(V,RESULTS[[i]]$V)
+  Type<-cbind(Type,RESULTS[[i]]$gam_type)
+  K<-c(K,rep(as.numeric(RESULTS[[i]][2]),ncol(RESULTS[[i]]$gam_type)))
+  ss<-c(ss,as.numeric(rep(results$study_length[i],ncol(RESULTS[[i]]$gam_type))))
+  hist(RESULTS[[i]]$V,main=studies[i],xlab="",ylab="")
+  abline(v=0,col="red",lwd=2)
+}
+
+  # study length effect of detecting anything across the full distributions of gam
+  test<-c(1-length(Type[Type[,1]==0,1])/100)
+  for(i in 2:912)
+  {
+          test<-c(test,(1-length(Type[Type[,i]==0,i])/100))
+          }
+  str(test)
+   v_v_glmer<-glmer(test~scale(ss)+(1|K),family="binomial",weights=rep(100,912))
+   summary(v_v_glmer)
+   plot(scale(ss),test,pch=20)
+   yy<-predict(v_v_glmer,type="response",re.form=NA)
+   points(scale(ss),yy,pch=20,col="red",type="l",lwd=2)
+   
+   #assign species a shape -> 0 or 1 for non-sensitive and sensitive.
+   sp_sensitive<-rep(0,ncol(Type))
+   newtype<-Type
+   for(i in 1:ncol(Type))
+   {
+   newtype[newtype[,i]!=0,i]<-1
+   }
+   
+     for(i in 1:ncol(newtype))
+ {
+       if((c(0,1)[summary(factor(newtype[,i],levels=c(0,1)))==max(summary(factor(newtype[,i],levels=c(0,1))))])[1]!=0)
+ {sp_sensitive[i]<-1}
+     }
+      sp_glmer<-glmer(sp_sensitive~ss+(1|K),family="binomial")
+   summary(sp_glmer)
+   plot(ss,sp_sensitive,pch=20,ylab="Climate sensitive",xlab="Study duration")
+   yy<-predict(sp_glmer,type="response",re.form=NA)
+   points(ss[order(ss)],yy[order(ss)],pch=20,col="red",type="l",lwd=2)
+ 
+  #test for study length effects on V
+  ss<-c()
+  for(i in 1:length(K))
+  {
+    ss<-c(ss,unique(study_length[c(1:46)[ID==K[i]]]))
+  }
+  v_m<-apply(V,2,median)
+  v_v<-apply(V,2,sd)
+ v_v_glmer<-glmer(scale(v_v,center=FALSE)~scale(ss)+(1|K),family=Gamma(link = "inverse"))
+  v_m_lmer<-lmer(v_m~ss+(1|K))
+  summary(v_v_glmer)
+  summary(v_m_lmer)
+    par(mfrow=c(1,2))
+    plot(ss,v_m,xlab="Study length (years)",ylab="Jensen's inequality (median)",pch=20)
+    plot(ss,v_v,xlab="Study length (years)",ylab="Jensen's inequality (sd)",pch=20)
+  
+    # test for study length on certainty of the shape
+    certain<-c()
+    for (i in 1:length(K))
+    {
+      certain<-c(certain,max(summary(factor(Type[,i],levels=c(0,1,2,3)))))
+    }
+    certain<-certain/100
+    certain_glmer<-glmer(certain~ss+(1|K),family="binomial",weights=rep(100,912))
+       plot(ss,certain,pch=20,ylab="Certainty in the shape",xlab="Study duration")
+   yy<-predict(certain_glmer,type="response",re.form=NA)
+   points(ss[order(ss)],yy[order(ss)],pch=20,col="red",type="l",lwd=2)
+```
+
+Instead of looking at each study individually, we can look at the results across studies.
+
+```{r V statistics all, echo=FALSE}
+summary(as.numeric(V))
+summary(as.numeric(V[Type!=0]))
+
+#let's look at how many unique species
+sp<-c()
+ for(i in 1:length(RESULTS))
+ {
+     sp<-c(sp,RESULTS[[i]]$spp_names)
+ } 
+
+sp_per_study<-c()
+ for(i in 1:length(RESULTS))
+ {
+     sp_per_study<-c(sp_per_study,length(unique(RESULTS[[i]]$spp_names)))
+ } 
+sp_per_study_m<-mean(sp_per_study)
+sp_per_study_r<-range(sp_per_study)
+print(paste("there is on average",sp_per_study_m," per study with a range of (",sp_per_study_r[1],":",sp_per_study_r[2],")"))
+
+sp_unique<-c()
+ for(i in 1:100)
+     {
+         sp_unique<-c(sp_unique,length(unique(sp[Type[i,]!=0])))
+ }
+
+
+par(mfrow=c(1,2))
+hist(V,main="V",xlab="",ylab="Number",breaks=20)
+  abline(v=0,col="red",lwd=2)
+hist(V[Type!=0],main="Significant V",xlab="",ylab="Number",breaks=20)
+  abline(v=0,col="red",lwd=2)
+  
+ zeros<-c(summary(as.factor(Type[1,]))[1]/ncol(V))
+ for(i in 2:100)
+ {
+ zeros<-c(zeros,summary(as.factor(Type[i,]))[1]/ncol(V))
+ }
+ 
+
+hist(zeros,main="Not significant gams")
+
+ones<-c(summary(as.factor(Type[1,]))[2]/ncol(V))
+ for(i in 2:100)
+ {
+ ones<-c(ones,summary(as.factor(Type[i,]))[2]/ncol(V))
+ }
+
+hist(ones, main="Linear gams")
+
+twos<-c(summary(as.factor(Type[1,]))[3]/ncol(V))
+ for(i in 2:100)
+ {
+ twos<-c(twos,summary(as.factor(Type[i,]))[3]/ncol(V))
+ }
+
+hist(twos, main="Concav or convex gams")
+
+two_negative<-length(V[1,Type[1,]==2][V[1,Type[1,]==2]<0])/ncol(V)
+for(i in 2:100)
+{
+ two_negative<-c(two_negative,length(V[i,Type[i,]==2][V[i,Type[i,]==2]<0])/ncol(V)) 
+}
+
+two_positive<-length(V[1,Type[1,]==2][V[1,Type[1,]==2]>0])/ncol(V)
+for(i in 2:100)
+{
+ two_positive<-c(two_positive,length(V[i,Type[i,]==2][V[i,Type[i,]==2]>0])/ncol(V)) 
+}
+
+threes<-c(summary(as.factor(Type[1,]))[4]/ncol(V))
+ for(i in 2:100)
+ {
+ threes<-c(threes,summary(as.factor(Type[i,]))[4]/ncol(V))
+ }
+hist(threes, main="concave and convex gams")
+
+print(paste("Fraction of species with change no SPEI relationships:",round(median(zeros),2),"(",round(quantile(zeros,0.025),2),":",round(quantile(zeros,0.975),2),")"),sep="")
+
+print(paste("Fraction of species with linear gam:",round(median(ones),2),"(",round(quantile(ones,0.025),2),":",round(quantile(ones,0.975),2),")"),sep="")
+
+print(paste("Fraction of species with concave/convex gam:",round(median(twos),2),"(",round(quantile(twos,0.025),2),":",round(quantile(twos,0.975),2),")"),sep="")
+
+print(paste("Fraction of species with concave:",round(median(two_negative),2),"(",round(quantile(two_negative,0.025),2),":",round(quantile(two_negative,0.975),2),")"),sep="")
+
+print(paste("Fraction of species with convex:",round(median(two_positive),2),"(",round(quantile(two_positive,0.025),2),":",round(quantile(two_positive,0.975),2),")"),sep="")
+
+print(paste("Fraction of species with change in concavity:",round(median(threes),2),"(",round(quantile(threes,0.025),2),":",round(quantile(threes,0.975),2),")"),sep="")
+
+```
+
+Fraction of species with no significant gams: 'round(median(zeros),2)' ('round(quantile(zeros,0.025),2)':'round(quantile(zeros,0.975),2)')
+
+Fraction of species with linear gams: 'round(median(ones),2)' ('round(quantile(ones,0.025),2)':'round(quantile(ones,0.975),2)')
+
+Fraction of species with concave or convex gams: 'round(median(twos),2)' ('round(quantile(twos,0.025),2)':'round(quantile(twos,0.975),2)')
+
+Fraction of species with concave gams: 'round(median(two_negative),2)' ('round(quantile(two_negative,0.025),2)':'round(quantile(two_negative,0.975),2)')
+
+Fraction of species with convex gams: 'round(median(two_positive),2)' ('round(quantile(two_positive,0.025),2)':'round(quantile(two_positive,0.975),2)')
+
+Fraction of species with concave and convex gams: 'round(median(threes),2)' ('round(quantile(threes,0.025),2)':'round(quantile(threes,0.975),2)')
+
+## Results through space
+
+Let's summarize the GAM shape. 
+```{r Space summarizing GAM shape, echo=FALSE}
+lon<-c()
+lat<-c()
+ID<-c()
+LTER<-c()
+gam_type<-c() #GAM proportion
+for(i in 1:nrow(results))
+{
+ ID<-c(ID,RESULTS[[i]]$k)
+ lon<-c(lon,RESULTS[[i]]$site_lon) 
+ lat<-c(lat,RESULTS[[i]]$site_lat)
+ pos_neg<-length(RESULTS[[i]]$V[RESULTS[[i]]$gam_type==2][RESULTS[[i]]$V[RESULTS[[i]]$gam_type==2]<0])/length(RESULTS[[i]]$V[RESULTS[[i]]$gam_type==2])
+ pos<-(1-pos_neg)*as.numeric(summary(factor(RESULTS[[i]]$gam_type,levels=c("0","1","2","3")))/sum(summary(as.factor(RESULTS[[i]]$gam_type))))[3]
+ neg<-pos_neg*as.numeric(summary(factor(RESULTS[[i]]$gam_type,levels=c("0","1","2","3")))/sum(summary(as.factor(RESULTS[[i]]$gam_type))))[3]
+ gam_type<-rbind(gam_type,c(as.numeric(summary(factor(RESULTS[[i]]$gam_type,levels=c("0","1","2","3")))/sum(summary(as.factor(RESULTS[[i]]$gam_type))))[1:2],neg,pos,as.numeric(summary(factor(RESULTS[[i]]$gam_type,levels=c("0","1","2","3")))/sum(summary(as.factor(RESULTS[[i]]$gam_type))))[4]))
+ LTER<-c(LTER,RESULTS[[i]]$study_site)
+}
+locations<-cbind(lon,lat,gam_type,ID,LTER)
+locations<-data.frame(locations)
+colnames(locations)<-c("lon","lat","horizontal","linear","concave","convex","curved2","ID","LTER")
+
+locations<-data.frame(locations)
+for(i in 1:7)
+{
+  locations[,i]<-as.numeric(as.character(locations[,i]))
+  locations[is.na(locations[,i])==TRUE,i]<-0
+}
+
+
+location_transform<-usmap_transform(locations[,1:2])
+
+lon2<-c()
+lat2<-c()
+ for(i in 1:nrow(locations))
+     {
+         lon2<-c(lon2,location_transform[location_transform[,1]==locations[i,1],3])
+         lat2<-c(lat2,location_transform[location_transform[,2]==locations[i,2],4])
+ }
+locations<-cbind(locations,lon2,lat2)
+####
+```
+
+Let's put these results on a map. How do the results look across the US? 
+```{r Summarized by locations, echo=FALSE}
+locations_summarized<-matrix(data=0,nrow=length(unique(locations$LTER)),ncol=8)
+locations_summarized[,8]<-unique(locations$LTER)
+for(i in 1:nrow(locations_summarized))
+{
+  locations_summarized[i,1:7]<-apply(locations[locations[,9]==locations_summarized[i,8],1:7],2,mean)
+}
+
+locations_summarized<-data.frame(locations_summarized)
+for(i in 1:7)
+{
+  locations_summarized[,i]<-as.numeric(as.character(locations_summarized[,i]))
+}
+colnames(locations_summarized)<-c("lon","lat","horizontal","linear","concave","convex","curved2","LTER")
+
+location_transform<-usmap_transform(locations_summarized[,1:2])
+
+lon2<-c()
+lat2<-c()
+ for(i in 1:nrow(locations_summarized))
+     {
+         lon2<-c(lon2,location_transform[location_transform[,1]==locations_summarized[i,1],3])
+         lat2<-c(lat2,location_transform[location_transform[,2]==locations_summarized[i,2],4])
+ }
+locations_summarized<-cbind(locations_summarized,lon2,lat2)
+
+
+# FIGURE 1 
+mapplot4 <- plot_usmap(color = "white", fill = "gray50") + 
+  geom_scatterpie(data=locations_summarized,aes(x=lon2, y=lat2), cols = colnames(locations_summarized[,c(4:7)]),pie_scale=2.5) +
+  scale_fill_manual(breaks = c("linear", "concave","convex", "curved2"),labels = c("linear", "concave","convex", "curved2"),values = c("linear" = "green","concave" = "darkblue","convex"="lightblue","curved2" = "purple"))+
+    coord_fixed() +
+    theme_bw()
+
+mapplot4
+```
+
+Plots to add to the map:
+```{r species example, echo=FALSE}
+par(mfrow=c(2,2))
+makeTransparent<-function(someColor, alpha=100)
+{
+  newColor<-col2rgb(someColor)
+  apply(newColor, 2, function(curcoldata){rgb(red=curcoldata[1], green=curcoldata[2],
+    blue=curcoldata[3],alpha=alpha, maxColorValue=255)})
+}
+
+#summarize gam shape by the majority. Two species had a non-clear winner, so we used parsimony and pick the simplest shape. 
+gam_majority2<-c()
+ for(i in 1:ncol(Type))
+     {
+         if(summary(factor(Type[,i],levels=c(0,1,2,3)))[1]>50)
+             {gam_majority2<-c(gam_majority2,0)}
+         if(summary(factor(Type[,i],levels=c(0,1,2,3)))[1]<51)
+             {gam_majority2<-c(gam_majority2,1)}
+         }
+
+for(i in 1:length(gam_majority2))
+     {
+         if(gam_majority2[i]==1)
+             {
+                 gam_majority2[i]<-c(1,2,3)[summary(factor(Type[,i],levels=c(0,1,2,3)))[2:4]==max(summary(factor(Type[,i],levels=c(0,1,2,3)))[2:4])][1]
+                 }
+}
+
+for(i in 1:length(gam_majority2))
+     {
+         if(gam_majority2[i]==2)
+             {
+           if(mean(V[Type[,i]==2,i])<0)
+           {gam_majority2[i]<--2}
+         }
+}
+
+horizontalExample<-as.numeric(K[gam_majority2==0])
+linearExample<-as.numeric(K[gam_majority2==1])
+sigmoidExample<-as.numeric(K[gam_majority2==3])
+positiveExample<-as.numeric(K[gam_majority2==2])
+negativeExample<-as.numeric(K[gam_majority2==-2])
+
+  gam_color<-c(NA,makeTransparent("green",90),makeTransparent("blue",90),makeTransparent("purple",90))
+    
+    N_draws <- 100
+  
+    #horizontalExample
+     V_sum<-RESULTS[[c(1:length(RESULTS))[locations$ID==horizontalExample[547]]]]$V_summary
+ V_sum<-data.frame(V_sum)
+ for(j in 2:5)
+ {
+   V_sum[,j]<-as.numeric(as.character(V_sum[,j]))
+ }
+s<-c(1:nrow(V_sum))[V_sum[,2]==max(V_sum[,2])][2]
+
+r_clim<-RESULTS[[c(1:length(RESULTS))[locations$ID==horizontalExample[547]]]]$r_clim
+spp_names<-RESULTS[[c(1:length(RESULTS))[locations$ID==horizontalExample[547]]]]$spp_names
+r_posterior<-RESULTS[[c(1:length(RESULTS))[locations$ID==horizontalExample[547]]]]$r_posterior
+gt<-RESULTS[[c(1:length(RESULTS))[locations$ID==horizontalExample[547]]]]$gam_type
+  
+  gam_fit <- gam(r ~ s(SPEI,k=length(unique(r_clim$SPEI[r_clim$species==spp_names[s]]))), data=subset(r_clim,species==spp_names[s]))
+  SPEI.seq<-data.frame(SPEI=rep(seq(min(r_clim$SPEI),max(r_clim$SPEI),length=100)))
+  preds_mean<-predict(gam_fit, type="terms", newdata=SPEI.seq,se.fit=TRUE)
+  plot(r_clim$SPEI[r_clim$species==spp_names[s]],r_clim$r[r_clim$species==spp_names[s]],
+       cex.lab=2,xlab="SPEI",ylab="r",type="n",ylim=c(min(r_clim$r[r_clim$species==spp_names[s]]-1),max(r_clim$r[r_clim$species==spp_names[s]]+1)))
+  title(main = paste("Species: ",spp_names[s]),adj=0)
+
+  r_clim_species<-r_clim[r_clim$species==spp_names[s],]
+  
+  for(i in 1:N_draws)
+    {
+    
+    df_i <- data.frame(r_posterior[i,,])  
+    colnames(df_i) <- spp_names
+    df_i$year <- unique(r_clim$year)
+    r_clim_i <- full_join(
+      df_i %>% 
+      gather(key="species",value="r",1:length(spp_names)) %>% 
+      mutate(species=as.factor(species)) %>% 
+      #filter(species %in% sig_spp),
+      filter(species==spp_names[s]),
+       tibble(SPEI = r_clim_species$SPEI,
+                               year = unique(r_clim_species$year)),
+      by="year")%>% 
+      filter(!is.na(r))
+    
+  gam_fit_i <- gam(r ~ s(SPEI,k=length(unique(r_clim_i$SPEI[r_clim_i$species==spp_names[s]]))), data=subset(r_clim_i,species==spp_names[s]))
+  
+  preds<-predict(gam_fit_i, type="terms", newdata=SPEI.seq,se.fit=TRUE)
+  
+  lines(SPEI.seq$SPEI,preds$fit,type="l",col=gam_color[gt[i,s]+1])
+  points(r_clim_i$SPEI[r_clim_i$species==spp_names[s]],
+         r_clim_i$r[r_clim_i$species==spp_names[s]],pch=".",cex=3,col=gam_color[gt[i,s]+1])
+
+  }
+  
+  lines(SPEI.seq$SPEI,preds_mean$fit,type="l",lwd=4)
+  points(r_clim$SPEI[r_clim$species==spp_names[s]],r_clim$r[r_clim$species==spp_names[s]],
+       pch=16,cex=2)
+
+    
+    #linearExample 
+ V_sum<-RESULTS[[c(1:length(RESULTS))[locations$ID==linearExample[7]]]]$V_summary
+ V_sum<-data.frame(V_sum)
+ for(j in 2:5)
+ {
+   V_sum[,j]<-as.numeric(as.character(V_sum[,j]))
+ }
+s<-15
+
+r_clim<-RESULTS[[c(1:length(RESULTS))[locations$ID==linearExample[7]]]]$r_clim
+spp_names<-RESULTS[[c(1:length(RESULTS))[locations$ID==linearExample[7]]]]$spp_names
+r_posterior<-RESULTS[[c(1:length(RESULTS))[locations$ID==linearExample[7]]]]$r_posterior
+gt<-RESULTS[[c(1:length(RESULTS))[locations$ID==linearExample[7]]]]$gam_type
+  
+  gam_fit <- gam(r ~ s(SPEI,k=length(unique(r_clim$SPEI[r_clim$species==spp_names[s]]))), data=subset(r_clim,species==spp_names[s]))
+  SPEI.seq<-data.frame(SPEI=rep(seq(min(r_clim$SPEI),max(r_clim$SPEI),length=100)))
+  preds_mean<-predict(gam_fit, type="terms", newdata=SPEI.seq,se.fit=TRUE)
+  plot(r_clim$SPEI[r_clim$species==spp_names[s]],r_clim$r[r_clim$species==spp_names[s]],
+       cex.lab=2,xlab="SPEI",ylab="r",type="n",ylim=c(min(r_clim$r[r_clim$species==spp_names[s]]-1),max(r_clim$r[r_clim$species==spp_names[s]]+1)))
+  title(main = paste("Species: ",spp_names[s]),adj=0)
+
+  r_clim_species<-r_clim[r_clim$species==spp_names[s],]
+  
+  for(i in 1:N_draws)
+    {
+    
+    df_i <- data.frame(r_posterior[i,,]) 
+    colnames(df_i) <- spp_names
+    df_i$year <- unique(r_clim$year)
+    r_clim_i <- full_join(
+      df_i %>% 
+      gather(key="species",value="r",1:length(spp_names)) %>% 
+      mutate(species=as.factor(species)) %>% 
+      #filter(species %in% sig_spp),
+      filter(species==spp_names[s]),
+       tibble(SPEI = r_clim_species$SPEI,
+                               year = unique(r_clim_species$year)),
+      by="year")%>% 
+      filter(!is.na(r))
+    
+  gam_fit_i <- gam(r ~ s(SPEI,k=length(unique(r_clim_i$SPEI[r_clim_i$species==spp_names[s]]))), data=subset(r_clim_i,species==spp_names[s]))
+  
+  preds<-predict(gam_fit_i, type="terms", newdata=SPEI.seq,se.fit=TRUE)
+  
+  lines(SPEI.seq$SPEI,preds$fit,type="l",col=gam_color[gt[i,s]+1])
+  points(r_clim_i$SPEI[r_clim_i$species==spp_names[s]],
+         r_clim_i$r[r_clim_i$species==spp_names[s]],pch=".",cex=3,col=gam_color[gt[i,s]+1])
+
+  }
+  
+  lines(SPEI.seq$SPEI,preds_mean$fit,type="l",lwd=4)
+  points(r_clim$SPEI[r_clim$species==spp_names[s]],r_clim$r[r_clim$species==spp_names[s]],
+       pch=16,cex=2)
+
+#positiveExample  
+  
+  gam_color_pos<-gam_color
+  gam_color_pos[3]<-"lightblue"
+  
+   V_sum<-RESULTS[[c(1:length(RESULTS))[locations$ID==positiveExample[8]]]]$V_summary
+    V_sum<-data.frame(V_sum)
+ for(j in 2:5)
+ {
+   V_sum[,j]<-as.numeric(as.character(V_sum[,j]))
+ }
+s<-41
+r_clim<-RESULTS[[c(1:length(RESULTS))[locations$ID==positiveExample[8]]]]$r_clim
+spp_names<-RESULTS[[c(1:length(RESULTS))[locations$ID==positiveExample[8]]]]$spp_names
+r_posterior<-RESULTS[[c(1:length(RESULTS))[locations$ID==positiveExample[8]]]]$r_posterior
+gt<-RESULTS[[c(1:length(RESULTS))[locations$ID==positiveExample[8]]]]$gam_type
+  
+  gam_fit <- gam(r ~ s(SPEI,k=length(unique(r_clim$SPEI[r_clim$species==spp_names[s]]))), data=subset(r_clim,species==spp_names[s]))
+  SPEI.seq<-data.frame(SPEI=rep(seq(min(r_clim$SPEI),max(r_clim$SPEI),length=100)))
+  preds_mean<-predict(gam_fit, type="terms", newdata=SPEI.seq,se.fit=TRUE)
+  plot(r_clim$SPEI[r_clim$species==spp_names[s]],r_clim$r[r_clim$species==spp_names[s]],
+       cex.lab=2,xlab="SPEI",ylab="r",type="n",ylim=c(min(r_clim$r[r_clim$species==spp_names[s]]-1),max(r_clim$r[r_clim$species==spp_names[s]]+1)))
+  title(main = paste("Species: ",spp_names[s]),adj=0)
+
+    r_clim_species<-r_clim[r_clim$species==spp_names[s],]
+  
+  for(i in 1:N_draws)
+    {
+    
+    df_i <- data.frame(r_posterior[i,,])  
+    colnames(df_i) <- spp_names
+    df_i$year <- unique(r_clim$year)
+    r_clim_i <- full_join(
+      df_i %>% 
+      gather(key="species",value="r",1:length(spp_names)) %>% 
+      mutate(species=as.factor(species)) %>% 
+      #filter(species %in% sig_spp),
+      filter(species==spp_names[s]),
+      tibble(SPEI = r_clim_species$SPEI,
+                               year = unique(r_clim$year)),
+      by="year")%>% 
+      filter(!is.na(r))
+    
+  gam_fit_i <- gam(r ~ s(SPEI,k=length(unique(r_clim_i$SPEI[r_clim_i$species==spp_names[s]]))), data=subset(r_clim_i,species==spp_names[s]))
+  
+  preds<-predict(gam_fit_i, type="terms", newdata=SPEI.seq,se.fit=TRUE)
+  
+  lines(SPEI.seq$SPEI,preds$fit,type="l",col=gam_color_pos[gt[i,s]+1])
+  points(r_clim_i$SPEI[r_clim_i$species==spp_names[s]],
+         r_clim_i$r[r_clim_i$species==spp_names[s]],pch=".",cex=3,col=gam_color_pos[gt[i,s]+1])
+
+  }
+  
+  lines(SPEI.seq$SPEI,preds_mean$fit,type="l",lwd=4)
+  points(r_clim$SPEI[r_clim$species==spp_names[s]],r_clim$r[r_clim$species==spp_names[s]],
+       pch=16,cex=2)
+
+  
+  #negativeExample  
+
+    gam_color_neg<-gam_color
+  gam_color_neg[3]<-"darkblue"  
+  
+   V_sum<-RESULTS[[c(1:length(RESULTS))[locations$ID==negativeExample[6]]]]$V_summary
+    V_sum<-data.frame(V_sum)
+ for(j in 2:5)
+ {
+   V_sum[,j]<-as.numeric(as.character(V_sum[,j]))
+ }
+s<-c(1:nrow(V_sum))[V_sum[,4]==max(V_sum[,4])]
+r_clim<-RESULTS[[c(1:length(RESULTS))[locations$ID==negativeExample[6]]]]$r_clim
+spp_names<-RESULTS[[c(1:length(RESULTS))[locations$ID==negativeExample[6]]]]$spp_names
+r_posterior<-RESULTS[[c(1:length(RESULTS))[locations$ID==negativeExample[6]]]]$r_posterior
+gt<-RESULTS[[c(1:length(RESULTS))[locations$ID==negativeExample[6]]]]$gam_type
+  
+  gam_fit <- gam(r ~ s(SPEI,k=length(unique(r_clim$SPEI[r_clim$species==spp_names[s]]))), data=subset(r_clim,species==spp_names[s]))
+  SPEI.seq<-data.frame(SPEI=rep(seq(min(r_clim$SPEI),max(r_clim$SPEI),length=100)))
+  preds_mean<-predict(gam_fit, type="terms", newdata=SPEI.seq,se.fit=TRUE)
+  plot(r_clim$SPEI[r_clim$species==spp_names[s]],r_clim$r[r_clim$species==spp_names[s]],
+       cex.lab=2,xlab="SPEI",ylab="r",type="n",ylim=c(min(r_clim$r[r_clim$species==spp_names[s]]-1),max(r_clim$r[r_clim$species==spp_names[s]]+1)))
+  title(main = paste("Species: ",spp_names[s]),adj=0)
+
+  r_clim_species<-r_clim[r_clim$species==spp_names[s],]
+  
+  for(i in 1:N_draws)
+    {
+    
+    df_i <- data.frame(r_posterior[i,,])  
+    colnames(df_i) <- spp_names
+    df_i$year <- unique(r_clim$year)
+    r_clim_i <- full_join(
+      df_i %>% 
+      gather(key="species",value="r",1:length(spp_names)) %>% 
+      mutate(species=as.factor(species)) %>% 
+      #filter(species %in% sig_spp),
+      filter(species==spp_names[s]),
+      tibble(SPEI = r_clim_species$SPEI,
+                               year = unique(r_clim$year)),
+      by="year")%>% 
+      filter(!is.na(r))
+    
+  gam_fit_i <- gam(r ~ s(SPEI,k=length(unique(r_clim_i$SPEI[r_clim_i$species==spp_names[s]]))), data=subset(r_clim_i,species==spp_names[s]))
+  
+  preds<-predict(gam_fit_i, type="terms", newdata=SPEI.seq,se.fit=TRUE)
+  
+  lines(SPEI.seq$SPEI,preds$fit,type="l",col=gam_color_neg[gt[i,s]+1])
+  points(r_clim_i$SPEI[r_clim_i$species==spp_names[s]],
+         r_clim_i$r[r_clim_i$species==spp_names[s]],pch=".",cex=3,col=gam_color_neg[gt[i,s]+1])
+
+  }
+  
+  lines(SPEI.seq$SPEI,preds_mean$fit,type="l",lwd=4)
+  points(r_clim$SPEI[r_clim$species==spp_names[s]],r_clim$r[r_clim$species==spp_names[s]],
+       pch=16,cex=2)
+
+  #sigmoidExample  
+   V_sum<-RESULTS[[c(1:29)[locations$ID==sigmoidExample[2]]]]$V_summary
+    V_sum<-data.frame(V_sum)
+ for(j in 2:5)
+ {
+   V_sum[,j]<-as.numeric(as.character(V_sum[,j]))
+ }
+s<-c(1:nrow(V_sum))[V_sum[,5]==max(V_sum[,5])]
+r_clim<-RESULTS[[c(1:29)[locations$ID==sigmoidExample[2]]]]$r_clim
+spp_names<-RESULTS[[c(1:29)[locations$ID==sigmoidExample[2]]]]$spp_names
+r_posterior<-RESULTS[[c(1:29)[locations$ID==sigmoidExample[2]]]]$r_posterior
+gt<-RESULTS[[c(1:29)[locations$ID==sigmoidExample[2]]]]$gam_type
+  
+  gam_fit <- gam(r ~ s(SPEI,k=length(unique(r_clim$SPEI[r_clim$species==spp_names[s]]))), data=subset(r_clim,species==spp_names[s]))
+  SPEI.seq<-data.frame(SPEI=rep(seq(min(r_clim$SPEI),max(r_clim$SPEI),length=100)))
+  preds_mean<-predict(gam_fit, type="terms", newdata=SPEI.seq,se.fit=TRUE)
+  plot(r_clim$SPEI[r_clim$species==spp_names[s]],r_clim$r[r_clim$species==spp_names[s]],
+       cex.lab=2,xlab="SPEI",ylab="r",type="n",ylim=c(min(r_clim$r[r_clim$species==spp_names[s]]-1),max(r_clim$r[r_clim$species==spp_names[s]]+1)))
+  title(main = paste("Species: ",spp_names[s]),adj=0)
+
+  r_clim_species<-r_clim[r_clim$species==spp_names[s],]
+  
+  for(i in 1:N_draws)
+    {
+    
+    df_i <- data.frame(r_posterior[i,,])  
+    colnames(df_i) <- spp_names
+    df_i$year <- unique(r_clim$year)
+    r_clim_i <- full_join(
+      df_i %>% 
+      gather(key="species",value="r",1:length(spp_names)) %>% 
+      mutate(species=as.factor(species)) %>% 
+      #filter(species %in% sig_spp),
+      filter(species==spp_names[s]),
+      tibble(SPEI = r_clim_species$SPEI,
+                               year = unique(r_clim$year)),
+      by="year")%>% 
+      filter(!is.na(r))
+    
+  gam_fit_i <- gam(r ~ s(SPEI,k=length(unique(r_clim_i$SPEI[r_clim_i$species==spp_names[s]]))), data=subset(r_clim_i,species==spp_names[s]))
+  
+  preds<-predict(gam_fit_i, type="terms", newdata=SPEI.seq,se.fit=TRUE)
+  
+  lines(SPEI.seq$SPEI,preds$fit,type="l",col=gam_color[gt[i,s]+1])
+  points(r_clim_i$SPEI[r_clim_i$species==spp_names[s]],
+         r_clim_i$r[r_clim_i$species==spp_names[s]],pch=".",cex=3,col=gam_color[gt[i,s]+1])
+
+  }
+  
+  lines(SPEI.seq$SPEI,preds_mean$fit,type="l",lwd=4)
+  points(r_clim$SPEI[r_clim$species==spp_names[s]],r_clim$r[r_clim$species==spp_names[s]],
+       pch=16,cex=2)
+  
+```
+
+## Results through species traits - Figure 2
+
+```{r species traits, echo=FALSE}
+setwd("/path")
+traits<-read.csv("traits2.csv",header=TRUE)
+traits$Species.code[1801]<-"NA"
+traits$Species.code[1519]<-"NA"
+traits$Species.code[2127]<-"NA"
+traits<-traits[traits$proj_metadata_key%in%ID,]
+sp<-c()
+for(i in 1:length(RESULTS))
+{
+  sp<-c(sp,RESULTS[[i]]$spp_names)
+}  
+
+print(paste("across studies, we obtained data for",length(sp),"species, including",length(unique(sp)),"uniques ones",sep=" "))
+
+traits<-traits[traits$Species.code%in%sp,]
+
+traits<-distinct(traits)
+
+test_combo<-paste(traits$proj_metadata_key,traits$Species.code)
+test_data<-paste(K,sp)
+
+traits<-cbind(test_combo,traits)
+traits<-traits[traits$test_combo%in%test_data,]
+
+traits_test<-traits[,c(4,6,8,11,12)]
+traits_test<-distinct(traits_test)
+
+print(summary(as.factor(traits_test$Kingdom)))
+print(summary(as.factor(traits_test$Ecosystem.Type)))
+print(summary(as.factor(traits_test$Class)))
+print(summary(as.factor(traits_test$Growth.form)))
+
+V<-RESULTS[[1]]$V
+type<-RESULTS[[1]]$gam_type
+
+for(i in 2:length(RESULTS))
+{
+ V<-cbind(V,RESULTS[[i]]$V)
+type<-cbind(type,RESULTS[[i]]$gam_type)
+}
+
+Kingdom<-rep(NA,length(sp))
+  Ecosystem<-rep(NA,length(sp))
+      Growth<-rep(NA,length(sp))
+        Class<-rep(NA,length(sp))
+for(i in 1:length(sp))
+{
+  if(length(traits$Kingdom[traits$Species.code==sp[i]])!=0)
+  {
+  Kingdom[i]<-traits$Kingdom[traits$Species.code==sp[i]]
+  }
+  if(length(traits$Ecosystem.Type[traits$Species.code==sp[i]])!=0)
+  {
+  Ecosystem[i]<-traits$Ecosystem.Type[traits$Species.code==sp[i]]
+  }
+    if(length(traits$Growth.form[traits$Species.code==sp[i]])!=0)
+  {
+  Growth[i]<-traits$Growth.form[traits$Species.code==sp[i]]
+    }
+      if(length(traits$Class[traits$Species.code==sp[i]])!=0)
+  {
+  Class[i]<-traits$Class[traits$Species.code==sp[i]]
+    }
+}
+  
+VnoNA<-V[,is.na(Kingdom)==FALSE]
+typenoNA<-type[,is.na(Kingdom)==FALSE]
+boxplot(apply(VnoNA,2,mean)~as.factor(Kingdom[is.na(Kingdom)==FALSE]),ylab="V mean",xlab="",col=c("Brown","Red","Blue","Darkgreen"))
+
+Vkingdom<-apply(VnoNA,2,mean)
+by(Vkingdom,as.factor(Kingdom[is.na(Kingdom)==FALSE]),mean)
+by(Vkingdom,as.factor(Kingdom[is.na(Kingdom)==FALSE]),quantile,c(0.025,0.975))
+
+pass<-typenoNA[,Kingdom[is.na(Kingdom)==FALSE]=="Plantae"]
+tt<-summary(factor(pass[1,],levels=c(0,1,2,3)))
+pass_V<-VnoNA[,Kingdom[is.na(Kingdom)==FALSE]=="Plantae"]
+np<-pass_V[1,pass[1,]==2]
+np<-c(length(np[np<0])/length(np),length(np[np>0])/length(np))
+ for(i in 2:100)
+     {
+         tt<-rbind(tt,summary(factor(pass[i,],levels=c(0,1,2,3))))
+         np_pass<-pass_V[i,pass[i,]==2]
+         np<-rbind(np,c(length(np_pass[np_pass<0])/length(np_pass),length(np_pass[np_pass>0])/length(np_pass)))
+         }
+  tt<-tt/summary(as.factor(Kingdom))[4]   
+  np<-np*tt[,3]
+  
+pass<-typenoNA[,Kingdom[is.na(Kingdom)==FALSE]=="Animalia"]
+tt2<-summary(factor(pass[1,],levels=c(0,1,2,3)))
+pass_V<-VnoNA[,Kingdom[is.na(Kingdom)==FALSE]=="Animalia"]
+np2<-pass_V[1,pass[1,]==2]
+np2<-c(length(np2[np2<0])/length(np2),length(np2[np2>0])/length(np2))
+ for(i in 2:100)
+     {
+         tt2<-rbind(tt2,summary(factor(pass[i,],levels=c(0,1,2,3))))
+                  np_pass<-pass_V[i,pass[i,]==2]
+         np2<-rbind(np2,c(length(np_pass[np_pass<0])/length(np_pass),length(np_pass[np_pass>0])/length(np_pass)))
+         }
+  tt2<-tt2/summary(as.factor(Kingdom))[1]  
+    np2<-np2*tt2[,3]
+    
+pass<-typenoNA[,Kingdom[is.na(Kingdom)==FALSE]=="Bacteria"]
+tt3<-summary(factor(pass[1,],levels=c(0,1,2,3)))
+pass_V<-VnoNA[,Kingdom[is.na(Kingdom)==FALSE]=="Bacteria"]
+np3<-pass_V[1,pass[1,]==2]
+np3<-c(length(np3[np3<0])/length(np3),length(np3[np3>0])/length(np3))
+ for(i in 2:100)
+     {
+         tt3<-rbind(tt3,summary(factor(pass[i,],levels=c(0,1,2,3))))
+                           np_pass<-pass_V[i,pass[i,]==2]
+         np3<-rbind(np3,c(length(np_pass[np_pass<0])/length(np_pass),length(np_pass[np_pass>0])/length(np_pass)))
+         }
+tt3<-tt3/summary(as.factor(Kingdom))[2]  
+ np3<-np3*tt3[,3]
+ 
+pass<-typenoNA[,Kingdom[is.na(Kingdom)==FALSE]=="Chromista"]
+tt4<-summary(factor(pass[1,],levels=c(0,1,2,3)))
+pass_V<-VnoNA[,Kingdom[is.na(Kingdom)==FALSE]=="Chromista"]
+np4<-pass_V[1,pass[1,]==2]
+np4<-c(length(np4[np4<0])/length(np4),length(np4[np4>0])/length(np4))
+ for(i in 2:100)
+     {
+         tt4<-rbind(tt4,summary(factor(pass[i,],levels=c(0,1,2,3))))
+                           np_pass<-pass_V[i,pass[i,]==2]
+         np4<-rbind(np4,c(length(np_pass[np_pass<0])/length(np_pass),length(np_pass[np_pass>0])/length(np_pass)))
+         }
+tt4<-tt4/summary(as.factor(Kingdom))[3]  
+np4<-np4*tt4[,3]
+
+for(i in 1:100)
+{
+  if(is.na(np4[i,1])==TRUE)
+  {np4[i,1]<-0}
+   if(is.na(np3[i,1])==TRUE)
+   {np3[i,1]<-0}
+   if(is.na(np2[i,1])==TRUE)
+   {np2[i,1]<-0}
+   if(is.na(np[i,1])==TRUE)
+  {np[i,1]<-0}
+
+    if(is.na(np4[i,2])==TRUE)
+  {np4[i,2]<-0}
+   if(is.na(np3[i,2])==TRUE)
+   {np3[i,2]<-0}
+   if(is.na(np2[i,2])==TRUE)
+   {np2[i,2]<-0}
+   if(is.na(np[i,2])==TRUE)
+  {np[i,2]<-0}
+}
+
+TT<-cbind(tt2[,1],tt3[,1],tt4[,1],tt[,1],rep(NA,100),tt2[,2],tt3[,2],tt4[,2],tt[,2],rep(NA,100),np2[,1],np3[,1],np4[,1],np[,1],rep(NA,100),np2[,2],np3[,2],np4[,2],np[,2],rep(NA,100),tt2[,4],tt3[,4],tt4[,4],tt[,4])
+
+x<-barplot(apply(TT,2,median),ylim=c(0,1),col=c("Brown","Red","Blue","Darkgreen","white","Brown","Red","Blue","Darkgreen","white","Brown","Red","Blue","Darkgreen","white","Brown","Red","Blue","Darkgreen","white","Brown","Red","Blue","Darkgreen"),space=0)
+segments(x[-c(5,10,15,20)],apply(TT[,-c(5,10,15,20)],2,quantile,0.025),x[-c(5,10,15,20)],apply(TT[,-c(5,10,15,20)],2,quantile,0.975))
+axis(1,at=x[c(2,7,12,17,22),1],labels=c("Flat","Linear","Concave","Convex","Curved2"))
+#legend(locator(1),col=c("Brown","Red","Blue","Darkgreen"),legend=c("Animalia","Bacteria","Chromista","Plantae"),pch=20,cex=1.25)
+
+#appendix: Flat
+x<-barplot(apply(TT[,1:4],2,median),ylim=c(0,1),col=c("Brown","Red","Blue","Darkgreen"),space=0)
+segments(x,apply(TT[,1:4],2,quantile,0.025),x,apply(TT[,1:4],2,quantile,0.975))
+axis(1,at=2,labels=c("Flat"))
+
+# add a few tests: Plant versus animals
+t.test(TT[,1],TT[,4])
+t.test(TT[,6],TT[,9])
+t.test(TT[,11],TT[,14])
+t.test(TT[,16],TT[,19])
+t.test(TT[,21],TT[,24])
+
+Ecosystem[Ecosystem==""]<-NA
+Ecosystem[Ecosystem=="Marine"]<-"Aquatic"
+VnoNA<-V[,is.na(Ecosystem)==FALSE]
+typenoNA<-type[,is.na(Ecosystem)==FALSE]
+boxplot(apply(VnoNA,2,mean)~as.factor(Ecosystem[is.na(Ecosystem)==FALSE]),ylab="V mean",xlab="",col=c("Darkblue","Darkgreen","Brown"))
+
+pass<-typenoNA[,Ecosystem[is.na(Ecosystem)==FALSE]%in%c("Aquatic","Marine")]
+tt<-summary(factor(pass[1,],levels=c(0,1,2,3)))
+pass_V<-VnoNA[,Ecosystem[is.na(Ecosystem)==FALSE]%in%c("Aquatic","Marine")]
+np<-pass_V[1,pass[1,]==2]
+np<-c(length(np[np<0])/length(np),length(np[np>0])/length(np))
+ for(i in 2:100)
+     {
+         tt<-rbind(tt,summary(factor(pass[i,],levels=c(0,1,2,3))))
+          np_pass<-pass_V[i,pass[i,]==2]
+         np<-rbind(np,c(length(np_pass[np_pass<0])/length(np_pass),length(np_pass[np_pass>0])/length(np_pass)))
+         }
+  tt<-tt/(summary(as.factor(Ecosystem))[1]) 
+    np<-np*tt[,3]
+  
+pass<-typenoNA[,Ecosystem[is.na(Ecosystem)==FALSE]=="Semiaquatic"]
+tt2<-summary(factor(pass[1,],levels=c(0,1,2,3)))
+pass_V<-VnoNA[,Ecosystem[is.na(Ecosystem)==FALSE]=="Semiaquatic"]
+np2<-pass_V[1,pass[1,]==2]
+np2<-c(length(np2[np2<0])/length(np2),length(np2[np2>0])/length(np2))
+ for(i in 2:100)
+     {
+         tt2<-rbind(tt2,summary(factor(pass[i,],levels=c(0,1,2,3))))
+                   np_pass<-pass_V[i,pass[i,]==2]
+         np2<-rbind(np2,c(length(np_pass[np_pass<0])/length(np_pass),length(np_pass[np_pass>0])/length(np_pass)))
+         }
+  tt2<-tt2/summary(as.factor(Ecosystem))[2] 
+  np2<-np2*tt2[,3]
+  
+pass<-typenoNA[,Ecosystem[is.na(Ecosystem)==FALSE]=="Terrestrial"]
+tt3<-summary(factor(pass[1,],levels=c(0,1,2,3)))
+pass_V<-VnoNA[,Ecosystem[is.na(Ecosystem)==FALSE]=="Terrestrial"]
+np3<-pass_V[1,pass[1,]==2]
+np3<-c(length(np3[np3<0])/length(np3),length(np3[np3>0])/length(np3))
+ for(i in 2:100)
+     {
+         tt3<-rbind(tt3,summary(factor(pass[i,],levels=c(0,1,2,3))))
+            np_pass<-pass_V[i,pass[i,]==2]
+         np3<-rbind(np3,c(length(np_pass[np_pass<0])/length(np_pass),length(np_pass[np_pass>0])/length(np_pass)))
+         }
+tt3<-tt3/summary(as.factor(Ecosystem))[3]  
+np3<-np3*tt3[,3]
+
+TT<-cbind(tt[,1],tt2[,1],tt3[,1],rep(NA,100),tt[,2],tt2[,2],tt3[,2],rep(NA,100),np[,1],np2[,1],np3[,1],rep(NA,100),np[,2],np2[,2],np3[,2],rep(NA,100),tt[,4],tt2[,4],tt3[,4])
+
+x<-barplot(apply(TT,2,median),ylim=c(0,1),col=c("Darkblue","DarkGreen","Brown","white","Darkblue","Darkgreen","Brown","white","Darkblue","Darkgreen","Brown","white","Darkblue","Darkgreen","Brown","white","Darkblue","Darkgreen","Brown"),space=0)
+segments(x[-c(4,8,12,16)],apply(TT[,-c(4,8,12,16)],2,quantile,0.025),x[-c(4,8,12,16)],apply(TT[,-c(4,8,12,16)],2,quantile,0.975))
+axis(1,at=x[c(2,6,10,14,18),1],labels=c("Flat","Linear","Concave","Convex","Curved2"))
+#legend(locator(1),col=c("Darkblue","DarkGreen","Brown"),legend=c("Aquatic","Seimaquatic","Terrestrial"),pch=20,cex=1.25)
+
+#appendix: Flat
+x<-barplot(apply(TT[,1:3],2,median),ylim=c(0,1),col=c("Darkblue","DarkGreen","Brown"),space=0)
+segments(x,apply(TT[,1:3],2,quantile,0.025),x,apply(TT[,1:3],2,quantile,0.975))
+axis(1,at=1.5,labels=c("Flat"))
+
+
+# add a few tests
+t.test(TT[,1],TT[,3])
+t.test(TT[,5],TT[,7])
+t.test(TT[,9],TT[,11])
+t.test(TT[,13],TT[,15])
+t.test(TT[,17],TT[,19])
+
+#CLASS
+Class[Class==""]<-NA
+Class[(Kingdom=="Animalia")==FALSE]<-NA
+Class[(Class%in%c("Actinopterygii","Aves","Insecta"))==FALSE]<-NA
+VnoNA<-V[,is.na(Class)==FALSE]
+typenoNA<-type[,is.na(Class)==FALSE]
+boxplot(apply(VnoNA,2,mean)~as.factor(Class[is.na(Class)==FALSE]),ylab="V mean",xlab="",col=c("Darkblue","Darkgreen","Brown"))
+test<-apply(VnoNA,2,mean)
+by(test,Class[is.na(Class)==FALSE],mean)
+by(test,Class[is.na(Class)==FALSE],quantile,c(0.025,0.975))
+
+pass<-typenoNA[,Class[is.na(Class)==FALSE]%in%c("Actinopterygii")]
+tt<-summary(factor(pass[1,],levels=c(0,1,2,3)))
+pass_V<-VnoNA[,Class[is.na(Class)==FALSE]%in%c("Actinopterygii")]
+np<-pass_V[1,pass[1,]==2]
+np<-c(length(np[np<0])/length(np),length(np[np>0])/length(np))
+ for(i in 2:100)
+     {
+         tt<-rbind(tt,summary(factor(pass[i,],levels=c(0,1,2,3))))
+          np_pass<-pass_V[i,pass[i,]==2]
+         np<-rbind(np,c(length(np_pass[np_pass<0])/length(np_pass),length(np_pass[np_pass>0])/length(np_pass)))
+         }
+  tt<-tt/(summary(as.factor(Class))[1]) 
+    np<-np*tt[,3]
+  
+pass<-typenoNA[,Class[is.na(Class)==FALSE]%in%c("Aves")]
+tt2<-summary(factor(pass[1,],levels=c(0,1,2,3)))
+pass_V<-VnoNA[,Class[is.na(Class)==FALSE]%in%c("Aves")]
+np2<-pass_V[1,pass[1,]==2]
+np2<-c(length(np2[np2<0])/length(np2),length(np2[np2>0])/length(np2))
+ for(i in 2:100)
+     {
+         tt2<-rbind(tt2,summary(factor(pass[i,],levels=c(0,1,2,3))))
+                   np_pass<-pass_V[i,pass[i,]==2]
+         np2<-rbind(np2,c(length(np_pass[np_pass<0])/length(np_pass),length(np_pass[np_pass>0])/length(np_pass)))
+         }
+  tt2<-tt2/summary(as.factor(Class))[2] 
+  np2<-np2*tt2[,3]
+  
+pass<-typenoNA[,Class[is.na(Class)==FALSE]%in%c("Insecta")]
+tt3<-summary(factor(pass[1,],levels=c(0,1,2,3)))
+pass_V<-VnoNA[,Class[is.na(Class)==FALSE]%in%c("Insecta")]
+np3<-pass_V[1,pass[1,]==2]
+np3<-c(length(np3[np3<0])/length(np3),length(np3[np3>0])/length(np3))
+ for(i in 2:100)
+     {
+         tt3<-rbind(tt3,summary(factor(pass[i,],levels=c(0,1,2,3))))
+            np_pass<-pass_V[i,pass[i,]==2]
+         np3<-rbind(np3,c(length(np_pass[np_pass<0])/length(np_pass),length(np_pass[np_pass>0])/length(np_pass)))
+         }
+tt3<-tt3/summary(as.factor(Class))[3]  
+np3<-np3*tt3[,3]
+
+TT<-cbind(tt[,1],tt2[,1],tt3[,1],rep(NA,100),tt[,2],tt2[,2],tt3[,2],rep(NA,100),np[,1],np2[,1],np3[,1],rep(NA,100),np[,2],np2[,2],np3[,2],rep(NA,100),tt[,4],tt2[,4],tt3[,4])
+
+x<-barplot(apply(TT,2,median),ylim=c(0,1),col=c("Darkblue","DarkGreen","Brown","white","Darkblue","Darkgreen","Brown","white","Darkblue","Darkgreen","Brown","white","Darkblue","Darkgreen","Brown","white","Darkblue","Darkgreen","Brown"),space=0)
+segments(x[-c(4,8,12,16)],apply(TT[,-c(4,8,12,16)],2,quantile,0.025),x[-c(4,8,12,16)],apply(TT[,-c(4,8,12,16)],2,quantile,0.975))
+axis(1,at=x[c(2,6,10,14,18),1],labels=c("Flat","Linear","Concave","Convex","Curved2"))
+#legend(locator(1),col=c("Darkblue","DarkGreen","Brown"),legend=c("Actinopterygii","Aves","Insecta"),pch=20,cex=1.25)
+
+#appendix: Flat
+x<-barplot(apply(TT[,1:3],2,median),ylim=c(0,1),col=c("Darkblue","DarkGreen","Brown"),space=0)
+segments(x,apply(TT[,1:3],2,quantile,0.025),x,apply(TT[,1:3],2,quantile,0.975))
+axis(1,at=1.5,labels=c("Flat"))
+
+#add some tests
+#fish - insect
+t.test(TT[,1],TT[,3])
+t.test(TT[,5],TT[,7])
+t.test(TT[,9],TT[,11])
+t.test(TT[,13],TT[,15])
+t.test(TT[,17],TT[,19])
+
+#fish - bird
+t.test(TT[,1],TT[,2])
+t.test(TT[,5],TT[,6])
+t.test(TT[,9],TT[,10])
+t.test(TT[,13],TT[,14])
+t.test(TT[,17],TT[,18])
+
+
+# bird - insect
+t.test(TT[,3],TT[,2])
+t.test(TT[,7],TT[,6])
+t.test(TT[,11],TT[,10])
+t.test(TT[,15],TT[,14])
+t.test(TT[,19],TT[,18])
+
+#GROWTH
+Growth[Growth==""]<-NA
+Growth[Growth=="Vine"]<-NA
+Growth[Growth=="Moss"]<-NA
+VnoNA<-V[,is.na(Growth)==FALSE]
+typenoNA<-type[,is.na(Growth)==FALSE]
+boxplot(apply(VnoNA,2,mean)~as.factor(Growth[is.na(Growth)==FALSE]),ylab="V mean",xlab="",col=c("Darkblue","Lightgreen","Green","Darkgreen","Brown"))
+
+Vgrowth<-apply(VnoNA,2,mean)
+by(Vgrowth,as.factor(Growth[is.na(Growth)==FALSE]),mean)
+by(Vgrowth,as.factor(Growth[is.na(Growth)==FALSE]),quantile,c(0.025,0.975))
+
+pass<-typenoNA[,Growth[is.na(Growth)==FALSE]=="Algae"]
+tt<-summary(factor(pass[1,],levels=c(0,1,2,3)))
+pass_V<-VnoNA[,Growth[is.na(Growth)==FALSE]=="Algae"]
+np<-pass_V[1,pass[1,]==2]
+np<-c(length(np[np<0])/length(np),length(np[np>0])/length(np))
+ for(i in 2:100)
+     {
+         tt<-rbind(tt,summary(factor(pass[i,],levels=c(0,1,2,3))))
+         np_pass<-pass_V[i,pass[i,]==2]
+         np<-rbind(np,c(length(np_pass[np_pass<0])/length(np_pass),length(np_pass[np_pass>0])/length(np_pass)))
+         }
+  tt<-tt/summary(as.factor(Growth))[1]   
+  np<-np*tt[,3]
+  
+pass<-typenoNA[,Growth[is.na(Growth)==FALSE]=="Forb"]
+tt2<-summary(factor(pass[1,],levels=c(0,1,2,3)))
+pass_V<-VnoNA[,Growth[is.na(Growth)==FALSE]=="Forb"]
+np2<-pass_V[1,pass[1,]==2]
+np2<-c(length(np2[np2<0])/length(np2),length(np2[np2>0])/length(np2))
+ for(i in 2:100)
+     {
+         tt2<-rbind(tt2,summary(factor(pass[i,],levels=c(0,1,2,3))))
+                  np_pass<-pass_V[i,pass[i,]==2]
+         np2<-rbind(np2,c(length(np_pass[np_pass<0])/length(np_pass),length(np_pass[np_pass>0])/length(np_pass)))
+         }
+  tt2<-tt2/summary(as.factor(Growth))[2]  
+    np2<-np2*tt2[,3]
+    
+pass<-typenoNA[,Growth[is.na(Growth)==FALSE]=="Grass"]
+tt3<-summary(factor(pass[1,],levels=c(0,1,2,3)))
+pass_V<-VnoNA[,Growth[is.na(Growth)==FALSE]=="Grass"]
+np3<-pass_V[1,pass[1,]==2]
+np3<-c(length(np3[np3<0])/length(np3),length(np3[np3>0])/length(np3))
+ for(i in 2:100)
+     {
+         tt3<-rbind(tt3,summary(factor(pass[i,],levels=c(0,1,2,3))))
+                           np_pass<-pass_V[i,pass[i,]==2]
+         np3<-rbind(np3,c(length(np_pass[np_pass<0])/length(np_pass),length(np_pass[np_pass>0])/length(np_pass)))
+         }
+tt3<-tt3/summary(as.factor(Growth))[3]  
+ np3<-np3*tt3[,3]
+ 
+pass<-typenoNA[,Growth[is.na(Growth)==FALSE]=="Shrub"]
+tt4<-summary(factor(pass[1,],levels=c(0,1,2,3)))
+pass_V<-VnoNA[,Growth[is.na(Growth)==FALSE]=="Shrub"]
+np4<-pass_V[1,pass[1,]==2]
+np4<-c(length(np4[np4<0])/length(np4),length(np4[np4>0])/length(np4))
+ for(i in 2:100)
+     {
+         tt4<-rbind(tt4,summary(factor(pass[i,],levels=c(0,1,2,3))))
+                           np_pass<-pass_V[i,pass[i,]==2]
+         np4<-rbind(np4,c(length(np_pass[np_pass<0])/length(np_pass),length(np_pass[np_pass>0])/length(np_pass)))
+         }
+tt4<-tt4/summary(as.factor(Growth))[4]  
+np4<-np4*tt4[,3]
+
+pass<-typenoNA[,Growth[is.na(Growth)==FALSE]=="Tree"]
+tt5<-summary(factor(pass[1,],levels=c(0,1,2,3)))
+pass_V<-VnoNA[,Growth[is.na(Growth)==FALSE]=="Tree"]
+np5<-pass_V[1,pass[1,]==2]
+np5<-c(length(np5[np5<0])/length(np5),length(np5[np5>0])/length(np5))
+ for(i in 2:100)
+     {
+         tt5<-rbind(tt5,summary(factor(pass[i,],levels=c(0,1,2,3))))
+                           np_pass<-pass_V[i,pass[i,]==2]
+         np5<-rbind(np5,c(length(np_pass[np_pass<0])/length(np_pass),length(np_pass[np_pass>0])/length(np_pass)))
+         }
+tt5<-tt5/summary(as.factor(Growth))[5]  
+np5<-np5*tt5[,3]
+
+for(i in 1:100)
+{
+    if(is.na(np5[i,1])==TRUE)
+  {np5[i,1]<-0}
+  if(is.na(np4[i,1])==TRUE)
+  {np4[i,1]<-0}
+   if(is.na(np3[i,1])==TRUE)
+   {np3[i,1]<-0}
+   if(is.na(np2[i,1])==TRUE)
+   {np2[i,1]<-0}
+   if(is.na(np[i,1])==TRUE)
+  {np[i,1]<-0}
+
+    if(is.na(np4[i,2])==TRUE)
+    {np4[i,2]<-0}
+      if(is.na(np5[i,2])==TRUE)
+  {np5[i,2]<-0}
+   if(is.na(np3[i,2])==TRUE)
+   {np3[i,2]<-0}
+   if(is.na(np2[i,2])==TRUE)
+   {np2[i,2]<-0}
+   if(is.na(np[i,2])==TRUE)
+  {np[i,2]<-0}
+}
+
+TT<-cbind(tt[,1],tt2[,1],tt3[,1],tt4[,1],tt5[,1],rep(NA,100),tt[,2],tt2[,2],tt3[,2],tt4[,2],tt5[,2],rep(NA,100),np[,1],np2[,1],np3[,1],np4[,1],np5[,1],rep(NA,100),np[,2],np2[,2],np3[,2],np4[,2],np5[,2],rep(NA,100),tt[,4],tt2[,4],tt3[,4],tt4[,4],tt5[,4])
+
+x<-barplot(apply(TT,2,median),ylim=c(0,1),col=c("Darkblue","Lightgreen","Green","Darkgreen","Brown","white","Darkblue","Lightgreen","Green","Darkgreen","Brown","white","Darkblue","Lightgreen","Green","Darkgreen","Brown","white","Darkblue","Lightgreen","Green","Darkgreen","Brown","white","Darkblue","Lightgreen","Green","Darkgreen","Brown"),space=0)
+segments(x[-c(6,12,18,24)],apply(TT[,-c(6,12,18,24)],2,quantile,0.025),x[-c(6,12,18,24)],apply(TT[,-c(6,12,18,24)],2,quantile,0.975))
+axis(1,at=x[c(3,9,15,21,27),1],labels=c("Flat","Linear","Concave","Convex","Curved2"))
+#legend(locator(1),col=c("Darkblue","Lightgreen","Green","Darkgreen","Brown"),legend=c("Algae","Forb","Grass","Shrub","Tree"),pch=20,cex=1.25)
+
+#appendix: Flat
+x<-barplot(apply(TT[,1:5],2,median),ylim=c(0,1),col=c("Darkblue","Lightgreen","Green","Darkgreen","Brown"),space=0)
+segments(x,apply(TT[,1:5],2,quantile,0.025),x,apply(TT[,1:5],2,quantile,0.975))
+axis(1,at=2.5,labels=c("Flat"))
+
+
+#Add some test
+# grass - tree
+t.test(TT[,3],TT[,5]) #horizontal
+t.test(TT[,9],TT[,11]) #linear
+t.test(TT[,15],TT[,17]) #concavs
+t.test(TT[,21],TT[,23]) #convex, n.s.
+t.test(TT[,27],TT[,29]) #interaction
+
+# grass - shrub
+t.test(TT[,3],TT[,4]) #horizontal
+t.test(TT[,9],TT[,10]) #linear
+t.test(TT[,15],TT[,16]) #concavs
+t.test(TT[,21],TT[,22]) #convex
+t.test(TT[,27],TT[,28]) #interaction
+
+# forb - tree
+t.test(TT[,2],TT[,5]) #horizontal
+t.test(TT[,8],TT[,11]) #linear, n.s
+t.test(TT[,14],TT[,17]) #concavs, n.s
+t.test(TT[,20],TT[,23]) #convex, n.s.
+t.test(TT[,26],TT[,29]) #interaction, ns
+
+# forb - shrub
+t.test(TT[,2],TT[,4]) #horizontal
+t.test(TT[,8],TT[,10]) #linear
+t.test(TT[,14],TT[,16]) #concavs
+t.test(TT[,20],TT[,22]) #convex
+t.test(TT[,26],TT[,28]) #interaction
+
+# forb - grass
+t.test(TT[,2],TT[,3]) #horizontal
+t.test(TT[,8],TT[,9]) #linear
+t.test(TT[,14],TT[,15]) #concavs
+t.test(TT[,20],TT[,21]) #convex
+t.test(TT[,26],TT[,27]) #interaction
+
+```
+
+
+## Summarizing the var x mean effects - Figure 3
+
+```{r var x mean , echo=FALSE}
+setwd("/Path")
+mean_effect<-c()
+var_effect<-c()
+interaction_effect<-c()
+for(i in 1:length(studies))
+{
+  load(studies[i])
+  if(dim(output$mean_var_effect)[1]>1)
+  {
+  mean_effect<-cbind(mean_effect,t(output$mean_var_effect[,,1]))
+  var_effect<-cbind(var_effect,t(output$mean_var_effect[,,2]))
+  interaction_effect<-cbind(interaction_effect,t(output$mean_var_effect[,,3]))
+  }
+    if(dim(output$mean_var_effect)[1]==1)
+  {
+  mean_effect<-cbind(mean_effect,output$mean_var_effect[,,1])
+  var_effect<-cbind(var_effect,output$mean_var_effect[,,2])
+  interaction_effect<-cbind(interaction_effect,output$mean_var_effect[,,3])
+  }
+}
+
+mean_effect_save<-mean_effect
+var_effect_save<-var_effect
+interaction_effect_save<-interaction_effect
+
+#Only focus on significant gams
+for( i in 1:ncol(mean_effect))
+{
+  mean_effect[Type[,i]==0,i]<-0
+var_effect[Type[,i]==0,i]<-0
+interaction_effect[Type[,i]==0,i]<-0
+}
+
+
+effects<-cbind(apply(mean_effect,2,mean,na.rm=TRUE),apply(var_effect,2,mean,na.rm=TRUE),apply(interaction_effect,2,mean,na.rm=TRUE))
+colnames(effects)<-c("Mean","Var","Interaction")
+b<-boxplot(effects,plot=FALSE)
+b$stats[2,]<-apply(effects,2,quantile,0.025,na.rm=TRUE)
+b$stats[4,]<-apply(effects,2,quantile,0.975,na.rm=TRUE)
+b$stats[1,]<-apply(effects,2,min,na.rm=TRUE)
+b$stats[5,]<-apply(effects,2,max,na.rm=TRUE)
+b1<-b$out[b$group==1]
+b1<-b1[b1>=b$stats[4,1]]
+b2<-b$out[b$group==2]
+b2<-b2[b2<=b$stats[2,2]]
+b3<-b$out[b$group==2]
+b3<-b3[b3>=b$stats[4,3]]
+b$group<-c(rep(1,length(b1)),rep(2,length(b2)),rep(3,length(b3)))
+b$out<-c(b1,b2,b3)
+bxp(b,boxfill=c("green","Blue","purple"))
+```
+
+
+## Forcast - Figure 4
+
+Let's think about how to summarize temporally the historical results of changing V by separating sigmoid, concave, convex along with the climate forecast.
+
+```{r historical time series , echo=FALSE}
+
+## separating by type (sigmoid, concave, convex)
+#sigmoid
+ V_past<-RESULTS[[1]]$V_ts[,1:94,1:100]
+ for( i in 2:length(studies))
+ {
+    V_past<-abind(V_past,RESULTS[[i]]$V_ts[,1:94,1:100],along=1)
+ }
+ 
+V_pass<-V_past[gam_majority2==3,,] 
+V_pass_sig<-V[,gam_majority2==3]
+
+
+Proportions_positive<-c()
+Proportions_negative<-c()
+Difference_sigmoid<-c()
+value_sigmoid<-c()
+for(i in 1:100)
+{
+  Proportions_positive_pass<-c()
+  Proportions_negative_pass<-c()
+  Difference_sigmoid_pass<-c()
+  value_sigmoid_pass<-c()
+  for(k in 1:94)
+  {
+    Proportions_positive_pass<-c(Proportions_positive_pass,length(V_pass[V_pass[,k,i]>0,k,i])/nrow(V_pass))
+    Proportions_negative_pass<-c(Proportions_negative_pass,length(V_pass[V_pass[,k,i]<0,k,i])/nrow(V_pass))
+    Difference_sigmoid_pass<-c(Difference_sigmoid_pass,mean(V_pass[,k,i]-t(V_pass_sig[i,])))
+    value_sigmoid_pass<-c(value_sigmoid_pass,mean(V_pass[,k,i]))
+  }
+  Proportions_positive<-rbind(Proportions_positive,Proportions_positive_pass)
+    Proportions_negative<-rbind(Proportions_negative,Proportions_negative_pass)
+    Difference_sigmoid<-rbind(Difference_sigmoid,Difference_sigmoid_pass)
+    value_sigmoid<-rbind(value_sigmoid,value_sigmoid_pass)
+}
+
+
+tt0<-apply(Proportions_positive,2,median)
+tt0b<-apply(Proportions_positive,2,quantile,0.025)
+tt0c<-apply(Proportions_positive,2,quantile,0.975)
+year<-c(1901:1994)
+type<-rep("1positive",94)
+tt0<-cbind(year,tt0,tt0b,tt0c,type)
+tt0<-data.frame(tt0)
+colnames(tt0)<-c("year","median","lower","upper","type")
+
+tt1<-apply(Proportions_negative,2,median)
+tt1b<-apply(Proportions_negative,2,quantile,0.025)
+tt1c<-apply(Proportions_negative,2,quantile,0.975)
+year<-c(1901:1994)
+type<-rep("2negative",94)
+tt1<-cbind(year,tt1,tt1b,tt1c,type)
+tt1<-data.frame(tt1)
+colnames(tt1)<-c("year","median","lower","upper","type")
+
+tt0<-rbind(tt0,tt1)
+for(i in 1:4)
+{
+tt0[,i]<-as.numeric(tt0[,i])
+}
+
+p0<-ggplot(data=tt0, aes(x=year, y=median, group=type,color=type))  
+p0<-p0+geom_ribbon(aes(ymin=lower, ymax=upper,fill=type,color=type), colour=NA, alpha=0.6)+ geom_point() + geom_line()+scale_colour_manual(values = c("#44AA99","#DDCC77")) + scale_fill_manual(values = c("#44AA99","#DDCC77"))
+
+#concave and convex
+
+V_past_neg<-V_past[gam_majority2==-2,,]
+V_pass_neg<-V[,gam_majority2==-2]
+V_past_neg_diff<-c()
+V_past_neg_value<-c()
+for(i in 1:100)
+{
+  V_past_neg_diff_pass<-c()
+  V_past_neg_value_pass<-c()
+  for(k in 1:94)
+  {
+    V_past_neg_diff_pass<-c(V_past_neg_diff_pass,mean((V_past_neg[,k,i]-t(V_pass_neg[i,]))))
+    V_past_neg_value_pass<-c(V_past_neg_value_pass,mean(V_past_neg[,k,i]))
+  }
+  V_past_neg_diff<-rbind(V_past_neg_diff,V_past_neg_diff_pass)
+  V_past_neg_value<-rbind(V_past_neg_value,V_past_neg_value_pass)
+}
+
+tt1_n<-apply(V_past_neg_diff,2,median)
+tt1b_n<-apply(V_past_neg_diff,2,quantile,0.025)
+tt1c_n<-apply(V_past_neg_diff,2,quantile,0.975)
+year<-c(1901:1994)
+type<-rep("2negative",94)
+tt1_n<-cbind(year,tt1_n,tt1b_n,tt1c_n,type)
+tt1_n<-data.frame(tt1_n)
+colnames(tt1_n)<-c("year","median","lower","upper","type")
+
+V_past_pos<-V_past[gam_majority2==2,,]
+V_pass_pos<-V[,gam_majority2==2]
+V_past_pos_diff<-c()
+V_past_pos_value<-c()
+for(i in 1:100)
+{
+  V_past_pos_diff_pass<-c()
+   V_past_pos_value_pass<-c()
+  for(k in 1:94)
+  {
+    V_past_pos_diff_pass<-c(V_past_pos_diff_pass,mean((V_past_pos[,k,i]-t(V_pass_pos[i,]))))
+    V_past_pos_value_pass<-c(V_past_pos_value_pass,mean(V_past_pos[,k,i]))
+  }
+  V_past_pos_diff<-rbind(V_past_pos_diff,V_past_pos_diff_pass)
+  V_past_pos_value<-rbind(V_past_pos_value,V_past_pos_value_pass)
+}
+
+tt1_p<-apply(V_past_pos_diff,2,median)
+tt1b_p<-apply(V_past_pos_diff,2,quantile,0.025)
+tt1c_p<-apply(V_past_pos_diff,2,quantile,0.975)
+year<-c(1901:1994)
+type<-rep("1positive",94)
+tt1_p<-cbind(year,tt1_p,tt1b_p,tt1c_p,type)
+tt1_p<-data.frame(tt1_p)
+colnames(tt1_p)<-c("year","median","lower","upper","type")
+
+tt1_np<-rbind(tt1_n,tt1_p)
+
+for(i in 1:4)
+{
+ tt1_np[,i]<-as.numeric(tt1_np[,i]) 
+}
+
+p0b<-ggplot(data=tt1_np, aes(x=year, y=median, group=type,color=type))  
+p0b<-p0b+geom_ribbon(aes(ymin=lower, ymax=upper,fill=type,color=type), colour=NA, alpha=0.6)+ geom_point() + geom_line()+scale_colour_manual(values = c("#44AA99","#DDCC77")) + scale_fill_manual(values = c("#44AA99","#DDCC77"))
+
+```
+
+Let's forecast the future!
+```{r future , echo=FALSE}
+# first step get the future climate for the 8 models x 2 climate scenarios and calculate SPEI.
+
+setwd("/Path")
+prismfuture<-read.csv("prismfuture.csv",header=TRUE)
+V_future_s<-array(data=0,dim=c(1848,912,100))
+Mean_Var_future_s<-array(data=NA,dim=c(28,912,100,3))
+scenarios<-unique(prismfuture$Scenario)
+win_size <- 24
+for(w in 1:length(scenarios))
+{
+  climatefuture <- prismfuture %>% 
+     dplyr::select(-X) %>% 
+    filter(Scenario == scenarios[w])
+S<-0  
+for(i in 1:45) #no climate for VCR.
+{
+climatefuture_pass <- climatefuture %>% 
+    filter(ID1 == RESULTS[[i]][1]) %>% 
+    group_by(month,Year) %>%  # group by everything other than the value column. 
+     dplyr::summarise(tmean=mean(tmean,na.rm=TRUE),
+              ppt=(mean(ppt,na.rm=TRUE)))%>%
+    ##thornthwaite function does not like NAs
+    filter(!is.na(tmean),
+           !is.na(ppt))%>% 
+    distinct() %>% 
+    ##df with years and months for ppt and temp
+    arrange_at("month") %>% 
+    arrange_at("Year") %>%
+    as.data.frame
+
+PET <- thornthwaite(Tave=climatefuture_pass$tmean,RESULTS[[i]]$site_lat)
+BAL <- climatefuture_pass$ppt-PET
+speiFuture <- spei(BAL, 12)
+SPEI = speiFuture$fitted[seq(from=12,to=length(speiFuture$fitted),by=12)]
+year<-c(2011:2100)
+speiFuture<-data.frame(cbind(SPEI,year))
+spp_names<-RESULTS[[i]]$spp_names
+r_clim<-RESULTS[[i]]$r_clim
+
+for(s in 1:length(spp_names))
+{
+ 
+  for(p in 1:100)
+  {
+  
+    if(length(spp_names)>1)
+    {
+  r_posterior<-RESULTS[[i]]$r_posterior[p,,s]
+    }
+        if(length(spp_names)==1)
+    {
+  r_posterior<-RESULTS[[i]]$r_posterior[p,]
+        }
+    pass<-c()
+    mm<-c()
+    vv<-c()
+    for(t in 1:(length(year)-win_size))
+    {
+    window_years <- speiFuture$year[t]:speiFuture$year[t+win_size]
+    SPEI_window <- speiFuture %>% filter(year %in% window_years)
+    mm<-c(mm,mean(SPEI_window$SPEI))
+    vv<-c(vv,var(SPEI_window$SPEI))
+    SPEI_window_mean = data.frame(mean(SPEI_window$SPEI));names(SPEI_window_mean)[1]="SPEI"
+  data_pass<-subset(r_clim,species==spp_names[s])
+  data_pass$r<-r_posterior
+  gam_fit<-gam(r ~ s(SPEI,k=length(unique(r_clim$SPEI[r_clim$species==spp_names[s]]))), data=data_pass)
+  
+  pass<-c(pass,mean(predict(gam_fit, type="terms", newdata=SPEI_window,se.fit=TRUE)$fit) - 
+  predict(gam_fit, type="terms", newdata=SPEI_window_mean,se.fit=TRUE)$fit)
+    }
+  V_future_s[((w-1)*66+1):(w*66),S-length(spp_names)+s,p] <- pass
+  Mean_Var_future_s[w,S-length(spp_names)+s,p,1:3]<-rsq.partial(lm(pass~mm*vv))[[3]]
+  
+  }
+}
+
+S<-S+length(spp_names)
+}
+  
+}
+
+
+#sigmoid
+
+rcp<-scenarios
+for(i in 1:28)
+      {
+ rcp[i]<-substr(rcp[i],nchar(rcp[i])-4,nchar(rcp[i]))
+ }
+rcp<-rep(rcp,each=66)
+
+V_future_s_3<-V_future_s[,gam_majority2==3,]
+V_future_pass<-V_future_s_3
+V_pass_sig<-V[,gam_majority2==3]
+
+V_future_s_3_difference<-V_future_s_3
+for(k in 1:1848)
+{
+  V_future_s_3_difference[k,,]<-V_future_s_3[k,,]-t(V_pass_sig[,])
+}
+V_future_s_3_difference_RCP45<-V_future_s_3_difference[rcp=="RCP45",,]
+V_future_s_3_difference_RCP85<-V_future_s_3_difference[rcp=="RCP85",,]
+V_future_s_3_value_RCP45<-V_future_s_3[rcp=="RCP45",,]
+V_future_s_3_value_RCP85<-V_future_s_3[rcp=="RCP85",,]
+
+Projection_results_n<-matrix(data=NA,nrow=length(scenarios),ncol=66)
+Projection_results_p<-matrix(data=NA,nrow=length(scenarios),ncol=66)
+Projection_diff_sigmoid<-matrix(data=NA,nrow=length(scenarios),ncol=66)
+Projection_sigmoid_value<-matrix(data=NA,nrow=length(scenarios),ncol=66)
+
+for(w in 1:length(scenarios))
+{
+  V_future_negative<-c()
+  V_future_positive<-c()
+  V_future_diff<-c()
+  V_future_value<-c()
+  for(j in ((w-1)*66+1):(w*66))
+  {
+     pass<-V_future_pass[j,,]
+V_future_negative<-c(V_future_negative,length(pass[is.na(pass)==FALSE & pass<0])/length(pass))
+V_future_positive<-c(V_future_positive,length(pass[is.na(pass)==FALSE & pass>0])/length(pass))
+V_future_diff<-c(V_future_diff,mean(pass-t(V_pass_sig)))
+V_future_value<-c(V_future_value,mean(pass))
+  }
+Projection_results_n[w,]<-V_future_negative
+Projection_results_p[w,]<-V_future_positive
+Projection_diff_sigmoid[w,]<-V_future_diff
+Projection_sigmoid_value[w,]<-V_future_value
+}
+
+Projection_results_n_45<-Projection_results_n[c(1,3:7,13,15,17,19:23),]
+Projection_results_n_85<-Projection_results_n[c(2,8:12,14,16,18,24:28),]
+Projection_results_p_45<-Projection_results_p[c(1,3:7,13,15,17,19:23),]
+Projection_results_p_85<-Projection_results_p[c(2,8:12,14,16,18,24:28),]
+Projection_diff_sigmoid_45<-Projection_diff_sigmoid[c(1,3:7,13,15,17,19:23),]
+Projection_diff_sigmoid_85<-Projection_diff_sigmoid[c(2,8:12,14,16,18,24:28),]
+Projection_sigmoid_value_45<-Projection_sigmoid_value[c(1,3:7,13,15,17,19:23),]
+Projection_sigmoid_value_85<-Projection_sigmoid_value[c(2,8:12,14,16,18,24:28),]
+
+Projection_results_p_45_m<-apply(Projection_results_p_45,2,mean)
+Projection_results_p_45_l<-apply(Projection_results_p_45,2,quantile,0.025)
+Projection_results_p_45_h<-apply(Projection_results_p_45,2,quantile,0.975)
+tt<-cbind(c(2035:2100),Projection_results_p_45_m,Projection_results_p_45_l,Projection_results_p_45_h,rep("1Positive",66))
+
+tt<-data.frame(tt)
+colnames(tt)<-c("year","median","lower","upper","type")
+for(i in 1:4)
+{
+  tt[,i]<-as.numeric(tt[,i])
+}
+
+Projection_results_n_45_m<-apply(Projection_results_n_45,2,mean)
+Projection_results_n_45_l<-apply(Projection_results_n_45,2,quantile,0.025)
+Projection_results_n_45_h<-apply(Projection_results_n_45,2,quantile,0.975)
+tt2<-cbind(c(2035:2100),Projection_results_n_45_m,Projection_results_n_45_l,Projection_results_n_45_h,rep("2Negative",66))
+
+tt2<-data.frame(tt2)
+colnames(tt2)<-c("year","median","lower","upper","type")
+for(i in 1:4)
+{
+  tt2[,i]<-as.numeric(tt2[,i])
+}
+
+tt<-rbind(tt,tt2)
+
+p<-ggplot(data=tt, aes(x=year, y=median, group=type,color=type))  
+p<-p+geom_ribbon(aes(ymin=lower, ymax=upper,fill=type), colour=NA, alpha=0.6)+ geom_point() + geom_line()+scale_colour_manual(values = c("#44AA99","#DDCC77")) + scale_fill_manual(values = c("#44AA99","#DDCC77"))
+
+Projection_results_p_85_m<-apply(Projection_results_p_85,2,mean)
+Projection_results_p_85_l<-apply(Projection_results_p_85,2,quantile,0.025)
+Projection_results_p_85_h<-apply(Projection_results_p_85,2,quantile,0.975)
+tt3<-cbind(c(2035:2100),Projection_results_p_85_m,Projection_results_p_85_l,Projection_results_p_85_h,rep("1Positive",66))
+
+tt3<-data.frame(tt3)
+colnames(tt3)<-c("year","median","lower","upper","type")
+for(i in 1:4)
+{
+  tt3[,i]<-as.numeric(tt3[,i])
+}
+
+Projection_results_n_85_m<-apply(Projection_results_n_85,2,mean)
+Projection_results_n_85_l<-apply(Projection_results_n_85,2,quantile,0.025)
+Projection_results_n_85_h<-apply(Projection_results_n_85,2,quantile,0.975)
+tt4<-cbind(c(2035:2100),Projection_results_n_85_m,Projection_results_n_85_l,Projection_results_n_85_h,rep("2Negative",66))
+
+tt4<-data.frame(tt4)
+colnames(tt4)<-c("year","median","lower","upper","type")
+for(i in 1:4)
+{
+  tt4[,i]<-as.numeric(tt4[,i])
+}
+
+tt3<-rbind(tt3,tt4)
+
+p2<-ggplot(data=tt3, aes(x=year, y=median, group=type,color=type))  
+p2<-p2+geom_ribbon(aes(ymin=lower, ymax=upper,fill=type), colour=NA, alpha=0.6)+ geom_point() + geom_line()+scale_colour_manual(values = c("#44AA99","#DDCC77")) + scale_fill_manual(values = c("#44AA99","#DDCC77"))
+
+grid.arrange (p,p2,nrow=2)
+
+#concave vs convex
+negative<-c()
+for(i in 1:ncol(V))
+{
+  if(gam_majority2[i]==-2)
+  {negative<-c(negative,i)}
+}
+
+V_future_s_neg<-V_future_s[,negative,]
+V_pass_neg<-V[,negative]
+
+V_future_s_neg_difference<-V_future_s_neg
+for(k in 1:1848)
+{
+  V_future_s_neg_difference[k,,]<-V_future_s_neg[k,,]-t(V_pass_neg[,])
+}
+V_future_s_neg_difference_RCP45<-V_future_s_neg_difference[rcp=="RCP45",,]
+V_future_s_neg_difference_RCP85<-V_future_s_neg_difference[rcp=="RCP85",,]
+
+V_future_s_neg_value_RCP45<-V_future_s_neg[rcp=="RCP45",,]
+V_future_s_neg_value_RCP85<-V_future_s_neg[rcp=="RCP85",,]
+
+V_future_pass<-V_future_s_neg
+
+Projection_results_diff<-matrix(data=NA,nrow=length(scenarios),ncol=66)
+Projection_results_value<-matrix(data=NA,nrow=length(scenarios),ncol=66)
+for(w in 1:length(scenarios))
+{
+  V_future_diff<-c()
+  V_future_value<-c()
+  for(j in ((w-1)*66+1):(w*66))
+  {
+     pass<-V_future_pass[j,,]
+V_future_diff<-c(V_future_diff,mean((pass-t(V_pass_neg)),na.rm=TRUE))
+V_future_value<-c(V_future_value,mean(pass,na.rm=TRUE))
+}
+Projection_results_diff[w,]<-V_future_diff
+Projection_results_value[w,]<-V_future_value
+}
+
+Projection_results_diff_45<-Projection_results_diff[c(1,3:7,13,15,17,19:23),]
+Projection_results_diff_85<-Projection_results_diff[c(2,8:12,14,16,18,24:28),]
+Projection_results_value_45<-Projection_results_value[c(1,3:7,13,15,17,19:23),]
+Projection_results_value_85<-Projection_results_value[c(2,8:12,14,16,18,24:28),]
+
+Projection_results_diff_45_m<-apply(Projection_results_diff_45,2,mean,na.rm=TRUE)
+Projection_results_diff_45_l<-apply(Projection_results_diff_45,2,quantile,0.025,na.rm=TRUE)
+Projection_results_diff_45_h<-apply(Projection_results_diff_45,2,quantile,0.975,na.rm=TRUE)
+tt5<-cbind(c(2035:2100),Projection_results_diff_45_m,Projection_results_diff_45_l,Projection_results_diff_45_h,rep("2Negative",66))
+
+tt5<-data.frame(tt5)
+colnames(tt5)<-c("year","median","lower","upper","type")
+for(i in 1:4)
+{
+  tt5[,i]<-as.numeric(tt5[,i])
+}
+
+Projection_results_diff_85_m<-apply(Projection_results_diff_85,2,mean,na.rm=TRUE)
+Projection_results_diff_85_l<-apply(Projection_results_diff_85,2,quantile,0.025,na.rm=TRUE)
+Projection_results_diff_85_h<-apply(Projection_results_diff_85,2,quantile,0.975,na.rm=TRUE)
+tt7<-cbind(c(2035:2100),Projection_results_diff_85_m,Projection_results_diff_85_l,Projection_results_diff_85_h,rep("2Negative",66))
+
+tt7<-data.frame(tt7)
+colnames(tt7)<-c("year","median","lower","upper","type")
+for(i in 1:4)
+{
+  tt7[,i]<-as.numeric(tt7[,i])
+}
+
+positive<-c()
+for(i in 1:ncol(V))
+{
+  if(gam_majority2[i]==2)
+  {positive<-c(positive,i)}
+}
+
+V_future_s_pos<-V_future_s[,positive,]
+V_pass_pos<-V[,positive]
+
+V_future_s_pos_difference<-V_future_s_pos
+for(k in 1:1848)
+{
+  V_future_s_pos_difference[k,,]<-V_future_s_pos[k,,]-t(V_pass_pos[,])
+}
+V_future_s_pos_difference_RCP45<-V_future_s_pos_difference[rcp=="RCP45",,]
+V_future_s_pos_difference_RCP85<-V_future_s_pos_difference[rcp=="RCP85",,]
+
+V_future_s_pos_value_RCP45<-V_future_s_pos[rcp=="RCP45",,]
+V_future_s_pos_value_RCP85<-V_future_s_pos[rcp=="RCP85",,]
+
+V_future_pass<-V_future_s_pos
+Projection_results_diff<-matrix(data=NA,nrow=length(scenarios),ncol=66)
+Projection_results_value<-matrix(data=NA,nrow=length(scenarios),ncol=66)
+for(w in 1:length(scenarios))
+{
+  V_future_diff<-c()
+  V_future_value<-c()
+  for(j in ((w-1)*66+1):(w*66))
+  {
+     pass<-V_future_pass[j,,]
+     V_future_diff<-c(V_future_diff,mean((pass-t(V_pass_pos)),na.rm=TRUE))
+      V_future_value<-c(V_future_value,mean(pass,na.rm=TRUE))
+}
+Projection_results_diff[w,]<-V_future_diff
+Projection_results_value[w,]<-V_future_value
+}
+
+Projection_results_diff_45<-Projection_results_diff[c(1,3:7,13,15,17,19:23),]
+Projection_results_diff_85<-Projection_results_diff[c(2,8:12,14,16,18,24:28),]
+Projection_results_value_45<-Projection_results_value[c(1,3:7,13,15,17,19:23),]
+Projection_results_value_85<-Projection_results_value[c(2,8:12,14,16,18,24:28),]
+
+Projection_results_diff_45_m<-apply(Projection_results_diff_45,2,mean,na.rm=TRUE)
+Projection_results_diff_45_l<-apply(Projection_results_diff_45,2,quantile,0.025,na.rm=TRUE)
+Projection_results_diff_45_h<-apply(Projection_results_diff_45,2,quantile,0.975,na.rm=TRUE)
+tt6<-cbind(c(2035:2100),Projection_results_diff_45_m,Projection_results_diff_45_l,Projection_results_diff_45_h,rep("1Positive",66))
+
+tt6<-data.frame(tt6)
+colnames(tt6)<-c("year","median","lower","upper","type")
+for(i in 1:4)
+{
+  tt6[,i]<-as.numeric(tt6[,i])
+}
+
+tt5<-rbind(tt5,tt6)
+
+p3<-ggplot(data=tt5, aes(x=year, y=median, group=type,color=type))  
+p3<-p3+geom_ribbon(aes(ymin=lower, ymax=upper,fill=type), colour=NA, alpha=0.6)+ geom_point() + geom_line()+scale_colour_manual(values = c("#44AA99","#DDCC77")) + scale_fill_manual(values = c("#44AA99","#DDCC77"))
+
+
+Projection_results_diff_85_m<-apply(Projection_results_diff_85,2,mean,na.rm=TRUE)
+Projection_results_diff_85_l<-apply(Projection_results_diff_85,2,quantile,0.025,na.rm=TRUE)
+Projection_results_diff_85_h<-apply(Projection_results_diff_85,2,quantile,0.975,na.rm=TRUE)
+tt8<-cbind(c(2035:2100),Projection_results_diff_85_m,Projection_results_diff_85_l,Projection_results_diff_85_h,rep("1Positive",66))
+
+tt8<-data.frame(tt8)
+colnames(tt8)<-c("year","median","lower","upper","type")
+for(i in 1:4)
+{
+  tt8[,i]<-as.numeric(tt8[,i])
+}
+
+tt7<-rbind(tt7,tt8)
+
+p4<-ggplot(data=tt7, aes(x=year, y=median, group=type,color=type))  
+p4<-p4+geom_ribbon(aes(ymin=lower, ymax=upper,fill=type), colour=NA, alpha=0.6)+ geom_point() + geom_line()+scale_colour_manual(values = c("#44AA99","#DDCC77")) + scale_fill_manual(values = c("#44AA99","#DDCC77"))
+
+grid.arrange (p3,p4,nrow=2)
+```
+
+## Summarizing the var x mean effects: past and future - Figure 3
+
+```{r future , echo=FALSE}
+# Mean, Var, Interaction
+FutureMean45<-Mean_Var_future_s[c(1,3:7,13,15,17,19:23),,,1]
+FutureMean85<-Mean_Var_future_s[c(2,8:12,14,16,18,24:28),,,1]
+FutureVar45<-Mean_Var_future_s[c(1,3:7,13,15,17,19:23),,,2]
+FutureVar85<-Mean_Var_future_s[c(2,8:12,14,16,18,24:28),,,2]
+FutureInt45<-Mean_Var_future_s[c(1,3:7,13,15,17,19:23),,,3]
+FutureInt85<-Mean_Var_future_s[c(2,8:12,14,16,18,24:28),,,3]
+
+FutureMean45_m<-apply(FutureMean45,2,median)
+FutureMean45_l<-apply(FutureMean45,2,quantile,0.025)
+FutureMean45_h<-apply(FutureMean45,2,quantile,0.975)
+tt_new<-cbind(FutureMean45_m,FutureMean45_l,FutureMean45_h,rep("1Mean",90))
+FutureVar45_m<-apply(FutureVar45,2,median)
+FutureVar45_l<-apply(FutureVar45,2,quantile,0.025)
+FutureVar45_h<-apply(FutureVar45,2,quantile,0.975)
+tt_new2<-cbind(FutureVar45_m,FutureVar45_l,FutureVar45_h,rep("2Var",90))
+FutureInt45_m<-apply(FutureInt45,2,median)
+FutureInt45_l<-apply(FutureInt45,2,quantile,0.025)
+FutureInt45_h<-apply(FutureInt45,2,quantile,0.975)
+tt_new3<-cbind(FutureInt45_m,FutureInt45_l,FutureInt45_h,rep("3Int",90))
+
+tt_new<-rbind(tt_new,tt_new2,tt_new3)
+tt_new<-data.frame(tt_new)
+colnames(tt_new)<-c("median","lower","upper","type")
+for(i in 1:3)
+{
+ tt_new[,i]<-as.numeric(as.character(tt_new[,i])) 
+}
+
+FutureMean85_m<-apply(FutureMean85,2,median)
+FutureMean85_l<-apply(FutureMean85,2,quantile,0.025)
+FutureMean85_h<-apply(FutureMean85,2,quantile,0.975)
+tt_new4<-cbind(FutureMean85_m,FutureMean85_l,FutureMean85_h,rep("1Mean",90))
+FutureVar85_m<-apply(FutureVar85,2,median)
+FutureVar85_l<-apply(FutureVar85,2,quantile,0.025)
+FutureVar85_h<-apply(FutureVar85,2,quantile,0.975)
+tt_new5<-cbind(FutureVar85_m,FutureVar85_l,FutureVar85_h,rep("2Var",90))
+FutureInt85_m<-apply(FutureInt85,2,median)
+FutureInt85_l<-apply(FutureInt85,2,quantile,0.025)
+FutureInt85_h<-apply(FutureInt85,2,quantile,0.975)
+tt_new6<-cbind(FutureInt85_m,FutureInt85_l,FutureInt85_h,rep("3Int",90))
+
+tt_new2<-rbind(tt_new4,tt_new5,tt_new6)
+tt_new2<-data.frame(tt_new2)
+colnames(tt_new2)<-c("median","lower","upper","type")
+for(i in 1:3)
+{
+ tt_new2[,i]<-as.numeric(as.character(tt_new2[,i])) 
+}
+
+
+par(mfrow=c(1,1))
+
+TEST<-c(apply(effects,2,median)[1],mean(tt_new[tt_new$type=="1Mean",1]),mean(tt_new2[tt_new2$type=="1Mean",1]),NA,apply(effects,2,median)[2],mean(tt_new[tt_new$type=="2Var",1]),mean(tt_new2[tt_new2$type=="2Var",1]),NA,apply(effects,2,median)[3],mean(tt_new[tt_new$type=="3Int",1]),mean(tt_new2[tt_new2$type=="3Int",1]))
+
+TEST_reorder<-TEST[c(1,5,9,4,2,6,10,8,3,7,11)]
+
+tt<-barplot(TEST_reorder,ylim=c(0,1),col=c("green","Blue","purple","white","green","Blue","purple","white","green","Blue","purple"))
+
+TEST_L<-c(apply(effects,2,quantile,0.025)[1],mean(tt_new[tt_new$type=="1Mean",2]),mean(tt_new2[tt_new2$type=="1Mean",2]),NA,apply(effects,2,quantile,0.025)[2],mean(tt_new[tt_new$type=="2Var",2]),mean(tt_new2[tt_new2$type=="2Var",2]),NA,apply(effects,2,quantile,0.025)[3],mean(tt_new[tt_new$type=="3Int",2]),mean(tt_new2[tt_new2$type=="3Int",2]))
+
+TEST_L_reorder<-TEST_L[c(1,5,9,4,2,6,10,8,3,7,11)]
+
+TEST_H<-c(apply(effects,2,quantile,0.975)[1],mean(tt_new[tt_new$type=="1Mean",3]),mean(tt_new2[tt_new2$type=="1Mean",3]),NA,apply(effects,2,quantile,0.975)[2],mean(tt_new[tt_new$type=="2Var",3]),mean(tt_new2[tt_new2$type=="2Var",3]),NA,apply(effects,2,quantile,0.975)[3],mean(tt_new[tt_new$type=="3Int",3]),mean(tt_new2[tt_new2$type=="3Int",3]))
+
+TEST_H_reorder<-TEST_H[c(1,5,9,4,2,6,10,8,3,7,11)]
+
+segments(as.numeric(tt),TEST_L_reorder,as.numeric(tt),TEST_H_reorder)
+```
+
